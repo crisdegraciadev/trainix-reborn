@@ -1,11 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { LoginFormSchema, loginFormSchema } from "./LoginFormSchema";
+import { LoginFormSchema, loginFormSchema } from "./login-form-schema";
 import { signIn } from "next-auth/react";
-import { useToast } from "../ui/use-toast";
+import { useToast } from "../../../components/ui/use-toast";
 import { useRouter } from "next/navigation";
-import { HttpStatus } from "../../constants/http";
+import { HttpStatus } from "../../../constants/http";
 
 export const useLoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);

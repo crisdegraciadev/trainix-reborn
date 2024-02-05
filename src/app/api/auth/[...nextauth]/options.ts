@@ -19,8 +19,6 @@ export const authOptions: NextAuthOptions = {
         const { email, password } = credentials;
         const user = await db.user.findUnique({ where: { email } });
 
-        console.log({ user });
-
         if (!user) {
           throw new Error("Wrong credentials");
         }
@@ -34,12 +32,26 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Wrong credentials");
         }
 
-        console.log({ user });
         return { ...user };
       },
     }),
   ],
+  callbacks: {
+    async session({ session }) {
+      const { email } = session.user;
 
+      const user = await db.user.findUnique({
+        where: { email: session.user.email },
+      });
+
+      if (!user) {
+        throw new Error("Wrong credentials");
+      }
+
+      const { id, name } = user;
+      return { ...session, user: { id, name, email } };
+    },
+  },
   pages: {
     signIn: "/auth/login",
   },

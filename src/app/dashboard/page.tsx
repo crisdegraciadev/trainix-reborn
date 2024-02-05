@@ -1,9 +1,9 @@
-import WithAuthLayout from "../../components/WithAuthLayout";
-import WorkoutButton from "../../components/dashboard/WorkoutButton";
+import TopbarLayout from "../../components/topbar-layout";
+import WorkoutButton from "./workout-button";
 
 export default async function DashboardPage() {
   return (
-    <WithAuthLayout>
+    <TopbarLayout>
       <div className="flex flex-col h-full ">
         <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-8">
           Weekly Planning
@@ -21,6 +21,6 @@ export default async function DashboardPage() {
         </div>
         <div className="mt-8">Second half</div>
       </div>
-    </WithAuthLayout>
+    </TopbarLayout>
   );
 }

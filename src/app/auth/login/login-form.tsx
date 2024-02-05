@@ -1,8 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { Input } from "../ui/input";
-import { useForm } from "react-hook-form";
+import { Input } from "../../../components/ui/input";
 import {
   Form,
   FormControl,
@@ -10,18 +8,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Button } from "../ui/button";
+} from "../../../components/ui/form";
+import { Button } from "../../../components/ui/button";
 import { Loader2 } from "lucide-react";
-import { useLoginForm } from "./useLoginForm";
+import { useLoginForm } from "./use-login-form";
 
-type LoginFormProps = React.HTMLAttributes<HTMLDivElement>;
-
-export function LoginForm({ className, ...props }: LoginFormProps) {
+export function LoginForm() {
   const { form, isLoading, onSubmit } = useLoginForm();
 
   return (
-    <div className={cn("grid gap-6", className)} {...props}>
+    <div className="grid gap-6">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="grid">
           <FormField

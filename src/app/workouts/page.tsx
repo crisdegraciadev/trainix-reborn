@@ -1,9 +1,9 @@
-import WithAuthLayout from "../../components/WithAuthLayout";
+import TopbarLayout from "../../components/topbar-layout";
 
 export default function WorkoutPage() {
   return (
-    <WithAuthLayout>
+    <TopbarLayout>
       <div>Workouts</div>
-    </WithAuthLayout>
+    </TopbarLayout>
   );
 }

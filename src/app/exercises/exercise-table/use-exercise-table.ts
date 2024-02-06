@@ -7,20 +7,18 @@ type UseExerciseTable = {
 };
 
 export const useExerciseTable = ({ userId }: UseExerciseTable) => {
-  const {
-    data: rawData,
-    isSuccess,
-    isError,
-  } = trpc.findAllExercises.useQuery({ userId });
+  const { data: rawData, isSuccess, isError } = trpc.findAllExercises.useQuery({ userId });
   const [data, setData] = useState<ExerciseTableData[]>([]);
 
   useEffect(() => {
     if (isSuccess) {
       setData(
-        rawData.map(({ name, description, muscles: rawMuscles }) => {
+        rawData.map(({ id, name, description, difficulty, muscles: rawMuscles }) => {
           return {
+            id,
             name,
             description,
+            difficulty: difficulty?.name,
             muscles: rawMuscles.map(({ name }) => ({ name })),
           };
         })

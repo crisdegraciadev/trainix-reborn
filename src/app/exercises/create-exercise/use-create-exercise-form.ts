@@ -4,21 +4,35 @@ import { CreateExerciseFormSchema, createExerciseSchema } from "./create-exercis
 import { useFindMusclesOptions } from "./use-find-muscles-options";
 import { useSession } from "next-auth/react";
 import { useCreateExercise } from "./use-create-exercise";
+import { useFindDifficultiesOptions } from "./use-find-difficulties-options";
 
 export const useCreateExerciseForm = () => {
   const { isFormLoading, isFormOpen, createExercise, toggleForm } = useCreateExercise();
   const { muscles } = useFindMusclesOptions();
+  const { difficulties } = useFindDifficultiesOptions();
   const { data: session } = useSession();
 
   const form = useForm<CreateExerciseFormSchema>({
     resolver: zodResolver(createExerciseSchema),
-    defaultValues: { name: "", description: "" },
+    defaultValues: { name: "", description: "", muscles: [], difficulty: "medium" },
   });
 
   const onSubmit = async (data: CreateExerciseFormSchema) => {
     const { user } = session!;
-    createExercise({ ...data, userId: user.id });
+
+    const difficultyId = getDifficultyId(data);
+
+    createExercise({
+      ...data,
+      difficultyId,
+      userId: user.id,
+    });
   };
 
-  return { form, muscles, isFormLoading, isFormOpen, toggleForm, onSubmit };
+  const getDifficultyId = ({ difficulty }: CreateExerciseFormSchema) => {
+    const idx = difficulties.findIndex(({ value }) => value === difficulty)!;
+    return difficulties[idx].id!;
+  };
+
+  return { form, muscles, difficulties, isFormLoading, isFormOpen, toggleForm, onSubmit };
 };

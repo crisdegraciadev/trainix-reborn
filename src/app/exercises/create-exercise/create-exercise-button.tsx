@@ -12,21 +12,21 @@ import {
   DialogTrigger,
 } from "../../../components/ui/dialog";
 import { useCreateExerciseForm } from "./use-create-exercise-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../../../components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../../../components/ui/form";
 import { Input } from "../../../components/ui/input";
 import { Textarea } from "../../../components/ui/textarea";
 import MultipleSelector from "../../../components/ui/multi-select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../../components/ui/select";
 
 export default function CreateExerciseButton() {
-  const { form, isFormLoading, isFormOpen, muscles, toggleForm, onSubmit } =
-    useCreateExerciseForm();
+  const { form, isFormLoading, isFormOpen, muscles, toggleForm, onSubmit } = useCreateExerciseForm();
 
   return (
     <Dialog open={isFormOpen} onOpenChange={toggleForm}>
@@ -43,8 +43,7 @@ export default function CreateExerciseButton() {
         <DialogHeader className="mb-4">
           <DialogTitle>Create exercise</DialogTitle>
           <DialogDescription>
-            Add a new exercise to your exercise pull. Click create when
-            you&apos;re done.
+            Add a new exercise to your exercise pull. Click create when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -56,13 +55,7 @@ export default function CreateExerciseButton() {
                 <FormItem>
                   <FormLabel className="sr-only">Name</FormLabel>
                   <FormControl>
-                    <Input
-                      id="name"
-                      placeholder="Name"
-                      type="text"
-                      disabled={isFormLoading}
-                      {...field}
-                    />
+                    <Input id="name" placeholder="Name" type="text" disabled={isFormLoading} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -81,12 +74,35 @@ export default function CreateExerciseButton() {
                       hidePlaceholderWhenSelected
                       placeholder="Select muscles"
                       emptyIndicator={
-                        <p className="text-center leading-5 text-gray-600 dark:text-gray-400">
-                          no results found.
-                        </p>
+                        <p className="text-center leading-5 text-gray-600 dark:text-gray-400">no results found.</p>
                       }
                       {...field}
                     />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="difficulty"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="sr-only">Difficulty</FormLabel>
+                  <FormControl>
+                    <Select {...field}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select difficulty" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="easy">Easy</SelectItem>
+                          <SelectItem value="medium">Medium</SelectItem>
+                          <SelectItem value="hard">Hard</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -100,12 +116,7 @@ export default function CreateExerciseButton() {
                 <FormItem>
                   <FormLabel className="sr-only">Password</FormLabel>
                   <FormControl>
-                    <Textarea
-                      id="description"
-                      placeholder="Description"
-                      disabled={isFormLoading}
-                      {...field}
-                    />
+                    <Textarea id="description" placeholder="Description" disabled={isFormLoading} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -114,9 +125,7 @@ export default function CreateExerciseButton() {
 
             <div className="flex justify-end">
               <Button type="submit" className="mt-2" disabled={isFormLoading}>
-                {isFormLoading && (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                )}
+                {isFormLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Create
               </Button>
             </div>

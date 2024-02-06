@@ -16,6 +16,13 @@ const muscles = [
   { name: "Hamstrings", value: "hamstrings" },
   { name: "Trapezius", value: "trapezius" },
 ];
+
+const difficulties = [
+  { name: "Easy", value: "easy" },
+  { name: "Medium", value: "medium" },
+  { name: "Hard", value: "hard" },
+];
+
 async function main() {
   for (const muscle of muscles) {
     const isFound = await prisma.muscle.findFirst({
@@ -27,6 +34,19 @@ async function main() {
     if (!isFound) {
       const added = await prisma.muscle.create({ data: muscle });
       console.log("Muscle added", added);
+    }
+  }
+
+  for (const difficulty of difficulties) {
+    const isFound = await prisma.difficulty.findFirst({
+      where: {
+        value: difficulty.value,
+      },
+    });
+
+    if (!isFound) {
+      const added = await prisma.difficulty.create({ data: difficulty });
+      console.log("Difficulty added", added);
     }
   }
 }

@@ -7,23 +7,23 @@ export const createExercise = privateProcedure
     z.object({
       name: z.string(),
       description: z.string().optional(),
+      difficultyId: z.string(),
       muscles: z.array(z.object({ id: z.string() })),
       userId: z.string(),
     })
   )
   .mutation(async ({ input }) => {
-    const { name, description, muscles, userId } = input;
+    const { name, description, difficultyId, muscles, userId } = input;
 
-    await db.exercise.create({
+    return db.exercise.create({
       data: {
         name,
         description,
         userId,
+        difficultyId,
         muscles: {
           connect: [...muscles],
         },
       },
     });
-
-    console.log({ name, description, muscles });
   });

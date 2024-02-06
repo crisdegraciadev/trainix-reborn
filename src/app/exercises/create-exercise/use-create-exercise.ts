@@ -5,10 +5,7 @@ import { useToast } from "../../../components/ui/use-toast";
 export const useCreateExercise = () => {
   const utils = trpc.useUtils();
 
-  const { mutate, isSuccess, isError, isLoading } =
-    trpc.createExercise.useMutation({
-      onSuccess: () => utils.findAllExercises.invalidate(),
-    });
+  const { mutate, isSuccess, isError, isLoading } = trpc.createExercise.useMutation();
 
   const [isFormLoading, setIsFormLoading] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -23,24 +20,28 @@ export const useCreateExercise = () => {
         description: "The exercise has been created.",
       });
 
+      utils.findAllExercises.invalidate();
+
       setIsFormLoading(false);
       setIsFormOpen(false);
     }
-  }, [isSuccess, toast, setIsFormLoading]);
+  }, [isSuccess, toast, utils]);
 
   useEffect(() => {
     if (isLoading) {
       setIsFormLoading(true);
     }
-  }, [isLoading, setIsFormLoading]);
+  }, [isLoading]);
 
   useEffect(() => {
     if (isError) {
       toast({
         variant: "destructive",
-        title: "Error creating exericse.",
+        title: "Error creating exercise.",
         description: "There was an unexpected error creating the exericse.",
       });
+
+      setIsFormLoading(false);
     }
   }, [isError, toast]);
 

@@ -1,6 +1,6 @@
 import db from "../../lib/prisma";
-import { publicProcedure } from "../trpc";
+import { privateProcedure } from "../trpc";
 
-export const findAllMuscles = publicProcedure.query(async () => {
+export const findAllMuscles = privateProcedure.query(async () => {
   return db.muscle.findMany();
 });

@@ -3,19 +3,13 @@
 import * as React from "react";
 import { X } from "lucide-react";
 
-import {
-  Command,
-  CommandGroup,
-  CommandItem,
-  CommandEmpty,
-  CommandList,
-} from "@/components/ui/command";
+import { Command, CommandGroup, CommandItem, CommandEmpty, CommandList } from "@/components/ui/command";
 import { Command as CommandPrimitive } from "cmdk";
 import { useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-export interface MultiSelectOption {
+export interface SelectOption {
   id?: string;
   value: string;
   label: string;
@@ -26,14 +20,14 @@ export interface MultiSelectOption {
   [key: string]: string | boolean | undefined;
 }
 interface GroupOption {
-  [key: string]: MultiSelectOption[];
+  [key: string]: SelectOption[];
 }
 
 interface MultipleSelectorProps {
-  value?: MultiSelectOption[];
-  defaultOptions?: MultiSelectOption[];
+  value?: SelectOption[];
+  defaultOptions?: SelectOption[];
   /** manually controlled options */
-  options?: MultiSelectOption[];
+  options?: SelectOption[];
   placeholder?: string;
   /** Loading component. */
   loadingIndicator?: React.ReactNode;
@@ -47,8 +41,8 @@ interface MultipleSelectorProps {
    **/
   triggerSearchOnFocus?: boolean;
   /** async search */
-  onSearch?: (value: string) => Promise<MultiSelectOption[]>;
-  onChange?: (options: MultiSelectOption[]) => void;
+  onSearch?: (value: string) => Promise<SelectOption[]>;
+  onChange?: (options: SelectOption[]) => void;
   /** Limit the maximum number of selected options. */
   maxSelected?: number;
   /** When the number of selected options exceeds the limit, the onMaxSelected will be called. */
@@ -79,7 +73,7 @@ interface MultipleSelectorProps {
 }
 
 export interface MultipleSelectorRef {
-  selectedValue: MultiSelectOption[];
+  selectedValue: SelectOption[];
   input: HTMLInputElement;
 }
 
@@ -97,7 +91,7 @@ export function useDebounce<T>(value: T, delay?: number): T {
   return debouncedValue;
 }
 
-function transToGroupOption(options: MultiSelectOption[], groupBy?: string) {
+function transToGroupOption(options: SelectOption[], groupBy?: string) {
   if (options.length === 0) {
     return {};
   }
@@ -118,24 +112,16 @@ function transToGroupOption(options: MultiSelectOption[], groupBy?: string) {
   return groupOption;
 }
 
-function removePickedOption(
-  groupOption: GroupOption,
-  picked: MultiSelectOption[]
-) {
+function removePickedOption(groupOption: GroupOption, picked: SelectOption[]) {
   const cloneOption = JSON.parse(JSON.stringify(groupOption)) as GroupOption;
 
   for (const [key, value] of Object.entries(cloneOption)) {
-    cloneOption[key] = value.filter(
-      (val) => !picked.find((p) => p.value === val.value)
-    );
+    cloneOption[key] = value.filter((val) => !picked.find((p) => p.value === val.value));
   }
   return cloneOption;
 }
 
-const MultipleSelector = React.forwardRef<
-  MultipleSelectorRef,
-  MultipleSelectorProps
->(
+const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorProps>(
   (
     {
       value,
@@ -166,12 +152,8 @@ const MultipleSelector = React.forwardRef<
     const [open, setOpen] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
 
-    const [selected, setSelected] = React.useState<MultiSelectOption[]>(
-      value || []
-    );
-    const [options, setOptions] = React.useState<GroupOption>(
-      transToGroupOption(arrayDefaultOptions, groupBy)
-    );
+    const [selected, setSelected] = React.useState<SelectOption[]>(value || []);
+    const [options, setOptions] = React.useState<GroupOption>(transToGroupOption(arrayDefaultOptions, groupBy));
     const [inputValue, setInputValue] = React.useState("");
     const debouncedSearchTerm = useDebounce(inputValue, delay || 500);
 
@@ -185,7 +167,7 @@ const MultipleSelector = React.forwardRef<
     );
 
     const handleUnselect = React.useCallback(
-      (option: MultiSelectOption) => {
+      (option: SelectOption) => {
         const newOptions = selected.filter((s) => s.value !== option.value);
         setSelected(newOptions);
         onChange?.(newOptions);
@@ -303,10 +285,7 @@ const MultipleSelector = React.forwardRef<
       return <CommandEmpty>{emptyIndicator}</CommandEmpty>;
     }, [creatable, emptyIndicator, onSearch, options]);
 
-    const selectables = React.useMemo<GroupOption>(
-      () => removePickedOption(options, selected),
-      [options, selected]
-    );
+    const selectables = React.useMemo<GroupOption>(() => removePickedOption(options, selected), [options, selected]);
 
     /** Avoid Creatable Selector freezing or lagging when paste a long string. */
     const commandFilter = React.useCallback(() => {
@@ -330,15 +309,8 @@ const MultipleSelector = React.forwardRef<
           handleKeyDown(e);
           commandProps?.onKeyDown?.(e);
         }}
-        className={cn(
-          "overflow-visible bg-transparent",
-          commandProps?.className
-        )}
-        shouldFilter={
-          commandProps?.shouldFilter !== undefined
-            ? commandProps.shouldFilter
-            : !onSearch
-        } // When onSearch is provided, we don't want to filter the options. You can still override it.
+        className={cn("overflow-visible bg-transparent", commandProps?.className)}
+        shouldFilter={commandProps?.shouldFilter !== undefined ? commandProps.shouldFilter : !onSearch} // When onSearch is provided, we don't want to filter the options. You can still override it.
         filter={commandFilter()}
       >
         <div
@@ -401,11 +373,7 @@ const MultipleSelector = React.forwardRef<
                 triggerSearchOnFocus && onSearch?.(debouncedSearchTerm);
                 inputProps?.onFocus?.(event);
               }}
-              placeholder={
-                hidePlaceholderWhenSelected && selected.length !== 0
-                  ? ""
-                  : placeholder
-              }
+              placeholder={hidePlaceholderWhenSelected && selected.length !== 0 ? "" : placeholder}
               className={cn(
                 "flex-1 bg-transparent outline-none placeholder:text-muted-foreground",
                 inputProps?.className
@@ -423,15 +391,9 @@ const MultipleSelector = React.forwardRef<
                 <>
                   {EmptyItem()}
                   {CreatableItem()}
-                  {!selectFirstItem && (
-                    <CommandItem value="-" className="hidden" />
-                  )}
+                  {!selectFirstItem && <CommandItem value="-" className="hidden" />}
                   {Object.entries(selectables).map(([key, dropdowns]) => (
-                    <CommandGroup
-                      key={key}
-                      heading={key}
-                      className="h-full overflow-auto"
-                    >
+                    <CommandGroup key={key} heading={key} className="h-full overflow-auto">
                       <>
                         {dropdowns.map((option) => {
                           return (
@@ -453,11 +415,7 @@ const MultipleSelector = React.forwardRef<
                                 setSelected(newOptions);
                                 onChange?.(newOptions);
                               }}
-                              className={cn(
-                                "cursor-pointer",
-                                option.disable &&
-                                  "cursor-default text-muted-foreground"
-                              )}
+                              className={cn("cursor-pointer", option.disable && "cursor-default text-muted-foreground")}
                             >
                               {option.label}
                             </CommandItem>

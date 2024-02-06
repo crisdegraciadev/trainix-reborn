@@ -12,7 +12,7 @@ generator client {
 }
 
 model User {
-  id           String @id @unique
+  id           String @id @unique @default(uuid())
   name         String
   surname      String
   email        String @unique
@@ -25,22 +25,20 @@ model User {
 }
 
 model Muscle {
-  id   String @id @unique
-  name String
+  id    String @id @unique @default(uuid())
+  name  String
+  value String
 
-  Exercise   Exercise? @relation(fields: [exerciseId], references: [id])
-  exerciseId String?
+  exercises Exercise[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@index([exerciseId])
 }
 
 model Exercise {
-  id          String @id @unique
-  name        String
-  description String
+  id          String  @id @unique @default(uuid())
+  name        String  @unique
+  description String? @db.Text
 
   muscles Muscle[]
 

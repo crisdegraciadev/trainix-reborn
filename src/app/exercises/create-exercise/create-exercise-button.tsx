@@ -25,10 +25,11 @@ import { Textarea } from "../../../components/ui/textarea";
 import MultipleSelector from "../../../components/ui/multi-select";
 
 export default function CreateExerciseButton() {
-  const { form, isLoading, onSubmit } = useCreateExerciseForm();
+  const { form, isFormLoading, isFormOpen, muscles, toggleForm, onSubmit } =
+    useCreateExerciseForm();
 
   return (
-    <Dialog>
+    <Dialog open={isFormOpen} onOpenChange={toggleForm}>
       <DialogTrigger asChild>
         <Button
           variant="outline"
@@ -59,7 +60,7 @@ export default function CreateExerciseButton() {
                       id="name"
                       placeholder="Name"
                       type="text"
-                      disabled={isLoading}
+                      disabled={isFormLoading}
                       {...field}
                     />
                   </FormControl>
@@ -76,11 +77,7 @@ export default function CreateExerciseButton() {
                   <FormLabel className="sr-only">Muscles</FormLabel>
                   <FormControl>
                     <MultipleSelector
-                      defaultOptions={[
-                        { label: "Chest", value: "chest" },
-                        { label: "Quads", value: "quads" },
-                        { label: "Core", value: "core" },
-                      ]}
+                      defaultOptions={muscles}
                       hidePlaceholderWhenSelected
                       placeholder="Select muscles"
                       emptyIndicator={
@@ -106,7 +103,7 @@ export default function CreateExerciseButton() {
                     <Textarea
                       id="description"
                       placeholder="Description"
-                      disabled={isLoading}
+                      disabled={isFormLoading}
                       {...field}
                     />
                   </FormControl>
@@ -116,8 +113,10 @@ export default function CreateExerciseButton() {
             />
 
             <div className="flex justify-end">
-              <Button type="submit" className="mt-2" disabled={isLoading}>
-                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              <Button type="submit" className="mt-2" disabled={isFormLoading}>
+                {isFormLoading && (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                )}
                 Create
               </Button>
             </div>

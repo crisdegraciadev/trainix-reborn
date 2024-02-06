@@ -9,7 +9,7 @@
     "lint": "next lint",
     "shad:add": "bunx shadcn-ui@latest add",
     "db:update": "bunx prisma db push",
-    "db:studio": "bunx prisma studio"
+    "db:studio": "bunx prisma studio --browser chrome"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
@@ -38,6 +38,7 @@
     "react-hook-form": "^7.50.0",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
+    "ts-node": "^10.9.2",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -52,5 +53,8 @@
     "prisma": "^5.9.1",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   }
 }

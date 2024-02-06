@@ -9,5 +9,6 @@ export const findAllExercises = privateProcedure
 
     return db.exercise.findMany({
       where: { userId },
+      include: { muscles: true },
     });
   });

@@ -8,33 +8,47 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../components/ui/dropdown-menu";
+} from "../../../components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
-import { Button } from "../../components/ui/button";
+import { Button } from "../../../components/ui/button";
+import { Badge } from "../../../components/ui/badge";
 
 export type Muscle = {
   name: string;
 };
 
-export type Exercise = {
+export type ExerciseTableData = {
   name: string;
-  description: string;
-  createdAt: Date;
-  updatedAt: Date;
+  description: string | null;
+  muscles: Muscle[];
 };
 
-export const exerciseColumns: ColumnDef<Exercise>[] = [
+export const exerciseColumns: ColumnDef<ExerciseTableData>[] = [
   {
     accessorKey: "name",
     header: "Name",
   },
   {
-    accessorKey: "description",
-    header: "Description",
-  },
-  {
     accessorKey: "muscles",
     header: "Muscles",
+    cell: ({ row }) => {
+      const muscles: Muscle[] = row.getValue("muscles");
+      return (
+        <div className="flex flex-wrap gap-1">
+          {muscles.length > 5
+            ? muscles.slice(0, 5).map(({ name }, idx) => (
+                <Badge key={idx} variant="outline">
+                  {name}
+                </Badge>
+              ))
+            : muscles.map(({ name }, idx) => (
+                <Badge key={idx} variant="outline">
+                  {name}
+                </Badge>
+              ))}
+        </div>
+      );
+    },
   },
   {
     id: "actions",

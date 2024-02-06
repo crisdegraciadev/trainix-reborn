@@ -1,5 +1,5 @@
 import { TRPCError, initTRPC } from "@trpc/server";
-import { checkAuthorized } from "../utils/use-auth";
+import { checkAuthorized } from "../utils/check-authorized";
 
 const t = initTRPC.create();
 

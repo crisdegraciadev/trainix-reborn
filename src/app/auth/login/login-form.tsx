@@ -1,15 +1,8 @@
 "use client";
 
-import { Input } from "../../../components/ui/input";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../../../components/ui/form";
-import { Button } from "../../../components/ui/button";
+import { Button } from "@components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@components/ui/form";
+import { Input } from "@components/ui/input";
 import { Loader2 } from "lucide-react";
 import { useLoginForm } from "./use-login-form";
 
@@ -27,13 +20,7 @@ export function LoginForm() {
               <FormItem>
                 <FormLabel className="sr-only">Email</FormLabel>
                 <FormControl>
-                  <Input
-                    id="email"
-                    placeholder="Email"
-                    type="email"
-                    disabled={isLoading}
-                    {...field}
-                  />
+                  <Input id="email" placeholder="Email" type="email" disabled={isLoading} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -46,13 +33,7 @@ export function LoginForm() {
               <FormItem>
                 <FormLabel className="sr-only">Password</FormLabel>
                 <FormControl>
-                  <Input
-                    id="password"
-                    placeholder="Password"
-                    type="password"
-                    disabled={isLoading}
-                    {...field}
-                  />
+                  <Input id="password" placeholder="Password" type="password" disabled={isLoading} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

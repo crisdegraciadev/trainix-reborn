@@ -1,9 +1,9 @@
+import { SelectOption } from "@components/ui/multi-select";
+import { trpc } from "@procedures/client";
 import { useEffect, useState } from "react";
-import { trpc } from "../../../trpc/client";
-import { SelectOption } from "../../../components/ui/multi-select";
 
 export const useFindMusclesOptions = () => {
-  const { data, isSuccess, isError } = trpc.findAllMuscles.useQuery();
+  const { data, isSuccess, isError } = trpc.muscles.findAllMuscles.useQuery();
 
   const [muscles, setMuscles] = useState<SelectOption[]>([]);
 

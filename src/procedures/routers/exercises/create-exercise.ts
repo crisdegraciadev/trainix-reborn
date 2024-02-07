@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { privateProcedure } from "../trpc";
-import db from "../../lib/prisma";
+import { privateProcedure } from "../../trpc";
+import db from "../../../lib/prisma";
 
 export const createExercise = privateProcedure
   .input(

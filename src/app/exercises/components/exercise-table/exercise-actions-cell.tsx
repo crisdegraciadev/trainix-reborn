@@ -1,7 +1,6 @@
 "use client";
 
 import { Loader2, MoreHorizontal, Trash2 } from "lucide-react";
-import { Button, buttonVariants } from "../../../components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,7 +8,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../../components/ui/dropdown-menu";
+} from "@components/ui/dropdown-menu";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,10 +18,11 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "../../../components/ui/alert-dialog";
-import { useDeleteExercise } from "./use-delete-exercise";
+} from "@components/ui/alert-dialog";
+import { CustomCellProps } from "@typings/table";
+import { Button, buttonVariants } from "@components/ui/button";
 import { ExerciseTableData } from "./exercise-columns";
-import { CustomCellProps } from "../../../types/table";
+import { useDeleteExercise } from "./use-delete-exercise";
 
 export default function ExerciseActionsCell({ row }: CustomCellProps<ExerciseTableData>) {
   const { deleteExercise, isDialogOpen, isMutationLoading, toggleDialog } = useDeleteExercise();

@@ -1,11 +1,11 @@
+import { useToast } from "@components/ui/use-toast";
+import { trpc } from "@procedures/client";
 import { useEffect, useState } from "react";
-import { trpc } from "../../../trpc/client";
-import { useToast } from "../../../components/ui/use-toast";
 
 export const useCreateExercise = () => {
   const utils = trpc.useUtils();
 
-  const { mutate, isSuccess, isError, isLoading } = trpc.createExercise.useMutation();
+  const { mutate, isSuccess, isError, isLoading } = trpc.exercises.createExercise.useMutation();
 
   const [isFormLoading, setIsFormLoading] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -20,7 +20,7 @@ export const useCreateExercise = () => {
         description: "The exercise has been created.",
       });
 
-      utils.findAllExercises.invalidate();
+      utils.exercises.findAllExercises.invalidate();
 
       setIsFormLoading(false);
       setIsFormOpen(false);

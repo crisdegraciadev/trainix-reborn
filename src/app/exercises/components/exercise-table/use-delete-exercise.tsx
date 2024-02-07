@@ -1,11 +1,11 @@
+import { useToast } from "@components/ui/use-toast";
+import { trpc } from "@procedures/client";
 import { useEffect, useState } from "react";
-import { trpc } from "../../../trpc/client";
-import { useToast } from "../../../components/ui/use-toast";
 
 export const useDeleteExercise = () => {
   const utils = trpc.useUtils();
 
-  const { mutate, isLoading, isSuccess, isError } = trpc.deleteExercise.useMutation();
+  const { mutate, isLoading, isSuccess, isError } = trpc.exercises.deleteExercise.useMutation();
 
   const [isMutationLoading, setIsMutationLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -20,7 +20,7 @@ export const useDeleteExercise = () => {
         description: "The exercise has been deleted.",
       });
 
-      utils.findAllExercises.invalidate();
+      utils.exercises.findAllExercises.invalidate();
 
       setIsMutationLoading(false);
       setIsDialogOpen(false);

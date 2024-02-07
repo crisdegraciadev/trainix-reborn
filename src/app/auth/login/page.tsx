@@ -23,9 +23,8 @@ export default function LoginPage() {
         <>
           <blockquote className="space-y-2">
             <p className="text-lg">
-              &ldquo;You put water into a bottle, it becomes the bottle. You put
-              it in a teapot, it becomes the teapot. Water can flow, or it can
-              crash. Be water, my friend.&rdquo;
+              &ldquo;You put water into a bottle, it becomes the bottle. You put it in a teapot, it becomes the teapot.
+              Water can flow, or it can crash. Be water, my friend.&rdquo;
             </p>
             <footer className="text-sm">Bruce Lee</footer>
           </blockquote>
@@ -35,12 +34,8 @@ export default function LoginPage() {
       <div className="flex justify-center lg:w-2/4">
         <div className="flex flex-col justify-center w-80 space-y-6">
           <div className="flex flex-col space-y-2 text-center">
-            <h1 className="text-2xl font-semibold tracking-tight">
-              Login with your account
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              Enter your credentials below to login into your account
-            </p>
+            <h1 className="text-2xl font-semibold tracking-tight">Login with your account</h1>
+            <p className="text-sm text-muted-foreground">Enter your credentials below to login into your account</p>
           </div>
           <LoginForm />
         </div>

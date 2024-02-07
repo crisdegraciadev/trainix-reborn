@@ -1,8 +1,8 @@
 "use client";
 
-import { Badge } from "../../../components/ui/badge";
+import { Badge } from "@components/ui/badge";
+import { CustomCellProps } from "@typings/table";
 import { ExerciseTableData, MuscleTableData } from "./exercise-columns";
-import { CustomCellProps } from "../../../types/table";
 
 export default function MusclesCell({ row }: CustomCellProps<ExerciseTableData>) {
   const muscles: MuscleTableData[] = row.getValue("muscles");

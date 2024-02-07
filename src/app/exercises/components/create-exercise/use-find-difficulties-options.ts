@@ -1,9 +1,9 @@
+import { SelectOption } from "@components/ui/multi-select";
+import { trpc } from "@procedures/client";
 import { useEffect, useState } from "react";
-import { trpc } from "../../../trpc/client";
-import { SelectOption } from "../../../components/ui/multi-select";
 
 export const useFindDifficultiesOptions = () => {
-  const { data, isSuccess, isError } = trpc.findAllDifficulties.useQuery();
+  const { data, isSuccess, isError } = trpc.difficulties.findAllDifficulties.useQuery();
 
   const [difficulties, setDifficulties] = useState<SelectOption[]>([]);
 

@@ -1,5 +1,5 @@
+import { trpc } from "@procedures/client";
 import { useEffect, useState } from "react";
-import { trpc } from "../../../trpc/client";
 import { ExerciseTableData } from "./exercise-columns";
 
 type UseExerciseTable = {
@@ -7,7 +7,7 @@ type UseExerciseTable = {
 };
 
 export const useExerciseTable = ({ userId }: UseExerciseTable) => {
-  const { data: rawData, isSuccess, isError } = trpc.findAllExercises.useQuery({ userId });
+  const { data: rawData, isSuccess, isError } = trpc.exercises.findAllExercises.useQuery({ userId });
   const [data, setData] = useState<ExerciseTableData[]>([]);
 
   useEffect(() => {

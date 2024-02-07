@@ -1,5 +1,5 @@
+import { Button } from "@components/ui/button";
 import { Dumbbell } from "lucide-react";
-import { Button } from "../../components/ui/button";
 
 export default function WorkoutButton() {
   return (

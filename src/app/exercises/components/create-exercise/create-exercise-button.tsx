@@ -1,7 +1,6 @@
 "use client";
 
-import { Loader2, PlusCircle } from "lucide-react";
-import { Button } from "../../../components/ui/button";
+import { Button } from "@components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -10,20 +9,15 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../../../components/ui/dialog";
+} from "@components/ui/dialog";
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@components/ui/form";
+import { Input } from "@components/ui/input";
+import MultipleSelector from "@components/ui/multi-select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@components/ui/select";
+import { Textarea } from "@components/ui/textarea";
+import { Loader2, PlusCircle } from "lucide-react";
+import { Form } from "react-hook-form";
 import { useCreateExerciseForm } from "./use-create-exercise-form";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../../../components/ui/form";
-import { Input } from "../../../components/ui/input";
-import { Textarea } from "../../../components/ui/textarea";
-import MultipleSelector from "../../../components/ui/multi-select";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../../components/ui/select";
 
 export default function CreateExerciseButton() {
   const { form, isFormLoading, isFormOpen, muscles, toggleForm, onSubmit } = useCreateExerciseForm();

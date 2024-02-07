@@ -4,7 +4,7 @@ import { CreateExerciseFormSchema, createExerciseSchema } from "./create-exercis
 import { useFindMusclesOptions } from "./use-find-muscles-options";
 import { useSession } from "next-auth/react";
 import { useCreateExercise } from "./use-create-exercise";
-import { useFindDifficultiesOptions } from "./use-find-difficulties-options";
+import useFindDifficultiesOptions from "./use-find-difficulties-options";
 
 export const useCreateExerciseForm = () => {
   const { isFormLoading, isFormOpen, createExercise, toggleForm } = useCreateExercise();

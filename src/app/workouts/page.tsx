@@ -1,4 +1,4 @@
-import TopbarLayout from "../../components/topbar-layout";
+import TopbarLayout from "@components/topbar-layout";
 
 export default function WorkoutPage() {
   return (

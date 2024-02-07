@@ -1,7 +1,7 @@
 import TopbarLayout from "@components/topbar-layout";
-import WorkoutButton from "./workout-button";
+import WorkoutButton from "./_components/workout-button";
 
-export default async function DashboardPage() {
+export default async function Page() {
   return (
     <TopbarLayout>
       <div className="flex flex-col h-full ">

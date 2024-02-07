@@ -1,6 +1,6 @@
-import { LoginForm } from "./login-form";
+import { LoginForm } from "./_components/login-form";
 
-export default function LoginPage() {
+export default function Page() {
   return (
     <div className="flex justify-center h-screen lg:justify-between">
       <div className="hidden bg-zinc-900 text-white h-full p-10 w-screen justify-center lg:flex lg:flex-col lg:justify-between lg:w-2/4">

@@ -39,6 +39,7 @@ model Difficulty {
   id    String @id @unique @default(uuid())
   name  String @unique
   value String @unique
+  level Int    @unique
 
   exercises Exercise[]
 }

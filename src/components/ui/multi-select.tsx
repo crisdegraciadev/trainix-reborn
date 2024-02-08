@@ -3,11 +3,11 @@
 import * as React from "react";
 import { X } from "lucide-react";
 
-import { Command, CommandGroup, CommandItem, CommandEmpty, CommandList } from "@/components/ui/command";
+import { Command, CommandGroup, CommandItem, CommandEmpty, CommandList } from "@components/ui/command";
 import { Command as CommandPrimitive } from "cmdk";
 import { useEffect } from "react";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+import { Badge } from "@components/ui/badge";
+import { cn } from "@lib/utils";
 
 export interface SelectOption {
   id?: string;

@@ -1,7 +1,7 @@
+import { difficultiesRouter } from "./difficulties";
+import { exercisesRouter } from "./exercises";
+import { musclesRouter } from "./muscles";
 import { router } from "./trpc";
-import { difficultiesRouter } from "./routers/difficulties";
-import { exercisesRouter } from "./routers/exercises";
-import { musclesRouter } from "./routers/muscles";
 
 export const appRouter = router({
   difficulties: difficultiesRouter,

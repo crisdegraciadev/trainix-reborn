@@ -1,5 +1,5 @@
-import TopbarLayout from "../../components/topbar-layout";
-import { checkAuthorized } from "../../utils/check-authorized";
+import TopbarLayout from "@components/topbar-layout";
+import { checkAuthorized } from "@utils/check-authorized";
 import Exercises from "./_components/exercises";
 
 export default async function Page() {

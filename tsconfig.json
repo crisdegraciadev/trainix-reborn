@@ -19,7 +19,8 @@
     ],
     "baseUrl": "./src",
     "paths": {
-      "@procedures/*": ["procedures/*"],
+      "@server/*": ["server/*"],
+      "@hooks/*": ["hooks/*"],
       "@constants/*": ["constants/*"],
       "@components/*": ["components/*"],
       "@lib/*": ["lib/*"],

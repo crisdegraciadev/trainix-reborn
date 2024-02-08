@@ -1,19 +1,20 @@
-import { trpc } from "@procedures/client";
 import { useEffect, useState } from "react";
 import { ExerciseTableData } from "./exercise-columns";
+import { useFindAllExercises } from "@hooks/exercises/use-find-all-exercises";
 
 type UseExerciseTable = {
   userId: string;
 };
 
 export const useExerciseTable = ({ userId }: UseExerciseTable) => {
-  const { data: rawData, isSuccess, isError } = trpc.exercises.findAllExercises.useQuery({ userId });
-  const [data, setData] = useState<ExerciseTableData[]>([]);
+  const { exercises, isExercisesSuccess, isExercisesError } = useFindAllExercises({ userId });
+
+  const [exercisesRows, setExercisesRows] = useState<ExerciseTableData[]>([]);
 
   useEffect(() => {
-    if (isSuccess) {
-      setData(
-        rawData.map(({ id, name, description, difficulty, muscles: rawMuscles }) => {
+    if (isExercisesSuccess) {
+      setExercisesRows(
+        exercises.map(({ id, name, description, difficulty, muscles: rawMuscles }) => {
           return {
             id,
             name,
@@ -24,13 +25,13 @@ export const useExerciseTable = ({ userId }: UseExerciseTable) => {
         })
       );
     }
-  }, [isSuccess, rawData]);
+  }, [isExercisesSuccess, exercises]);
 
   useEffect(() => {
-    if (isError) {
-      setData([]);
+    if (isExercisesError) {
+      setExercisesRows([]);
     }
-  }, [isError]);
+  }, [isExercisesError]);
 
-  return { data };
+  return { exercisesRows };
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import CreateExerciseButton from "./create-exercise/create-exercise-button";
+import CreateExerciseButton from "./create-exercise-button";
 
 export default function ExerciseToolbar() {
   return (

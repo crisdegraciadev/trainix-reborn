@@ -9,13 +9,14 @@ import ExerciseToolbar from "./exercise-toolbar";
 type ExercisesProps = {
   user: User;
 };
+
 export default function Exercises({ user }: ExercisesProps) {
-  const { data } = useExerciseTable({ userId: user.id });
+  const { exercisesRows } = useExerciseTable({ userId: user.id });
 
   return (
     <>
       <ExerciseToolbar />
-      <ExerciseTable data={data} columns={exerciseColumns} />
+      <ExerciseTable data={exercisesRows} columns={exerciseColumns} />
     </>
   );
 }

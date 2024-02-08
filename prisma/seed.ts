@@ -18,9 +18,9 @@ const muscles = [
 ];
 
 const difficulties = [
-  { name: "Easy", value: "easy" },
-  { name: "Medium", value: "medium" },
-  { name: "Hard", value: "hard" },
+  { name: "Easy", value: "easy", level: 1 },
+  { name: "Medium", value: "medium", level: 2 },
+  { name: "Hard", value: "hard", level: 3 },
 ];
 
 async function main() {

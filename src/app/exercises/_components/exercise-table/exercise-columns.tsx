@@ -1,9 +1,9 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import MusclesCell from "./muscles-cell";
 import ExerciseActionsCell from "./exercise-actions-cell";
-import DifficultyCell from "./difficulty-cell";
+import { CustomCellProps } from "@typings/table";
+import { Badge } from "@components/ui/badge";
 
 export type MuscleTableData = {
   name: string;
@@ -40,3 +40,28 @@ export const exerciseColumns: ColumnDef<ExerciseTableData>[] = [
     },
   },
 ];
+
+export function DifficultyCell({ row }: CustomCellProps<ExerciseTableData>) {
+  const difficulty: string[] = row.getValue("difficulty");
+  return <Badge>{difficulty}</Badge>;
+}
+
+export function MusclesCell({ row }: CustomCellProps<ExerciseTableData>) {
+  const muscles: MuscleTableData[] = row.getValue("muscles");
+
+  return (
+    <div className="flex flex-wrap gap-1">
+      {muscles.length > 5
+        ? muscles.slice(0, 5).map(({ name }, idx) => (
+            <Badge key={idx} variant="outline">
+              {name}
+            </Badge>
+          ))
+        : muscles.map(({ name }, idx) => (
+            <Badge key={idx} variant="outline">
+              {name}
+            </Badge>
+          ))}
+    </div>
+  );
+}

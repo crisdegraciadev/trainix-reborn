@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2, MoreHorizontal, Trash2 } from "lucide-react";
+import { Loader2, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,10 +22,11 @@ import {
 import { CustomCellProps } from "@typings/table";
 import { Button, buttonVariants } from "@components/ui/button";
 import { ExerciseTableData } from "./exercise-columns";
-import { useDeleteExercise } from "./use-delete-exercise";
+import { useExerciseActions } from "./use-exercise-actions";
 
 export default function ExerciseActionsCell({ row }: CustomCellProps<ExerciseTableData>) {
-  const { deleteExercise, isDialogOpen, isMutationLoading, toggleDialog } = useDeleteExercise();
+  const { deleteExercise, toggleDeleteDialog, isDeleteDialogOpen, isDeleteExerciseLoading, isUpdateDialogOpen } =
+    useExerciseActions();
 
   const { id } = row.original;
 
@@ -42,15 +43,19 @@ export default function ExerciseActionsCell({ row }: CustomCellProps<ExerciseTab
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="flex justify-start items-center" onClick={toggleDialog}>
+            <DropdownMenuItem className="flex justify-start items-center" onClick={toggleDeleteDialog}>
               <Trash2 className="w-4 h-4 mr-2" /> Delete
+            </DropdownMenuItem>
+
+            <DropdownMenuItem className="flex justify-start items-center" onClick={toggleDeleteDialog}>
+              <Pencil className="w-4 h-4 mr-2" /> Edit
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
 
       {/* Delete confirm dialog */}
-      <AlertDialog open={isDialogOpen} onOpenChange={toggleDialog}>
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={toggleDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
@@ -62,11 +67,35 @@ export default function ExerciseActionsCell({ row }: CustomCellProps<ExerciseTab
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              disabled={isMutationLoading}
+              disabled={isDeleteExerciseLoading}
               onClick={() => deleteExercise({ id })}
               className={buttonVariants({ variant: "destructive" })}
             >
-              {isMutationLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {isDeleteExerciseLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Edit confirm dialog */}
+      <AlertDialog open={isUpdateDialogOpen} onOpenChange={toggleDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your exercise and remove the workouts that make
+              use of it.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              disabled={isDeleteExerciseLoading}
+              onClick={() => deleteExercise({ id })}
+              className={buttonVariants({ variant: "destructive" })}
+            >
+              {isDeleteExerciseLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Delete
             </AlertDialogAction>
           </AlertDialogFooter>

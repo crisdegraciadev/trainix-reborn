@@ -6,14 +6,21 @@ import { CustomCellProps } from "@typings/table";
 import { Badge } from "@components/ui/badge";
 
 export type MuscleTableData = {
+  id: string;
   name: string;
+  value: string;
+};
+
+export type DifficultyDataTable = {
+  id: string;
+  name: string;
+  value: string;
 };
 
 export type ExerciseTableData = {
   id: string;
   name: string;
-  description: string | null;
-  difficulty: string;
+  difficulty: DifficultyDataTable;
   muscles: MuscleTableData[];
 };
 
@@ -42,8 +49,9 @@ export const exerciseColumns: ColumnDef<ExerciseTableData>[] = [
 ];
 
 export function DifficultyCell({ row }: CustomCellProps<ExerciseTableData>) {
-  const difficulty: string[] = row.getValue("difficulty");
-  return <Badge>{difficulty}</Badge>;
+  const { name }: DifficultyDataTable = row.getValue("difficulty");
+
+  return <Badge>{name}</Badge>;
 }
 
 export function MusclesCell({ row }: CustomCellProps<ExerciseTableData>) {
@@ -51,17 +59,22 @@ export function MusclesCell({ row }: CustomCellProps<ExerciseTableData>) {
 
   return (
     <div className="flex flex-wrap gap-1">
-      {muscles.length > 5
-        ? muscles.slice(0, 5).map(({ name }, idx) => (
-            <Badge key={idx} variant="outline">
-              {name}
-            </Badge>
-          ))
-        : muscles.map(({ name }, idx) => (
+      {muscles.length > 5 ? (
+        <>
+          {muscles.slice(0, 5).map(({ name }, idx) => (
             <Badge key={idx} variant="outline">
               {name}
             </Badge>
           ))}
+          <Badge variant="secondary">+ {muscles.length - 5} more</Badge>
+        </>
+      ) : (
+        muscles.map(({ name }, idx) => (
+          <Badge key={idx} variant="outline">
+            {name}
+          </Badge>
+        ))
+      )}
     </div>
   );
 }

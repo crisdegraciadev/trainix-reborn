@@ -4,7 +4,6 @@ import { Button } from "@components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@components/ui/form";
 import { Input } from "@components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@components/ui/select";
-import { Textarea } from "@components/ui/textarea";
 import { Loader2 } from "lucide-react";
 import { ExerciseFormProps, useExerciseForm } from "./use-exercise-form";
 import MultipleSelector from "@components/ui/multi-select";
@@ -64,7 +63,7 @@ export default function ExerciseForm(formProps: ExerciseFormProps) {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      {difficultiesOptions.map(({ id, value, label }) => (
+                      {difficultiesOptions.map(({ id, value, name: label }) => (
                         <SelectItem key={id} value={value}>
                           {label}
                         </SelectItem>
@@ -78,24 +77,10 @@ export default function ExerciseForm(formProps: ExerciseFormProps) {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="sr-only">Password</FormLabel>
-              <FormControl>
-                <Textarea id="description" placeholder="Description" disabled={isFormLoading} {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
         <div className="flex justify-end">
           <Button type="submit" className="mt-2" disabled={isFormLoading}>
             {isFormLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Create
+            Save
           </Button>
         </div>
       </form>

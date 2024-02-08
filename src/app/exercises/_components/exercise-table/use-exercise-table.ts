@@ -14,13 +14,16 @@ export const useExerciseTable = ({ userId }: UseExerciseTable) => {
   useEffect(() => {
     if (isExercisesSuccess) {
       setExercisesRows(
-        exercises.map(({ id, name, description, difficulty, muscles: rawMuscles }) => {
+        exercises.map(({ id, name, difficulty, muscles: rawMuscles }) => {
           return {
             id,
             name,
-            description,
-            difficulty: difficulty?.name,
-            muscles: rawMuscles.map(({ name }) => ({ name })),
+            difficulty: {
+              id: difficulty.id,
+              name: difficulty.name,
+              value: difficulty.value,
+            },
+            muscles: rawMuscles.map(({ id, name, value }) => ({ id, name, value })),
           };
         })
       );

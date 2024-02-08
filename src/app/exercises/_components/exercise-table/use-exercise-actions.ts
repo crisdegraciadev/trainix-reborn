@@ -1,14 +1,20 @@
 import { useToast } from "@components/ui/use-toast";
 import { useDeleteExercise } from "@hooks/exercises/use-delete-exercise";
+import { useFindExercise } from "@hooks/exercises/use-find-exercise";
 import { useUpdateExercise } from "@hooks/exercises/use-update-exercise";
+import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 
 export const useExerciseActions = () => {
+  const { data: session } = useSession();
+
   const { deleteExercise, isDeleteExerciseSuccess, isDeleteExerciseLoading, isDeleteExerciseError } =
     useDeleteExercise();
 
   const { updateExercise, isUpdateExerciseSuccess, isUpdateExerciseLoading, isUpdateExerciseError } =
     useUpdateExercise();
+
+  const {} = useFindExercise({ id: "" });
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);

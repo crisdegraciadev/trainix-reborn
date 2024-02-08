@@ -32,7 +32,7 @@ export default function CreateExerciseButton() {
         <DialogHeader className="mb-4">
           <DialogTitle>Create exercise</DialogTitle>
           <DialogDescription>
-            Add a new exercise to your exercise pull. Click create when you&apos;re done.
+            Add a new exercise to your exercise pull. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <ExerciseForm type="create" onComplete={() => setIsFormOpen(false)} />

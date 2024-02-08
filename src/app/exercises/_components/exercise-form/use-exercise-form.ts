@@ -10,22 +10,23 @@ import { ExerciseFormSchema, exerciseSchema } from "./exercise-schema";
 import { useUpdateExercise } from "@hooks/exercises/use-update-exercise";
 import { TOAST_MESSAGES } from "./toast-messages";
 import { SelectOption } from "@components/ui/multi-select";
+import { ExerciseTableData } from "../exercise-table/exercise-columns";
 
 export type ExerciseFormProps =
   | {
       type: "create";
-      defaultValues?: null;
-      exerciseId?: null;
+      rowData?: null;
       onComplete: () => void;
     }
   | {
       type: "update";
-      defaultValues: ExerciseFormSchema;
-      exerciseId: string;
+      rowData: ExerciseTableData;
       onComplete: () => void;
     };
 
-export const useExerciseForm = ({ type, defaultValues, exerciseId, onComplete }: ExerciseFormProps) => {
+const formatRowData = ({ difficulty: { value }, ...rest }: ExerciseTableData) => ({ ...rest, difficulty: value });
+
+export const useExerciseForm = ({ type, rowData, onComplete }: ExerciseFormProps) => {
   const { isCreateExerciseSuccess, isCreateExerciseLoading, isCreateExerciseError, createExercise } =
     useCreateExercise();
 
@@ -43,9 +44,10 @@ export const useExerciseForm = ({ type, defaultValues, exerciseId, onComplete }:
 
   const { toast } = useToast();
 
+  console.log({ rowData });
   const form = useForm<ExerciseFormSchema>({
     resolver: zodResolver(exerciseSchema),
-    defaultValues: defaultValues ?? { name: "", description: "", muscles: [], difficulty: "medium" },
+    defaultValues: rowData ? formatRowData(rowData) : { name: "", muscles: [], difficulty: "medium" },
   });
 
   useEffect(() => {
@@ -74,7 +76,7 @@ export const useExerciseForm = ({ type, defaultValues, exerciseId, onComplete }:
         difficulties
           .toSorted((a, b) => b.level - a.level)
           .toReversed()
-          .map(({ id, name: label, value }) => ({ id, label, value }))
+          .map(({ level, ...rest }) => ({ ...rest }))
       );
     }
   }, [isDifficultiesSuccess, difficulties]);
@@ -85,7 +87,7 @@ export const useExerciseForm = ({ type, defaultValues, exerciseId, onComplete }:
 
   useEffect(() => {
     if (isMuscleSuccess) {
-      setMusclesOptions(muscles.map(({ id, name: label, value }) => ({ id, label, value })));
+      setMusclesOptions(muscles.map(({ createdAt, updatedAt, ...rest }) => ({ ...rest })));
     }
   }, [isMuscleSuccess, muscles]);
 
@@ -110,7 +112,7 @@ export const useExerciseForm = ({ type, defaultValues, exerciseId, onComplete }:
 
     if (type === "update") {
       updateExercise({
-        id: exerciseId,
+        id: rowData.id,
         exercise: {
           ...data,
           difficultyId,

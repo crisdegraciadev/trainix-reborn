@@ -1,10 +1,10 @@
 import { trpc } from "@server/client";
 
-type UseFindAllExercisesProps = {
+type Props = {
   userId: string;
 };
 
-export const useFindAllExercises = ({ userId }: UseFindAllExercisesProps) => {
+export const useFindAllExercises = ({ userId }: Props) => {
   const { data, isSuccess, isLoading, isError } = trpc.exercises.findAllExercises.useQuery({ userId });
 
   return {

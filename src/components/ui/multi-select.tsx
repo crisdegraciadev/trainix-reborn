@@ -12,7 +12,7 @@ import { cn } from "@lib/utils";
 export interface SelectOption {
   id?: string;
   value: string;
-  label: string;
+  name: string;
   disable?: boolean;
   /** fixed option that can't be removed. */
   fixed?: boolean;
@@ -250,7 +250,7 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
               return;
             }
             setInputValue("");
-            const newOptions = [...selected, { value, label: value }];
+            const newOptions = [...selected, { value, name: value }];
             setSelected(newOptions);
             onChange?.(newOptions);
           }}
@@ -332,7 +332,7 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
                   data-fixed={option.fixed}
                   data-disabled={disabled}
                 >
-                  {option.label}
+                  {option.name}
                   <button
                     className={cn(
                       "ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2",
@@ -417,7 +417,7 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
                               }}
                               className={cn("cursor-pointer", option.disable && "cursor-default text-muted-foreground")}
                             >
-                              {option.label}
+                              {option.name}
                             </CommandItem>
                           );
                         })}

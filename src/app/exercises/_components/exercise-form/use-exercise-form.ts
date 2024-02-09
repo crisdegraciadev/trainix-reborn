@@ -44,7 +44,6 @@ export const useExerciseForm = ({ type, rowData, onComplete }: ExerciseFormProps
 
   const { toast } = useToast();
 
-  console.log({ rowData });
   const form = useForm<ExerciseFormSchema>({
     resolver: zodResolver(exerciseSchema),
     defaultValues: rowData ? formatRowData(rowData) : { name: "", muscles: [], difficulty: "medium" },
@@ -66,6 +65,7 @@ export const useExerciseForm = ({ type, rowData, onComplete }: ExerciseFormProps
   useEffect(() => {
     if (isCreateExerciseError) toast(TOAST_MESSAGES["createError"]);
     if (isUpdateExerciseError) toast(TOAST_MESSAGES["updateError"]);
+    setIsFormLoading(false);
   }, [isCreateExerciseError, isUpdateExerciseError, toast]);
 
   useEffect(() => {}, [isUpdateExerciseError, toast]);

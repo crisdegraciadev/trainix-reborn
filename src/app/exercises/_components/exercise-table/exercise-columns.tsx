@@ -4,6 +4,9 @@ import { ColumnDef } from "@tanstack/react-table";
 import ExerciseActionsCell from "./exercise-actions-cell";
 import { CustomCellProps } from "@typings/table";
 import { Badge } from "@components/ui/badge";
+import { Button } from "@components/ui/button";
+import { ArrowUpDown } from "lucide-react";
+import { DataTableColumnHeader } from "@components/data-table/data-table-column-header";
 
 export type MuscleTableData = {
   id: string;
@@ -27,7 +30,18 @@ export type ExerciseTableData = {
 export const exerciseColumns: ColumnDef<ExerciseTableData>[] = [
   {
     accessorKey: "name",
-    header: "Name",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
+    cell: ({ row }) => {
+      return (
+        <div className="w-[80px]">
+          <span className="w-[50px] truncate font-medium">{row.getValue("name")}</span>
+        </div>
+      );
+    },
+    filterFn: (row, id, value) => {
+      const rowValue: string = row.getValue(id);
+      return rowValue.includes(value);
+    },
   },
 
   {
@@ -51,30 +65,36 @@ export const exerciseColumns: ColumnDef<ExerciseTableData>[] = [
 export function DifficultyCell({ row }: CustomCellProps<ExerciseTableData>) {
   const { name }: DifficultyDataTable = row.getValue("difficulty");
 
-  return <Badge>{name}</Badge>;
+  return (
+    <div className="w-[60px]">
+      <Badge>{name}</Badge>
+    </div>
+  );
 }
 
 export function MusclesCell({ row }: CustomCellProps<ExerciseTableData>) {
   const muscles: MuscleTableData[] = row.getValue("muscles");
 
   return (
-    <div className="flex flex-wrap gap-1">
-      {muscles.length > 5 ? (
-        <>
-          {muscles.slice(0, 5).map(({ name }, idx) => (
+    <div className="w-[500px]">
+      <div className="flex flex-wrap gap-1 ">
+        {muscles.length > 5 ? (
+          <>
+            {muscles.slice(0, 5).map(({ name }, idx) => (
+              <Badge key={idx} variant="outline">
+                {name}
+              </Badge>
+            ))}
+            <Badge variant="secondary">+ {muscles.length - 5} more</Badge>
+          </>
+        ) : (
+          muscles.map(({ name }, idx) => (
             <Badge key={idx} variant="outline">
               {name}
             </Badge>
-          ))}
-          <Badge variant="secondary">+ {muscles.length - 5} more</Badge>
-        </>
-      ) : (
-        muscles.map(({ name }, idx) => (
-          <Badge key={idx} variant="outline">
-            {name}
-          </Badge>
-        ))
-      )}
+          ))
+        )}
+      </div>
     </div>
   );
 }

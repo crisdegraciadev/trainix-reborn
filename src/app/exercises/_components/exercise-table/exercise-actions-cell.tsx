@@ -45,10 +45,8 @@ export default function ExerciseActionsCell({ row }: CustomCellProps<ExerciseTab
 
   const { id } = row.original;
 
-  row.original;
-
   return (
-    <>
+    <div className="w-[10px]">
       <div className="flex justify-end">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -107,6 +105,6 @@ export default function ExerciseActionsCell({ row }: CustomCellProps<ExerciseTab
           <ExerciseForm type="update" rowData={row.original} onComplete={() => toggleUpdateDialog()} />
         </DialogContent>
       </Dialog>
-    </>
+    </div>
   );
 }

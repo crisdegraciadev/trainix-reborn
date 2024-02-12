@@ -30,7 +30,7 @@ export default function Topbar({ user }: TopbarProps) {
   const pathname = usePathname();
 
   return (
-    <div className="flex h-14 justify-between px-48 items-center border-b">
+    <div className="flex h-14 top-0 bg-white fixed w-full justify-between px-48 items-center border-b">
       <div className="flex">
         <div className="flex items-center gap-1 mr-6">
           <Dumbbell className="w-5 h-5" />
@@ -71,9 +71,7 @@ export default function Topbar({ user }: TopbarProps) {
           <Button variant="ghost" className="relative h-8 w-8 rounded-full">
             <Avatar className="h-8 w-8">
               {/* <AvatarImage src="/avatars/01.png" alt="@shadcn" /> */}
-              <AvatarFallback>
-                {user.name?.slice(0, 2).toUpperCase()}
-              </AvatarFallback>
+              <AvatarFallback>{user.name?.slice(0, 2).toUpperCase()}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
@@ -81,9 +79,7 @@ export default function Topbar({ user }: TopbarProps) {
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium leading-none">{user?.name}</p>
-              <p className="text-xs leading-none text-muted-foreground">
-                {user?.email}
-              </p>
+              <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />

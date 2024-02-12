@@ -9,7 +9,7 @@ export default async function TopbarLayout({ children }: PropsWithChildren) {
   return (
     <>
       <Topbar user={{ name, email }} />
-      <div className="px-48 py-8 h-[calc(100vh-3.5rem)]">{children}</div>
+      <div className="px-48 pt-8 my-14">{children}</div>
     </>
   );
   return;

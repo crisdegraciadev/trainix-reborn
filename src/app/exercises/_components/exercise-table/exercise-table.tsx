@@ -50,7 +50,7 @@ export default function ExerciseTable<TData, TValue>({ columns, data }: DataTabl
           placeholder="Filter name..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}
-          className="w-64"
+          className="h-8 w-64"
         />
 
         <CreateExerciseButton />

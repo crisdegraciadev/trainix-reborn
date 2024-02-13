@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 datasource db {
   provider     = "mysql"
   url          = env("DATABASE_URL")
@@ -24,32 +21,13 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
-model Muscle {
-  id    String @id @unique @default(uuid())
-  name  String @unique
-  value String @unique
-
-  exercises Exercise[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Difficulty {
-  id    String @id @unique @default(uuid())
-  name  String @unique
-  value String @unique
-  level Int    @unique
-
-  exercises Exercise[]
-}
-
 model Exercise {
   id          String  @id @unique @default(uuid())
   name        String  @unique
   description String? @db.Text
 
-  muscles Muscle[]
+  muscles    Muscle[]
+  activities WorkoutActicity[]
 
   User   User?   @relation(fields: [userId], references: [id])
   userId String?
@@ -62,4 +40,73 @@ model Exercise {
 
   @@index([userId])
   @@index([difficultyId])
+}
+
+model Workout {
+  id          String  @id @unique @default(uuid())
+  name        String  @unique
+  description String? @db.Text
+
+  muscles      Muscle[]
+  progressions WorkoutProgression[]
+
+  Difficulty   Difficulty @relation(fields: [difficultyId], references: [id])
+  difficultyId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([difficultyId])
+}
+
+model WorkoutProgression {
+  id String @id @unique @default(uuid())
+
+  Workout   Workout? @relation(fields: [workoutId], references: [id])
+  workoutId String
+
+  workSets WorkoutActicity[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([workoutId])
+}
+
+model WorkoutActicity {
+  id String @id @unique @default(uuid())
+
+  order Int
+  sets  Int
+  reps  Int
+
+  WorkoutProgression   WorkoutProgression? @relation(fields: [workoutProgressionId], references: [id])
+  workoutProgressionId String
+  Exercise             Exercise            @relation(fields: [exerciseId], references: [id])
+  exerciseId           String
+
+  @@index([workoutProgressionId])
+  @@index([exerciseId])
+}
+
+model Muscle {
+  id    String @id @unique @default(uuid())
+  name  String @unique
+  value String @unique
+
+  exercises Exercise[]
+  workouts  Workout[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Difficulty {
+  id    String @id @unique @default(uuid())
+  name  String @unique
+  value String @unique
+  level Int    @unique
+
+  exercises Exercise[]
+  workouts  Workout[]
 }

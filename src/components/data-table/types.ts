@@ -1,12 +1,14 @@
-import { Column, ColumnDef, Table } from "@tanstack/react-table";
+import { Column, ColumnDef, Table, Row } from "@tanstack/react-table";
 
-export type DataTableProps<T> = { table: Table<T> };
+export type CustomCellProps<T> = { row: Row<T> };
 
-export type DataTableHeaderProps<T> = DataTableProps<T>;
+export type DataTableProps<T, U> = { columns: ColumnDef<T, U>[]; data: T[] };
 
-export type DataTableBodyProps<T, U> = DataTableProps<T> & { columns: ColumnDef<T, U>[] };
+export type DataTableHeaderProps<T> = { table: Table<T> };
 
-export type DataTablePaginationProps<T> = DataTableProps<T>;
+export type DataTableBodyProps<T, U> = { table: Table<T>; columns: ColumnDef<T, U>[] };
+
+export type DataTablePaginationProps<T> = { table: Table<T> };
 
 export type DataTableColumnHeaderProps<T, U> = React.HTMLAttributes<HTMLDivElement> & {
   column: Column<T, U>;

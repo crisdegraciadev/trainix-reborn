@@ -1,5 +1,11 @@
-import { Row } from "@tanstack/react-table";
+export type MuscleTableData = {
+  id: string;
+  name: string;
+  value: string;
+};
 
-export type CustomCellProps<T> = {
-  row: Row<T>;
+export type DifficultyDataTable = {
+  id: string;
+  name: string;
+  value: string;
 };

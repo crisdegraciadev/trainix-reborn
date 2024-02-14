@@ -2,27 +2,15 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import ExerciseActionsCell from "./exercise-actions-cell";
-import { CustomCellProps } from "@typings/table";
 import { Badge } from "@components/ui/badge";
-import { Button } from "@components/ui/button";
-import { ArrowUpDown } from "lucide-react";
 import { DataTableColumnHeader } from "@components/data-table/data-table-column-header";
-
-export type MuscleTableData = {
-  id: string;
-  name: string;
-  value: string;
-};
-
-export type DifficultyDataTable = {
-  id: string;
-  name: string;
-  value: string;
-};
+import { CustomCellProps } from "@components/data-table/types";
+import { DifficultyDataTable, MuscleTableData } from "@typings/table";
 
 export type ExerciseTableData = {
   id: string;
   name: string;
+  description?: string;
   difficulty: DifficultyDataTable;
   muscles: MuscleTableData[];
 };

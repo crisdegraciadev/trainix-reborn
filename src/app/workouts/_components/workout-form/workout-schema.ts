@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const exerciseSchema = z.object({
+export const workoutSchema = z.object({
   name: z.string({ required_error: "Name cannot be blank" }).min(1),
   difficulty: z.string(),
   description: z.string().optional(),
@@ -14,4 +14,4 @@ export const exerciseSchema = z.object({
     .min(1),
 });
 
-export type ExerciseFormSchema = z.infer<typeof exerciseSchema>;
+export type WorkoutFormSchema = z.infer<typeof workoutSchema>;

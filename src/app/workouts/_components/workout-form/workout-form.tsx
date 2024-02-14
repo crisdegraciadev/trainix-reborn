@@ -5,12 +5,12 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@components/ui/select";
 import { Loader2 } from "lucide-react";
-import { ExerciseFormProps, useExerciseForm } from "./use-exercise-form";
 import MultipleSelector from "@components/ui/multi-select";
 import { Textarea } from "@components/ui/textarea";
+import { WorkoutFormProps, useWorkoutForm } from "./use-workout-form";
 
-export default function ExerciseForm(formProps: ExerciseFormProps) {
-  const { form, musclesOptions, difficultiesOptions, isFormLoading, onSubmit } = useExerciseForm({ ...formProps });
+export default function WorkoutForm(formProps: WorkoutFormProps) {
+  const { form, musclesOptions, difficultiesOptions, isFormLoading, onSubmit } = useWorkoutForm({ ...formProps });
 
   return (
     <Form {...form}>

@@ -19,7 +19,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@components/ui/alert-dialog";
-import { CustomCellProps } from "@typings/table";
 import { Button, buttonVariants } from "@components/ui/button";
 import { ExerciseTableData } from "./exercise-columns";
 import { useExerciseActions } from "./use-exercise-actions";
@@ -32,6 +31,7 @@ import {
   DialogTrigger,
 } from "@components/ui/dialog";
 import ExerciseForm from "../exercise-form/exercise-form";
+import { CustomCellProps } from "@components/data-table/types";
 
 export default function ExerciseActionsCell({ row }: CustomCellProps<ExerciseTableData>) {
   const {

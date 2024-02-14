@@ -1,5 +1,9 @@
-"use client";
-
+import DataTableBody from "@components/data-table/data-table-body";
+import DataTableHeader from "@components/data-table/data-table-header";
+import DataTablePagination from "@components/data-table/data-table-pagination";
+import { DataTableProps } from "@components/data-table/types";
+import { Input } from "@components/ui/input";
+import { Table } from "@components/ui/table";
 import {
   ColumnFiltersState,
   SortingState,
@@ -9,17 +13,10 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
-import { Table } from "@components/ui/table";
 import { useState } from "react";
-import { Input } from "@components/ui/input";
-import DataTableHeader from "@components/data-table/data-table-header";
-import DataTableBody from "@components/data-table/data-table-body";
-import DataTablePagination from "@components/data-table/data-table-pagination";
-import CreateExerciseButton from "./create-exercise-button";
-import { DataTableProps } from "@components/data-table/types";
+import CreateWorkoutButton from "./create-workout-button";
 
-export default function ExerciseTable<T, U>({ columns, data }: DataTableProps<T, U>) {
+export default function WorkoutTable<T, U>({ columns, data }: DataTableProps<T, U>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -48,7 +45,7 @@ export default function ExerciseTable<T, U>({ columns, data }: DataTableProps<T,
           className="h-8 w-64"
         />
 
-        <CreateExerciseButton />
+        <CreateWorkoutButton />
       </div>
 
       <div className="rounded-md border">

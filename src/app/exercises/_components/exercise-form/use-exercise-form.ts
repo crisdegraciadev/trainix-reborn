@@ -100,8 +100,6 @@ export const useExerciseForm = ({ type, rowData, onComplete }: ExerciseFormProps
 
     const difficultyId = getDifficultyId(data);
 
-    console.log({ data });
-
     if (type === "create") {
       createExercise({
         ...data,

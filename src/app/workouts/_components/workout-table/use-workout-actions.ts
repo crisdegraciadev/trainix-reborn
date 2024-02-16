@@ -1,10 +1,11 @@
+"use client";
+
 import { useToast } from "@components/ui/use-toast";
-import { useDeleteExercise } from "@hooks/exercises/use-delete-exercise";
+import { useDeleteWorkout } from "@hooks/workouts/use-delete-workout";
 import { useState, useEffect } from "react";
 
-export const useExerciseActions = () => {
-  const { deleteExercise, isDeleteExerciseSuccess, isDeleteExerciseLoading, isDeleteExerciseError } =
-    useDeleteExercise();
+export const useWorkoutActions = () => {
+  const { deleteWorkout, isDeleteWorkoutSuccess, isDeleteWorkoutLoading, isDeleteWorkoutError } = useDeleteWorkout();
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
@@ -12,28 +13,28 @@ export const useExerciseActions = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (isDeleteExerciseSuccess) {
+    if (isDeleteWorkoutSuccess) {
       toast({
         variant: "default",
-        title: "Exercise deleted.",
-        description: "The exercise has been deleted.",
+        title: "Workout deleted.",
+        description: "The workout has been deleted.",
       });
 
       setIsDeleteDialogOpen(false);
     }
-  }, [isDeleteExerciseSuccess, toast]);
+  }, [isDeleteWorkoutSuccess, toast]);
 
   useEffect(() => {
-    if (isDeleteExerciseError) {
+    if (isDeleteWorkoutError) {
       toast({
         variant: "destructive",
-        title: "Error deleting exercise.",
-        description: "There was an unexpected error deleting the exericse.",
+        title: "Error deleting workout.",
+        description: "There was an unexpected error deleting the workout.",
       });
 
       setIsDeleteDialogOpen(false);
     }
-  }, [isDeleteExerciseError, toast]);
+  }, [isDeleteWorkoutError, toast]);
 
   const toggleDeleteDialog = () => {
     setIsDeleteDialogOpen((state) => !state);
@@ -44,10 +45,10 @@ export const useExerciseActions = () => {
   };
 
   return {
-    deleteExercise,
+    deleteWorkout,
     toggleDeleteDialog,
     isDeleteDialogOpen,
-    isDeleteExerciseLoading,
+    isDeleteWorkoutLoading,
     toggleUpdateDialog,
     isUpdateDialogOpen,
   };

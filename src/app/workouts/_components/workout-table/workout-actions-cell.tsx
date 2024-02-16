@@ -1,6 +1,7 @@
 "use client";
 
-import { Loader2, MoreHorizontal, Pencil, PlusCircle, Trash2 } from "lucide-react";
+import { CustomCellProps } from "@components/data-table/types";
+import { WorkoutTableData } from "./workout-columns";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,31 +11,30 @@ import {
   DropdownMenuTrigger,
 } from "@components/ui/dropdown-menu";
 import {
+  AlertDialogHeader,
+  AlertDialogFooter,
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
   AlertDialogTitle,
 } from "@components/ui/alert-dialog";
 import { Button, buttonVariants } from "@components/ui/button";
-import { ExerciseTableData } from "./exercise-columns";
-import { useExerciseActions } from "./use-exercise-actions";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@components/ui/dialog";
-import ExerciseForm from "../exercise-form/exercise-form";
-import { CustomCellProps } from "@components/data-table/types";
+import { MoreHorizontal, Trash2, Pencil, Loader2 } from "lucide-react";
+import { useWorkoutActions } from "./use-workout-actions";
+import WorkoutForm from "../workout-form/workout-form";
 
-export default function ExerciseActionsCell({ row }: CustomCellProps<ExerciseTableData>) {
+export default function WorkoutActionsCell({ row }: CustomCellProps<WorkoutTableData>) {
   const {
-    deleteExercise,
+    deleteWorkout,
     toggleDeleteDialog,
     isDeleteDialogOpen,
-    isDeleteExerciseLoading,
+    isDeleteWorkoutLoading,
     toggleUpdateDialog,
     isUpdateDialogOpen,
-  } = useExerciseActions();
+  } = useWorkoutActions();
 
   const { id } = row.original;
 
@@ -68,18 +68,18 @@ export default function ExerciseActionsCell({ row }: CustomCellProps<ExerciseTab
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your exercise and remove the workouts that make
+              This action cannot be undone. This will permanently delete your workout and remove the workouts that make
               use of it.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              disabled={isDeleteExerciseLoading}
-              onClick={() => deleteExercise({ id })}
+              disabled={isDeleteWorkoutLoading}
+              onClick={() => deleteWorkout({ id })}
               className={buttonVariants({ variant: "destructive" })}
             >
-              {isDeleteExerciseLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {isDeleteWorkoutLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Delete
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -90,12 +90,12 @@ export default function ExerciseActionsCell({ row }: CustomCellProps<ExerciseTab
       <Dialog open={isUpdateDialogOpen} onOpenChange={toggleUpdateDialog}>
         <DialogContent className="max-w-md flex flex-col gap-0">
           <DialogHeader className="mb-4">
-            <DialogTitle>Update exercise</DialogTitle>
+            <DialogTitle>Update workout</DialogTitle>
             <DialogDescription>
-              Update a exercise from your exercise pull. Click save when you&apos;re done.
+              Update a workout from your workout pull. Click save when you&apos;re done.
             </DialogDescription>
           </DialogHeader>
-          <ExerciseForm type="update" rowData={row.original} onComplete={() => toggleUpdateDialog()} />
+          <WorkoutForm type="update" rowData={row.original} onComplete={() => toggleUpdateDialog()} />
         </DialogContent>
       </Dialog>
     </div>

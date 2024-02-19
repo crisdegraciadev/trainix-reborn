@@ -6,6 +6,7 @@ import { Input } from "@components/ui/input";
 import { Table } from "@components/ui/table";
 import {
   ColumnFiltersState,
+  RowSelectionState,
   SortingState,
   getCoreRowModel,
   getFilteredRowModel,
@@ -15,8 +16,9 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 import CreateWorkoutButton from "./create-workout-button";
+import { WorkoutTableData } from "./workout-columns";
 
-export default function WorkoutTable<T, U>({ columns, data }: DataTableProps<T, U>) {
+export default function WorkoutTable<U>({ columns, data }: DataTableProps<WorkoutTableData, U>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
 

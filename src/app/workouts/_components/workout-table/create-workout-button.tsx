@@ -29,7 +29,7 @@ export default function CreateWorkoutButton() {
       </DialogTrigger>
       <DialogContent className="max-w-md flex flex-col gap-0">
         <DialogHeader className="mb-4">
-          <DialogTitle>Create Workout</DialogTitle>
+          <DialogTitle className="text-xl">Create Workout</DialogTitle>
           <DialogDescription>
             Add a new workout to your workout pull. Click save when you&apos;re done.
           </DialogDescription>

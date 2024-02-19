@@ -4,6 +4,8 @@ import { DataTableColumnHeader } from "@components/data-table/data-table-column-
 import { ColumnDef } from "@tanstack/react-table";
 import { DifficultyDataTable, MuscleTableData } from "@typings/table";
 import WorkoutActionsCell from "./workout-actions-cell";
+import NameCell from "@components/data-table/cells/name-cell";
+import { AppRoutes } from "@constants/routes";
 
 export type WorkoutTableData = {
   id: string;
@@ -17,13 +19,7 @@ export const workoutColumns: ColumnDef<WorkoutTableData>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
-    cell: ({ row }) => {
-      return (
-        <div className="w-[80px]">
-          <span className="w-[50px] truncate font-medium">{row.getValue("name")}</span>
-        </div>
-      );
-    },
+    cell: ({ row }) => <NameCell row={row} path={AppRoutes.WORKOUTS} />,
     filterFn: (row, id, value) => {
       const rowValue: string = row.getValue(id);
       return rowValue.includes(value);

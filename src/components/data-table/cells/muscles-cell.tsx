@@ -1,9 +1,8 @@
 import { MuscleTableData } from "@typings/table";
-import { ExerciseTableData } from "app/exercises/_components/exercise-table/exercise-columns";
 import { CustomCellProps } from "../types";
 import { Badge } from "@components/ui/badge";
 
-export function MusclesCell({ row }: CustomCellProps<ExerciseTableData>) {
+export function MusclesCell<T>({ row }: CustomCellProps<T>) {
   const muscles: MuscleTableData[] = row.getValue("muscles");
 
   return (

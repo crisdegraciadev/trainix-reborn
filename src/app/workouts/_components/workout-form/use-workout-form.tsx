@@ -99,6 +99,8 @@ export const useWorkoutForm = ({ type, rowData, onComplete }: WorkoutFormProps) 
   const onSubmit = async (data: WorkoutFormSchema) => {
     const { user } = session!;
 
+    console.log({ data });
+
     const difficultyId = getDifficultyId(data);
 
     if (type === "create") {

@@ -2,7 +2,7 @@ import TopbarLayout from "@components/topbar-layout";
 import Workouts from "./_components/workouts";
 import { checkAuthorized } from "@utils/check-authorized";
 
-export default async function WorkoutPage() {
+export default async function Page() {
   const { user } = await checkAuthorized();
 
   return (

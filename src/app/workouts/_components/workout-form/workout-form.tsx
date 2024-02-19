@@ -20,9 +20,23 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="sr-only">Name</FormLabel>
+              <FormLabel>Name</FormLabel>
               <FormControl>
                 <Input id="name" placeholder="Name" type="text" disabled={isFormLoading} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem className="my-2">
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea id="description" placeholder="Description" disabled={isFormLoading} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -34,7 +48,7 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
           name="muscles"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="sr-only">Muscles</FormLabel>
+              <FormLabel>Muscles</FormLabel>
               <FormControl>
                 <MultipleSelector
                   options={musclesOptions}
@@ -56,7 +70,7 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
           name="difficulty"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="sr-only">Difficulty</FormLabel>
+              <FormLabel>Difficulty</FormLabel>
               <FormControl>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <SelectTrigger>
@@ -72,20 +86,6 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
                     </SelectGroup>
                   </SelectContent>
                 </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="sr-only">Password</FormLabel>
-              <FormControl>
-                <Textarea id="description" placeholder="Description" disabled={isFormLoading} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

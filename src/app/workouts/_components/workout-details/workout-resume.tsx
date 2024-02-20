@@ -1,5 +1,6 @@
 import { Badge } from "@components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@components/ui/card";
+import { Carousel, CarouselContent } from "@components/ui/carousel";
 import { Separator } from "@components/ui/separator";
 import { TableHeader, TableRow, TableHead, TableBody, TableCell, Table } from "@components/ui/table";
 import { Workout } from "@typings/entities";

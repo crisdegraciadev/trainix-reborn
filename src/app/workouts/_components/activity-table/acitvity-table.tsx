@@ -1,5 +1,8 @@
-"use client";
-
+import DataTableBody from "@components/data-table/data-table-body";
+import DataTableHeader from "@components/data-table/data-table-header";
+import DataTablePagination from "@components/data-table/data-table-pagination";
+import { DataTableProps } from "@components/data-table/types";
+import { Table } from "@components/ui/table";
 import {
   ColumnFiltersState,
   SortingState,
@@ -9,19 +12,12 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
-import { Table } from "@components/ui/table";
 import { useState } from "react";
-import { Input } from "@components/ui/input";
-import DataTableHeader from "@components/data-table/data-table-header";
-import DataTableBody from "@components/data-table/data-table-body";
-import DataTablePagination from "@components/data-table/data-table-pagination";
-import { DataTableProps } from "@components/data-table/types";
+import { ActivityTableData } from "./activity-columns";
 import CreateButton from "@components/create-button";
-import ExerciseForm from "../exercise-form/exercise-form";
+import { DatePicker } from "@components/ui/date-picker";
 
-export default function ExerciseTable<T, U>({ columns, data }: DataTableProps<T, U>) {
-  // Table state
+export default function ActivityTable<U>({ columns, data }: DataTableProps<ActivityTableData, U>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -45,21 +41,15 @@ export default function ExerciseTable<T, U>({ columns, data }: DataTableProps<T,
   return (
     <div>
       <div className="flex justify-between mb-4">
-        <Input
-          placeholder="Filter name..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}
-          className="h-8 w-64"
-        />
-
+        <DatePicker />
         <CreateButton
-          title="Create Exercise"
-          description="Add a new exercise to your exercise pull. Click save when you're done."
-          label="Exercise"
+          title="Create Activity"
+          description="Add a new activity to your workout progression. Click save when you're done."
+          label="Progression"
           isDialogOpen={isCreateDialogOpen}
           setIsDialogOpen={setIsCreateDialogOpen}
         >
-          <ExerciseForm type="create" onComplete={() => setIsCreateDialogOpen(false)} />
+          <div>Activity Form</div>
         </CreateButton>
       </div>
 
@@ -69,8 +59,6 @@ export default function ExerciseTable<T, U>({ columns, data }: DataTableProps<T,
           <DataTableBody table={table} columns={columns} />
         </Table>
       </div>
-
-      <DataTablePagination table={table} />
     </div>
   );
 }

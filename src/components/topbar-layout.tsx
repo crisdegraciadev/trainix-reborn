@@ -12,5 +12,4 @@ export default async function TopbarLayout({ children }: PropsWithChildren) {
       <div className="px-48 pt-8 my-14">{children}</div>
     </>
   );
-  return;
 }

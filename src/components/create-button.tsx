@@ -9,32 +9,42 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@components/ui/dialog";
-import ExerciseForm from "../exercise-form/exercise-form";
 import { PlusCircle } from "lucide-react";
-import { useState } from "react";
+import { Dispatch, PropsWithChildren, SetStateAction, useState } from "react";
 
-export default function CreateExerciseButton() {
-  const [isFormOpen, setIsFormOpen] = useState(false);
+type Props = {
+  title: string;
+  label?: string;
+  description: string;
+  isDialogOpen: boolean;
+  setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
+};
 
+export default function CreateButton({
+  children,
+  title,
+  label,
+  description,
+  isDialogOpen,
+  setIsDialogOpen,
+}: PropsWithChildren & Props) {
   return (
-    <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button
           variant="outline"
           className="items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground rounded-md px-3 text-xs ml-auto h-8 flex"
         >
           <PlusCircle className="w-4 h-4 mr-2" />
-          Create
+          {label ?? "Create"}
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-md flex flex-col gap-0">
         <DialogHeader className="mb-4">
-          <DialogTitle>Create exercise</DialogTitle>
-          <DialogDescription>
-            Add a new exercise to your exercise pull. Click save when you&apos;re done.
-          </DialogDescription>
+          <DialogTitle className="text-xl">{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
-        <ExerciseForm type="create" onComplete={() => setIsFormOpen(false)} />
+        {children}
       </DialogContent>
     </Dialog>
   );

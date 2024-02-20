@@ -70,7 +70,7 @@ model WorkoutProgression {
   workout   Workout? @relation(fields: [workoutId], references: [id])
   workoutId String
 
-  workSets WorkoutActicity[]
+  activities WorkoutActicity[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

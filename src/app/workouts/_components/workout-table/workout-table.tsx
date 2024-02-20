@@ -6,7 +6,6 @@ import { Input } from "@components/ui/input";
 import { Table } from "@components/ui/table";
 import {
   ColumnFiltersState,
-  RowSelectionState,
   SortingState,
   getCoreRowModel,
   getFilteredRowModel,
@@ -15,12 +14,16 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
-import CreateWorkoutButton from "./create-workout-button";
 import { WorkoutTableData } from "./workout-columns";
+import CreateButton from "@components/create-button";
+import WorkoutForm from "../workout-form/workout-form";
 
 export default function WorkoutTable<U>({ columns, data }: DataTableProps<WorkoutTableData, U>) {
+  // Table state
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
+
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
   const table = useReactTable({
     data,
@@ -47,7 +50,15 @@ export default function WorkoutTable<U>({ columns, data }: DataTableProps<Workou
           className="h-8 w-64"
         />
 
-        <CreateWorkoutButton />
+        <CreateButton
+          title="Create Workout"
+          description="Add a new workout to your workout pull. Click save when you're done."
+          label="Workout"
+          isDialogOpen={isCreateDialogOpen}
+          setIsDialogOpen={setIsCreateDialogOpen}
+        >
+          <WorkoutForm type="create" onComplete={() => setIsCreateDialogOpen(false)} />
+        </CreateButton>
       </div>
 
       <div className="rounded-md border">

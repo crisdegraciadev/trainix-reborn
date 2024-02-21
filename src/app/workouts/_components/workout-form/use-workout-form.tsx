@@ -4,7 +4,7 @@ import { useFindMuscles } from "@hooks/muscles/use-find-muscles-options";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { WorkoutTableData } from "../workout-table/workout-columns";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFindDifficulties } from "@hooks/difficulties/use-find-difficulties-options";
 import { WorkoutFormSchema, workoutSchema } from "./workout-schema";
@@ -24,10 +24,22 @@ export type WorkoutFormProps =
       onComplete: () => void;
     };
 
-const formatRowData = ({ difficulty: { value }, ...rest }: WorkoutTableData) => ({
+const rowToFormValues = ({ difficulty: { value }, ...rest }: WorkoutTableData) => ({
   ...rest,
   difficulty: value,
 });
+
+const DEFAULT_FORM_VALUES = {
+  name: "",
+  muscles: [],
+  difficulty: "medium",
+  activities: [
+    { exerciseId: -1, sets: 0, reps: 0 },
+    { exerciseId: -1, sets: 0, reps: 0 },
+    { exerciseId: -1, sets: 0, reps: 0 },
+    { exerciseId: -1, sets: 0, reps: 0 },
+  ],
+};
 
 export const useWorkoutForm = ({ type, rowData, onComplete }: WorkoutFormProps) => {
   const { isCreateWorkoutSuccess, isCreateWorkoutLoading, isCreateWorkoutError, createWorkout } = useCreateWorkout();
@@ -47,7 +59,16 @@ export const useWorkoutForm = ({ type, rowData, onComplete }: WorkoutFormProps) 
 
   const form = useForm<WorkoutFormSchema>({
     resolver: zodResolver(workoutSchema),
-    defaultValues: rowData ? formatRowData(rowData) : { name: "", muscles: [], difficulty: "medium" },
+    defaultValues: rowData ? rowToFormValues(rowData) : DEFAULT_FORM_VALUES,
+  });
+
+  const {
+    fields: activityFields,
+    append,
+    remove,
+  } = useFieldArray({
+    control: form.control,
+    name: "activities",
   });
 
   useEffect(() => {
@@ -123,6 +144,16 @@ export const useWorkoutForm = ({ type, rowData, onComplete }: WorkoutFormProps) 
     }
   };
 
+  const appendActivity = (e: React.MouseEvent<Element, MouseEvent>) => {
+    e.preventDefault();
+    append({ exerciseId: -1, sets: 0, reps: 0 });
+  };
+
+  const removeActivity = (e: React.MouseEvent<Element, MouseEvent>, idx: number) => {
+    e.preventDefault();
+    remove(idx);
+  };
+
   const getDifficultyId = ({ difficulty }: WorkoutFormSchema) => {
     const idx = difficulties.findIndex(({ value }) => value === difficulty)!;
     return difficulties[idx].id!;
@@ -130,6 +161,9 @@ export const useWorkoutForm = ({ type, rowData, onComplete }: WorkoutFormProps) 
 
   return {
     form,
+    activityFields,
+    appendActivity,
+    removeActivity,
     musclesOptions,
     difficultiesOptions,
     isFormLoading,

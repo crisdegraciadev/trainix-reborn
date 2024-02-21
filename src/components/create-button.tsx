@@ -39,7 +39,7 @@ export default function CreateButton({
           {label ?? "Create"}
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-md flex flex-col gap-0">
+      <DialogContent className="max-w-xl flex flex-col gap-0">
         <DialogHeader className="mb-4">
           <DialogTitle className="text-xl">{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>

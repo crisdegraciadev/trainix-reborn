@@ -7,10 +7,11 @@ import { WorkoutTableData } from "../workout-table/workout-columns";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFindDifficulties } from "@hooks/difficulties/use-find-difficulties-options";
-import { WorkoutFormSchema, workoutSchema } from "./workout-schema";
+import { WorkoutActivityFormSchema, WorkoutFormSchema, workoutSchema } from "./workout-schema";
 import { useCreateWorkout } from "@hooks/workouts/use-create-workout";
 import { useUpdateWorkout } from "@hooks/workouts/use-update-workout";
 import { TOAST_MESSAGES } from "./toast-messages";
+import { useFindExercises } from "@hooks/exercises/use-find-all-exercises";
 
 export type WorkoutFormProps =
   | {
@@ -33,27 +34,25 @@ const DEFAULT_FORM_VALUES = {
   name: "",
   muscles: [],
   difficulty: "medium",
-  activities: [
-    { exerciseId: -1, sets: 0, reps: 0 },
-    { exerciseId: -1, sets: 0, reps: 0 },
-    { exerciseId: -1, sets: 0, reps: 0 },
-    { exerciseId: -1, sets: 0, reps: 0 },
-  ],
+  activities: [{ order: 0 }, { order: 1 }, { order: 2 }, { order: 3 }],
 };
 
 export const useWorkoutForm = ({ type, rowData, onComplete }: WorkoutFormProps) => {
+  const { data: session } = useSession();
+
   const { isCreateWorkoutSuccess, isCreateWorkoutLoading, isCreateWorkoutError, createWorkout } = useCreateWorkout();
 
   const { isUpdateWorkoutSuccess, isUpdateWorkoutLoading, isUpdateWorkoutError, updateWorkout } = useUpdateWorkout();
 
-  const { muscles, isMuscleSuccess, isMuscleError } = useFindMuscles();
+  const { muscles, isMusclesSuccess, isMusclesError } = useFindMuscles();
   const { difficulties, isDifficultiesSuccess, isDifficultiesError } = useFindDifficulties();
-  const { data: session } = useSession();
+  const { exercises, isExercisesSuccess, isExercisesError } = useFindExercises({ userId: session?.user.id! });
 
   const [isFormLoading, setIsFormLoading] = useState(false);
 
   const [difficultiesOptions, setDifficultiesOptions] = useState<SelectOption[]>([]);
   const [musclesOptions, setMusclesOptions] = useState<SelectOption[]>([]);
+  const [exercisesOptions, setExercisesOptions] = useState<SelectOption[]>([]);
 
   const { toast } = useToast();
 
@@ -106,23 +105,35 @@ export const useWorkoutForm = ({ type, rowData, onComplete }: WorkoutFormProps) 
   }, [isDifficultiesError]);
 
   useEffect(() => {
-    if (isMuscleSuccess) {
+    if (isMusclesSuccess) {
       setMusclesOptions(muscles.map(({ createdAt, updatedAt, ...rest }) => ({ ...rest })));
     }
-  }, [isMuscleSuccess, muscles]);
+  }, [isMusclesSuccess, muscles]);
 
   useEffect(() => {
-    if (isMuscleError) {
+    if (isMusclesError) {
       setMusclesOptions([]);
     }
-  }, [isMuscleError]);
+  }, [isMusclesError]);
+
+  useEffect(() => {
+    if (isExercisesSuccess) {
+      setExercisesOptions(exercises.map(({ id, name }) => ({ id, value: id, name })));
+    }
+  }, [isExercisesSuccess, exercises]);
+
+  useEffect(() => {
+    if (isExercisesError) {
+      setExercisesOptions([]);
+    }
+  }, [isExercisesError]);
 
   const onSubmit = async (data: WorkoutFormSchema) => {
     const { user } = session!;
 
-    console.log({ data });
-
     const difficultyId = getDifficultyId(data);
+
+    console.log({ data });
 
     if (type === "create") {
       createWorkout({
@@ -146,7 +157,7 @@ export const useWorkoutForm = ({ type, rowData, onComplete }: WorkoutFormProps) 
 
   const appendActivity = (e: React.MouseEvent<Element, MouseEvent>) => {
     e.preventDefault();
-    append({ exerciseId: -1, sets: 0, reps: 0 });
+    append({ order: activityFields.length } as WorkoutActivityFormSchema);
   };
 
   const removeActivity = (e: React.MouseEvent<Element, MouseEvent>, idx: number) => {
@@ -166,6 +177,7 @@ export const useWorkoutForm = ({ type, rowData, onComplete }: WorkoutFormProps) 
     removeActivity,
     musclesOptions,
     difficultiesOptions,
+    exercisesOptions,
     isFormLoading,
     onSubmit,
   };

@@ -6,4 +6,12 @@ export const workoutSchema = z.object({
   description: z.string().optional(),
   muscles: z.array(z.object({ id: z.string() })),
   userId: z.string(),
+  activities: z.array(
+    z.object({
+      exerciseId: z.string().min(1),
+      order: z.number(),
+      sets: z.number(),
+      reps: z.number(),
+    })
+  ),
 });

@@ -5,8 +5,8 @@ export const useFindMuscles = () => {
 
   return {
     muscles: data ?? [],
-    isMuscleSuccess: isSuccess,
-    isMuscleLoading: isLoading,
-    isMuscleError: isError,
+    isMusclesSuccess: isSuccess,
+    isMusclesLoading: isLoading,
+    isMusclesError: isError,
   };
 };

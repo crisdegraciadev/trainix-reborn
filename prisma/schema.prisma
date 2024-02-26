@@ -67,7 +67,7 @@ model Workout {
 model WorkoutProgression {
   id String @id @unique @default(uuid())
 
-  workout   Workout? @relation(fields: [workoutId], references: [id])
+  workout   Workout @relation(fields: [workoutId], references: [id])
   workoutId String
 
   activities WorkoutActicity[]
@@ -85,7 +85,7 @@ model WorkoutActicity {
   sets  Int
   reps  Int
 
-  workoutProgression   WorkoutProgression? @relation(fields: [workoutProgressionId], references: [id])
+  workoutProgression   WorkoutProgression @relation(fields: [workoutProgressionId], references: [id])
   workoutProgressionId String
   exercise             Exercise            @relation(fields: [exerciseId], references: [id])
   exerciseId           String

@@ -4,7 +4,7 @@ type _Props = {
   userId: string;
 };
 
-export const useFindAllExercises = ({ userId }: _Props) => {
+export const useFindExercises = ({ userId }: _Props) => {
   const { data, isSuccess, isLoading, isError } = trpc.exercises.findAllExercises.useQuery({ userId });
 
   return {

@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import { ExerciseTableData } from "./exercise-columns";
-import { useFindAllExercises } from "@hooks/exercises/use-find-all-exercises";
+import { useFindExercises } from "@hooks/exercises/use-find-all-exercises";
 
 type _Props = {
   userId: string;
 };
 
 export const useExerciseTable = ({ userId }: _Props) => {
-  const { exercises, isExercisesSuccess, isExercisesError } = useFindAllExercises({ userId });
+  const { exercises, isExercisesSuccess, isExercisesError } = useFindExercises({ userId });
 
   const [exerciseRows, setExerciseRows] = useState<ExerciseTableData[]>([]);
 

@@ -3,7 +3,13 @@
 import * as React from "react";
 import { X } from "lucide-react";
 
-import { Command, CommandGroup, CommandItem, CommandEmpty, CommandList } from "@components/ui/command";
+import {
+  Command,
+  CommandGroup,
+  CommandItem,
+  CommandEmpty,
+  CommandList,
+} from "@components/ui/command";
 import { Command as CommandPrimitive } from "cmdk";
 import { useEffect } from "react";
 import { Badge } from "@components/ui/badge";
@@ -153,7 +159,9 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
     const [isLoading, setIsLoading] = React.useState(false);
 
     const [selected, setSelected] = React.useState<SelectOption[]>(value || []);
-    const [options, setOptions] = React.useState<GroupOption>(transToGroupOption(arrayDefaultOptions, groupBy));
+    const [options, setOptions] = React.useState<GroupOption>(
+      transToGroupOption(arrayDefaultOptions, groupBy)
+    );
     const [inputValue, setInputValue] = React.useState("");
     const debouncedSearchTerm = useDebounce(inputValue, delay || 500);
 
@@ -285,7 +293,10 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
       return <CommandEmpty>{emptyIndicator}</CommandEmpty>;
     }, [creatable, emptyIndicator, onSearch, options]);
 
-    const selectables = React.useMemo<GroupOption>(() => removePickedOption(options, selected), [options, selected]);
+    const selectables = React.useMemo<GroupOption>(
+      () => removePickedOption(options, selected),
+      [options, selected]
+    );
 
     /** Avoid Creatable Selector freezing or lagging when paste a long string. */
     const commandFilter = React.useCallback(() => {
@@ -310,7 +321,9 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
           commandProps?.onKeyDown?.(e);
         }}
         className={cn("overflow-visible bg-transparent", commandProps?.className)}
-        shouldFilter={commandProps?.shouldFilter !== undefined ? commandProps.shouldFilter : !onSearch} // When onSearch is provided, we don't want to filter the options. You can still override it.
+        shouldFilter={
+          commandProps?.shouldFilter !== undefined ? commandProps.shouldFilter : !onSearch
+        } // When onSearch is provided, we don't want to filter the options. You can still override it.
         filter={commandFilter()}
       >
         <div
@@ -415,7 +428,10 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
                                 setSelected(newOptions);
                                 onChange?.(newOptions);
                               }}
-                              className={cn("cursor-pointer", option.disable && "cursor-default text-muted-foreground")}
+                              className={cn(
+                                "cursor-pointer",
+                                option.disable && "cursor-default text-muted-foreground"
+                              )}
                             >
                               {option.name}
                             </CommandItem>

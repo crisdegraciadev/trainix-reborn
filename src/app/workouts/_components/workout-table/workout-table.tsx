@@ -54,6 +54,8 @@ export default function WorkoutTable<U>({ columns, data }: DataTableProps<Workou
           title="Create Workout"
           description="Add a new workout to your workout pull. Click save when you're done."
           label="Workout"
+          disabled={false}
+          disabledMessage="Exercises needed to create a workout"
           isDialogOpen={isCreateDialogOpen}
           setIsDialogOpen={setIsCreateDialogOpen}
         >

@@ -1,7 +1,7 @@
 import { useToast } from "@components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateExercise } from "@hooks/exercises/use-create-exercise";
-import { useFindMuscles } from "@hooks/muscles/use-find-muscles-options";
+import { useFindMusclesSelectList } from "@hooks/muscles/use-find-muscles-options";
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -33,7 +33,7 @@ export const useExerciseForm = ({ type, rowData, onComplete }: ExerciseFormProps
   const { isUpdateExerciseSuccess, isUpdateExerciseLoading, isUpdateExerciseError, updateExercise } =
     useUpdateExercise();
 
-  const { muscles, isMuscleSuccess, isMuscleError } = useFindMuscles();
+  const { muscles, isMusclesSuccess, isMusclesError } = useFindMusclesSelectList();
   const { difficulties, isDifficultiesSuccess, isDifficultiesError } = useFindDifficulties();
   const { data: session } = useSession();
 
@@ -84,16 +84,16 @@ export const useExerciseForm = ({ type, rowData, onComplete }: ExerciseFormProps
   }, [isDifficultiesError]);
 
   useEffect(() => {
-    if (isMuscleSuccess) {
+    if (isMusclesSuccess) {
       setMusclesOptions(muscles.map(({ createdAt, updatedAt, ...rest }) => ({ ...rest })));
     }
-  }, [isMuscleSuccess, muscles]);
+  }, [isMusclesSuccess, muscles]);
 
   useEffect(() => {
-    if (isMuscleError) {
+    if (isMusclesError) {
       setMusclesOptions([]);
     }
-  }, [isMuscleError]);
+  }, [isMusclesError]);
 
   const onSubmit = async (data: ExerciseFormSchema) => {
     const { user } = session!;

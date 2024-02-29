@@ -17,7 +17,7 @@ export type WorkoutActivityFormSchema = z.infer<typeof workoutActivitySchema>;
 
 export const workoutSchema = z.object({
   name: z.string({ required_error: "Name cannot be blank" }).min(1),
-  difficulty: z.string(),
+  difficultyId: z.string(),
   description: z.string().optional(),
   muscles: z.array(workoutMusclesSchema).min(1),
   activities: z.array(workoutActivitySchema).min(1),

@@ -5,18 +5,18 @@ import { checkAuthorized } from "@utils/check-authorized";
 import { redirect } from "next/navigation";
 import WorkoutDetails from "../_components/workout-details";
 
-type Props = {
+type _Props = {
   params: { id: string };
 };
 
-export default async function Page({ params }: Props) {
+export default async function Page({ params }: _Props) {
   const { user } = await checkAuthorized();
 
   const { id } = params;
 
   const workout = await db.workout.findUnique({
     where: { id },
-    include: { difficulty: true, muscles: true },
+    include: { difficulty: true, muscles: true, progressions: true },
   });
 
   if (!workout) {

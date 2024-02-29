@@ -1,11 +1,12 @@
 import db from "@lib/prisma";
 import { privateProcedure } from "@server/trpc";
 import { workoutSchema } from "../schemas/workout-schema";
+import { Workout } from "@typings/entities/workout";
 
-export const createWorkout = privateProcedure.input(workoutSchema).mutation(async ({ input }) => {
+export const createWorkout = privateProcedure.input(workoutSchema).mutation(async ({ input }): Promise<Workout> => {
   const { muscles: musclesIds, activities, ...workoutData } = input;
 
-  const { id: workoutId } = await db.workout.create({
+  const workout = await db.workout.create({
     data: {
       ...workoutData,
       muscles: {
@@ -14,9 +15,13 @@ export const createWorkout = privateProcedure.input(workoutSchema).mutation(asyn
     },
   });
 
-  const { id: workoutProgressionId } = await db.workoutProgression.create({ data: { workoutId } });
+  const { id: workoutProgressionId } = await db.workoutProgression.create({ data: { workoutId: workout.id } });
 
-  return db.workoutActicity.createMany({
+  await db.workoutActicity.createMany({
     data: activities.map((activity) => ({ workoutProgressionId, ...activity })),
+  });
+
+  return db.workout.findUniqueOrThrow({
+    where: { id: workout.id },
   });
 });

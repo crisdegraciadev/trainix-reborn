@@ -1,45 +1,27 @@
-import { useCallback, useEffect, useState } from "react";
-import { ExerciseTableData } from "./exercise-columns";
-import { useFindExercises } from "@hooks/exercises/use-find-all-exercises";
+import { useEffect, useState } from "react";
+import { useFindExerciseRows } from "app/exercises/_hooks/use-find-exercise-rows";
+import { ExerciseRow } from "@typings/entities/exercise";
 
-type _Props = {
+type _ = {
   userId: string;
 };
 
-export const useExerciseTable = ({ userId }: _Props) => {
-  const { exercises, isExercisesSuccess, isExercisesError } = useFindExercises({ userId });
+export const useExerciseTable = ({ userId }: _) => {
+  const { data, isSuccess, isError } = useFindExerciseRows({ userId });
 
-  const [exerciseRows, setExerciseRows] = useState<ExerciseTableData[]>([]);
-
-  const buildRows = useCallback((data: typeof exercises) => {
-    return data.map((exercise) => {
-      const { id, name, description: rawDescription, difficulty: rawDifficulty, muscles: rawMuscles } = exercise;
-
-      const description = rawDescription === null ? undefined : rawDescription;
-
-      const difficulty = {
-        id: rawDifficulty.id,
-        name: rawDifficulty.name,
-        value: rawDifficulty.value,
-      };
-
-      const muscles = rawMuscles.map(({ id, name, value }) => ({ id, name, value }));
-
-      return { id, name, description, difficulty, muscles };
-    });
-  }, []);
+  const [exerciseRows, setExerciseRows] = useState<ExerciseRow[]>([]);
 
   useEffect(() => {
-    if (isExercisesSuccess) {
-      setExerciseRows(buildRows(exercises));
+    if (isSuccess && data) {
+      setExerciseRows(data);
     }
-  }, [isExercisesSuccess, exercises, buildRows]);
+  }, [isSuccess, data]);
 
   useEffect(() => {
-    if (isExercisesError) {
+    if (isError) {
       setExerciseRows([]);
     }
-  }, [isExercisesError]);
+  }, [isError]);
 
   return { exerciseRows };
 };

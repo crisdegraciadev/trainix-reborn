@@ -1,11 +1,14 @@
 import { PropsWithChildren } from "react";
 import AuthProvider from "./auth";
 import TrpcProvider from "./trpc";
+import { TooltipProvider } from "@components/ui/tooltip";
 
-export default function Providers({ children }: PropsWithChildren) {
+export default function Providers({ children }: _PropsWithChildren) {
   return (
     <AuthProvider>
-      <TrpcProvider>{children}</TrpcProvider>
+      <TrpcProvider>
+        <TooltipProvider>{children}</TooltipProvider>
+      </TrpcProvider>
     </AuthProvider>
   );
 }

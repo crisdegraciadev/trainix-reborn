@@ -3,11 +3,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@comp
 import { Carousel, CarouselContent } from "@components/ui/carousel";
 import { Separator } from "@components/ui/separator";
 import { TableHeader, TableRow, TableHead, TableBody, TableCell, Table } from "@components/ui/table";
-import { Workout } from "@typings/entities";
 import { CheckCircle2, XCircle, PauseCircle } from "lucide-react";
+import { useMemo } from "react";
+import { useWorkoutDetails } from "./use-workout-details";
+import { Workout } from "@prisma/client";
+import { WorkoutWithDeps } from "@typings/entities";
 
-type Props = {
-  workout: Workout;
+type _Props = {
+  workout: WorkoutWithDeps;
 };
 
 const activities = [
@@ -42,7 +45,14 @@ const activities = [
   },
 ];
 
-export default function WorkoutResume({ workout }: Props) {
+export default function WorkoutResume({ workout }: _Props) {
+  const { lastWorkoutProgression } = useWorkoutDetails({ workout });
+  console.log({ lastWorkoutProgression });
+
+  if (!lastWorkoutProgression) {
+    return <p>loading</p>;
+  }
+
   return (
     <Card className="min-h-[400px]">
       <CardHeader>
@@ -79,20 +89,20 @@ export default function WorkoutResume({ workout }: Props) {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {activities.map((activity) => (
-                  <TableRow key={activity.name}>
-                    <TableCell className="px-4">{activity.name}</TableCell>
+                {lastWorkoutProgression.activities.map((activity) => (
+                  <TableRow key={activity.exercise.name}>
+                    <TableCell className="px-4">{activity.exercise.name}</TableCell>
                     <TableCell className="px-4 text-center">{activity.sets}</TableCell>
                     <TableCell className="px-4 text-center">{activity.reps}</TableCell>
                     <TableCell className="px-4 text-center">{activity.sets * activity.reps}</TableCell>
                     <TableCell className="px-4 flex justify-center items-center">
-                      {activity.improve === "+" ? (
+                      {/* {activity.improve === "+" ? (
                         <CheckCircle2 strokeWidth={2} color="#2563eb" className="w6 h-6" />
                       ) : activity.improve === "-" ? (
                         <XCircle color="#e11d48" strokeWidth={2} className="w6 h-6" />
-                      ) : (
-                        <PauseCircle strokeWidth={2} color="#94a3b8" className="w-6 h-6" />
-                      )}
+                      ) : ( */}
+                      <PauseCircle strokeWidth={2} color="#94a3b8" className="w-6 h-6" />
+                      {/* )} */}
                     </TableCell>
                   </TableRow>
                 ))}

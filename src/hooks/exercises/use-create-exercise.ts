@@ -8,7 +8,7 @@ export const useCreateExercise = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      utils.exercises.findAllExercises.invalidate();
+      utils.exercises.findExerciseRows.invalidate();
     }
   }, [isSuccess, utils]);
 

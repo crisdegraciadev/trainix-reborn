@@ -1,6 +1,6 @@
 import { router } from "@server/trpc";
-import { findAllDifficulties } from "./procedures/find-all-difficulties";
+import { findDifficultySelectList } from "./procedures/find-difficulty-select-list";
 
 export const difficultiesRouter = router({
-  findAllDifficulties,
+  findDifficultySelectList,
 });

@@ -1,9 +1,23 @@
 "use client";
 
 import { Button } from "@components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@components/ui/form";
 import { Input } from "@components/ui/input";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@components/ui/select";
 import { Loader2, PlusCircle, Trash2 } from "lucide-react";
 import MultipleSelector from "@components/ui/multi-select";
 import { Textarea } from "@components/ui/textarea";
@@ -38,7 +52,13 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input id="name" placeholder="Name" type="text" disabled={isFormLoading} {...field} />
+                    <Input
+                      id="name"
+                      placeholder="Name"
+                      type="text"
+                      disabled={isFormLoading}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -57,7 +77,9 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
                       hidePlaceholderWhenSelected
                       placeholder="Select muscles"
                       emptyIndicator={
-                        <p className="text-center leading-5 text-gray-600 dark:text-gray-400">no results found.</p>
+                        <p className="text-center leading-5 text-gray-600 dark:text-gray-400">
+                          no results found.
+                        </p>
                       }
                       {...field}
                     />
@@ -68,7 +90,7 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
             />
             <FormField
               control={form.control}
-              name="difficulty"
+              name="difficultyId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Difficulty</FormLabel>
@@ -79,9 +101,9 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {difficultiesOptions.map(({ id, value, name: label }) => (
-                            <SelectItem key={id} value={value}>
-                              {label}
+                          {difficultiesOptions.map(({ id, name }) => (
+                            <SelectItem key={id} value={id!}>
+                              {name}
                             </SelectItem>
                           ))}
                         </SelectGroup>
@@ -100,7 +122,12 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea id="description" placeholder="Description" disabled={isFormLoading} {...field} />
+                    <Textarea
+                      id="description"
+                      placeholder="Description"
+                      disabled={isFormLoading}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -169,7 +196,12 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
                       )}
                     />
 
-                    <Button className="mt-0 w-16" onClick={(e) => removeActivity(e, idx)} size="icon" variant="outline">
+                    <Button
+                      className="mt-0 w-16"
+                      onClick={(e) => removeActivity(e, idx)}
+                      size="icon"
+                      variant="outline"
+                    >
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
@@ -178,7 +210,9 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
             </div>
 
             {form.formState.errors.activities?.length && (
-              <span className="text-sm font-medium text-destructive">Please fill all the exercises.</span>
+              <span className="text-sm font-medium text-destructive">
+                Please fill all the exercises.
+              </span>
             )}
 
             <Button

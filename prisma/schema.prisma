@@ -17,9 +17,6 @@ model User {
 
   exercises Exercise[]
   workout   Workout[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model Exercise {
@@ -35,9 +32,6 @@ model Exercise {
 
   difficulty   Difficulty @relation(fields: [difficultyId], references: [id])
   difficultyId String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
   @@index([userId])
   @@index([difficultyId])
@@ -57,9 +51,6 @@ model Workout {
   difficulty   Difficulty @relation(fields: [difficultyId], references: [id])
   difficultyId String
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
   @@index([userId])
   @@index([difficultyId])
 }
@@ -67,13 +58,10 @@ model Workout {
 model WorkoutProgression {
   id String @id @unique @default(uuid())
 
-  workout   Workout @relation(fields: [workoutId], references: [id])
+  workout   Workout @relation(fields: [workoutId], references: [id], onDelete: Cascade)
   workoutId String
 
   activities WorkoutActicity[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
   @@index([workoutId])
 }
@@ -85,9 +73,9 @@ model WorkoutActicity {
   sets  Int
   reps  Int
 
-  workoutProgression   WorkoutProgression @relation(fields: [workoutProgressionId], references: [id])
+  workoutProgression   WorkoutProgression @relation(fields: [workoutProgressionId], references: [id], onDelete: Cascade)
   workoutProgressionId String
-  exercise             Exercise            @relation(fields: [exerciseId], references: [id])
+  exercise             Exercise           @relation(fields: [exerciseId], references: [id])
   exerciseId           String
 
   @@index([workoutProgressionId])
@@ -101,9 +89,6 @@ model Muscle {
 
   exercises Exercise[]
   workouts  Workout[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model Difficulty {

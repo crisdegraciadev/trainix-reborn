@@ -1,6 +1,9 @@
 import db from "@lib/prisma";
 import { privateProcedure } from "@server/trpc";
+import { SelectItem } from "@typings/utils";
 
-export const findAllMuscles = privateProcedure.query(async () => {
-  return db.muscle.findMany();
+export const findMusclesSelectList = privateProcedure.query(async (): Promise<SelectItem[]> => {
+  const data = await db.muscle.findMany();
+
+  return data.map(({ id, name, value }) => ({ id, name, value }));
 });

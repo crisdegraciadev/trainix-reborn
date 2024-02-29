@@ -5,7 +5,7 @@ import { PropsWithChildren, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { trpc } from "../server/client";
 
-export default function TrpcProvider({ children }: PropsWithChildren) {
+export default function TrpcProvider({ children }: _PropsWithChildren) {
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({

@@ -1,6 +1,6 @@
 import { router } from "@server/trpc";
-import { findAllMuscles } from "./procedures/find-all-muscles";
+import { findMusclesSelectList } from "./procedures/find-all-muscles";
 
 export const musclesRouter = router({
-  findAllMuscles,
+  findMusclesSelectList,
 });

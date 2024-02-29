@@ -1,10 +1,10 @@
 import { trpc } from "@server/client";
 
-type Props = {
+type _Props = {
   id: string;
 };
 
-export const useFindExercise = ({ id }: Props) => {
+export const useFindExercise = ({ id }: _Props) => {
   const { data, isSuccess, isLoading, isError } = trpc.exercises.findExercise.useQuery({ id });
 
   return {

@@ -1,7 +1,7 @@
 import { useFindAllWorkouts } from "@hooks/workouts/use-find-all-workouts";
 import { useCallback, useEffect, useState } from "react";
 import { WorkoutTableData } from "./workout-columns";
-import { Workout } from "@typings/entities";
+import { WorkoutModel } from "@typings/entities";
 
 type _Props = {
   userId: string;
@@ -12,7 +12,7 @@ export const useWorkoutTable = ({ userId }: _Props) => {
 
   const [workoutRows, setWorkoutRows] = useState<WorkoutTableData[]>([]);
 
-  const buildRows = useCallback((data: Workout[]) => {
+  const buildRows = useCallback((data: WorkoutModel[]) => {
     return data.map((workout) => {
       const { id, name, description: rawDescription, difficulty: rawDifficulty, muscles: rawMuscles } = workout;
 

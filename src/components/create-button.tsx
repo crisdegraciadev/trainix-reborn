@@ -11,11 +11,14 @@ import {
 } from "@components/ui/dialog";
 import { PlusCircle } from "lucide-react";
 import { Dispatch, PropsWithChildren, SetStateAction, useState } from "react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
-type Props = {
+type _Props = {
   title: string;
   label?: string;
   description: string;
+  disabled?: boolean;
+  disabledMessage?: string;
   isDialogOpen: boolean;
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
 };
@@ -25,19 +28,40 @@ export default function CreateButton({
   title,
   label,
   description,
+  disabled,
+  disabledMessage,
   isDialogOpen,
   setIsDialogOpen,
-}: PropsWithChildren & Props) {
+}: PropsWithChildren & _Props) {
+  console.log({ disabled });
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          className="items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground rounded-md px-3 text-xs ml-auto h-8 flex"
-        >
-          <PlusCircle className="w-4 h-4 mr-2" />
-          {label ?? "Create"}
-        </Button>
+        {disabled ? (
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                disabled={disabled}
+                variant="outline"
+                className="items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground rounded-md px-3 text-xs ml-auto h-8 flex"
+              >
+                <PlusCircle className="w-4 h-4 mr-2" />
+                {label ?? "Create"}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{disabledMessage ?? "Disabled button"}</p>
+            </TooltipContent>
+          </Tooltip>
+        ) : (
+          <Button
+            variant="outline"
+            className="items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground rounded-md px-3 text-xs ml-auto h-8 flex"
+          >
+            <PlusCircle className="w-4 h-4 mr-2" />
+            {label ?? "Create"}
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="max-w-xl flex flex-col gap-0">
         <DialogHeader className="mb-4">

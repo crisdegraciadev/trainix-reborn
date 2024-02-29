@@ -2,8 +2,13 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@comp
 import ActivityTable from "../activity-table/acitvity-table";
 import { activityColumns } from "../activity-table/activity-columns";
 import { Separator } from "@components/ui/separator";
+import { Workout } from "@prisma/client";
 
-export default function WorkoutProgression() {
+type _Props = {
+  workout: Workout;
+};
+
+export default function WorkoutProgression({ workout }: _Props) {
   return (
     <Card>
       <CardHeader>

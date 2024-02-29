@@ -2,22 +2,12 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import ExerciseActionsCell from "./exercise-actions-cell";
-import { Badge } from "@components/ui/badge";
 import { DataTableColumnHeader } from "@components/data-table/data-table-column-header";
-import { CustomCellProps } from "@components/data-table/types";
-import { DifficultyDataTable, MuscleTableData } from "@typings/table";
 import { DifficultyCell } from "@components/data-table/cells/difficulty-cell";
 import { MusclesCell } from "@components/data-table/cells/muscles-cell";
+import { ExerciseRow } from "@typings/entities/exercise";
 
-export type ExerciseTableData = {
-  id: string;
-  name: string;
-  description?: string;
-  difficulty: DifficultyDataTable;
-  muscles: MuscleTableData[];
-};
-
-export const exerciseColumns: ColumnDef<ExerciseTableData>[] = [
+export const exerciseColumns: ColumnDef<ExerciseRow>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,

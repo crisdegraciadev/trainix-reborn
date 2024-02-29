@@ -4,17 +4,24 @@ import { Button } from "@components/ui/button";
 import { Input } from "@components/ui/input";
 import { Label } from "@components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/ui/tabs";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@components/ui/card";
 
 import WorkoutResume from "./workout-details/workout-resume";
+import { WorkoutDetails } from "@typings/entities/workout";
 import WorkoutProgression from "./workout-details/workout-progression";
-import { Workout } from "@prisma/client";
 
-type _Props = {
-  workout: Workout;
+type _ = {
+  workout: WorkoutDetails;
 };
 
-export default function WorkoutDetails({ workout }: _Props) {
+export default function WorkoutDetails({ workout }: _) {
   return (
     <Tabs defaultValue="resume" className="w-full">
       <TabsList className="grid w-full grid-cols-4">
@@ -35,7 +42,9 @@ export default function WorkoutDetails({ workout }: _Props) {
         <Card>
           <CardHeader>
             <CardTitle>Password</CardTitle>
-            <CardDescription>Change your password here. After saving, youll be logged out.</CardDescription>
+            <CardDescription>
+              Change your password here. After saving, youll be logged out.
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="space-y-1">

@@ -2,17 +2,17 @@ import { DifficultyCell } from "@components/data-table/cells/difficulty-cell";
 import { MusclesCell } from "@components/data-table/cells/muscles-cell";
 import { DataTableColumnHeader } from "@components/data-table/data-table-column-header";
 import { ColumnDef } from "@tanstack/react-table";
-import { DifficultyDataTable, MuscleTableData } from "@typings/table";
 import WorkoutActionsCell from "./workout-actions-cell";
 import NameCell from "@components/data-table/cells/name-cell";
 import { AppRoutes } from "@constants/routes";
+import { BadgeData } from "@typings/utils";
 
 export type WorkoutTableData = {
   id: string;
   name: string;
   description?: string;
-  difficulty: DifficultyDataTable;
-  muscles: MuscleTableData[];
+  difficulty: BadgeData;
+  muscles: BadgeData[];
 };
 
 export const workoutColumns: ColumnDef<WorkoutTableData>[] = [

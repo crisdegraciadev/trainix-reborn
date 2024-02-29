@@ -3,14 +3,14 @@ import { AppRoutes } from "@constants/routes";
 import db from "@lib/prisma";
 import { checkAuthorized } from "@utils/check-authorized";
 import { redirect } from "next/navigation";
-import WorkoutDetails from "../_components/workout-details";
+import WorkoutDetails from "./_components/workout-details";
 
 type _Props = {
   params: { id: string };
 };
 
 export default async function Page({ params }: _Props) {
-  const { user } = await checkAuthorized();
+  await checkAuthorized();
 
   const { id } = params;
 

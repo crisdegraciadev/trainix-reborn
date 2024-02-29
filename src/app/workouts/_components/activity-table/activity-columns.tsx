@@ -3,15 +3,15 @@ import { MusclesCell } from "@components/data-table/cells/muscles-cell";
 import NameCell from "@components/data-table/cells/name-cell";
 import { DataTableColumnHeader } from "@components/data-table/data-table-column-header";
 import { ColumnDef } from "@tanstack/react-table";
-import { DifficultyDataTable, MuscleTableData } from "@typings/table";
+import { BadgeData } from "@typings/utils";
 import { CheckCircle2 } from "lucide-react";
 
 export type ActivityTableData = {
   id: string;
   name: string;
   description?: string;
-  difficulty: DifficultyDataTable;
-  muscles: MuscleTableData[];
+  difficulty: BadgeData;
+  muscles: BadgeData[];
   sets: number;
   reps: number;
   total: number;

@@ -6,6 +6,7 @@ import {
 
 import { Difficulty } from "./difficulty";
 import { Muscle } from "./muscle";
+import { Exercise } from "./exercise";
 
 export type Workout = WorkoutModel;
 
@@ -21,3 +22,13 @@ export type WorkoutRow = Workout & {
 };
 
 type WorkoutProgression = WorkoutProgressionModel;
+
+export type WorkoutProgressionDetails = WorkoutProgression & {
+  activities: WorkoutActivityDetails[];
+};
+
+export type WorkoutActivity = WorkoutActivityModel;
+
+export type WorkoutActivityDetails = WorkoutActivity & {
+  exercise: Exercise;
+};

@@ -1,16 +1,16 @@
 import { useFindWorkoutProgression } from "@hooks/workout-progression/use-find-workout-progression";
 import { WorkoutDetails, WorkoutProgressionDetails } from "@typings/entities/workout";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type _ = {
   workout: WorkoutDetails;
 };
 
 export const useWorkoutDetails = ({ workout }: _) => {
+  const lasProgressionId = useMemo(() => workout.progressions[0].id, [workout]);
+
   const { workoutProgression, isWorkoutProgressionSuccess, isWorkoutProgressionError } =
-    useFindWorkoutProgression({
-      id: workout.progressions[0].id,
-    });
+    useFindWorkoutProgression({ id: lasProgressionId });
 
   const [currentProgression, setCurrentProgression] = useState<WorkoutProgressionDetails | null>(
     null

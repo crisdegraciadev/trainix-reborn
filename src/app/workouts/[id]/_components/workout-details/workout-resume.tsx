@@ -12,7 +12,7 @@ import {
 } from "@components/ui/table";
 import { PauseCircle } from "lucide-react";
 import { useWorkoutDetails } from "./use-workout-details";
-import { Workout, WorkoutDetails } from "@typings/entities/workout";
+import { WorkoutDetails } from "@typings/entities/workout";
 
 type _ = {
   workout: WorkoutDetails;

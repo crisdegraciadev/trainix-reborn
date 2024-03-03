@@ -9,8 +9,8 @@ import { ExerciseFormSchema, exerciseSchema } from "./exercise-schema";
 import { useUpdateExercise } from "@hooks/exercises/use-update-exercise";
 import { TOAST_MESSAGES } from "./toast-messages";
 import { SelectOption } from "@components/ui/multi-select";
-import { ExerciseTableData } from "../exercise-table/exercise-columns";
 import { useFindDifficulties } from "@hooks/difficulties/use-find-difficulties-options";
+import { ExerciseRow } from "@typings/entities/exercise";
 
 export type ExerciseFormProps =
   | {
@@ -20,21 +20,48 @@ export type ExerciseFormProps =
     }
   | {
       type: "update";
-      rowData: ExerciseTableData;
+      rowData: ExerciseRow;
       onComplete: () => void;
     };
 
-const formatRowData = ({ difficulty: { value }, ...rest }: ExerciseTableData) => ({ ...rest, difficulty: value });
+const formatRowData = ({
+  id,
+  userId,
+  difficulty: { value },
+  difficultyId,
+  ...rest
+}: ExerciseRow) => ({
+  ...rest,
+  difficulty: value,
+});
 
 export const useExerciseForm = ({ type, rowData, onComplete }: ExerciseFormProps) => {
-  const { isCreateExerciseSuccess, isCreateExerciseLoading, isCreateExerciseError, createExercise } =
-    useCreateExercise();
+  const {
+    isCreateExerciseSuccess,
+    isCreateExerciseLoading,
+    isCreateExerciseError,
+    createExercise,
+  } = useCreateExercise();
 
-  const { isUpdateExerciseSuccess, isUpdateExerciseLoading, isUpdateExerciseError, updateExercise } =
-    useUpdateExercise();
+  const {
+    isUpdateExerciseSuccess,
+    isUpdateExerciseLoading,
+    isUpdateExerciseError,
+    updateExercise,
+  } = useUpdateExercise();
 
-  const { muscles, isMusclesSuccess, isMusclesError } = useFindMusclesSelectList();
-  const { difficulties, isDifficultiesSuccess, isDifficultiesError } = useFindDifficulties();
+  const {
+    data: muscles,
+    isSuccess: isMusclesSuccess,
+    isError: isMusclesError,
+  } = useFindMusclesSelectList();
+
+  const {
+    data: difficulties,
+    isSuccess: isDifficultiesSuccess,
+    isError: isDifficultiesError,
+  } = useFindDifficulties();
+
   const { data: session } = useSession();
 
   const [isFormLoading, setIsFormLoading] = useState(false);
@@ -46,7 +73,9 @@ export const useExerciseForm = ({ type, rowData, onComplete }: ExerciseFormProps
 
   const form = useForm<ExerciseFormSchema>({
     resolver: zodResolver(exerciseSchema),
-    defaultValues: rowData ? formatRowData(rowData) : { name: "", muscles: [], difficulty: "medium" },
+    defaultValues: rowData
+      ? formatRowData(rowData)
+      : { name: "", muscles: [], difficulty: "medium" },
   });
 
   useEffect(() => {
@@ -69,13 +98,8 @@ export const useExerciseForm = ({ type, rowData, onComplete }: ExerciseFormProps
   }, [isCreateExerciseError, isUpdateExerciseError, toast]);
 
   useEffect(() => {
-    if (isDifficultiesSuccess) {
-      setDifficultiesOptions(
-        difficulties
-          .toSorted((a, b) => b.level - a.level)
-          .toReversed()
-          .map(({ level, ...rest }) => ({ ...rest }))
-      );
+    if (isDifficultiesSuccess && difficulties) {
+      setDifficultiesOptions(difficulties);
     }
   }, [isDifficultiesSuccess, difficulties]);
 
@@ -84,8 +108,8 @@ export const useExerciseForm = ({ type, rowData, onComplete }: ExerciseFormProps
   }, [isDifficultiesError]);
 
   useEffect(() => {
-    if (isMusclesSuccess) {
-      setMusclesOptions(muscles.map(({ createdAt, updatedAt, ...rest }) => ({ ...rest })));
+    if (isMusclesSuccess && muscles) {
+      setMusclesOptions(muscles);
     }
   }, [isMusclesSuccess, muscles]);
 
@@ -121,8 +145,11 @@ export const useExerciseForm = ({ type, rowData, onComplete }: ExerciseFormProps
   };
 
   const getDifficultyId = ({ difficulty }: ExerciseFormSchema) => {
-    const idx = difficulties.findIndex(({ value }) => value === difficulty)!;
-    return difficulties[idx].id!;
+    if (difficulties) {
+    }
+
+    const idx = difficultiesOptions.findIndex(({ value }) => value === difficulty)!;
+    return difficultiesOptions[idx].id!;
   };
 
   return {

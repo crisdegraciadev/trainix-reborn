@@ -6,6 +6,7 @@ import { DataTableColumnHeader } from "@components/data-table/data-table-column-
 import { DifficultyCell } from "@components/data-table/cells/difficulty-cell";
 import { MusclesCell } from "@components/data-table/cells/muscles-cell";
 import { ExerciseRow } from "@typings/entities/exercise";
+import { truncate } from "@utils/truncate";
 
 export const exerciseColumns: ColumnDef<ExerciseRow>[] = [
   {
@@ -13,8 +14,10 @@ export const exerciseColumns: ColumnDef<ExerciseRow>[] = [
     header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
     cell: ({ row }) => {
       return (
-        <div className="w-[80px]">
-          <span className="w-[50px] truncate font-medium">{row.getValue("name")}</span>
+        <div className="w-[100px]">
+          <span className="w-[50px] truncate font-medium">
+            {truncate(row.getValue("name"), 30)}
+          </span>
         </div>
       );
     },

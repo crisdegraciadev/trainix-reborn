@@ -69,9 +69,10 @@ model WorkoutProgression {
 model WorkoutActicity {
   id String @id @unique @default(uuid())
 
-  order Int
-  sets  Int
-  reps  Int
+  order   Int
+  sets    Int
+  reps    Int
+  improve Boolean?
 
   workoutProgression   WorkoutProgression @relation(fields: [workoutProgressionId], references: [id], onDelete: Cascade)
   workoutProgressionId String

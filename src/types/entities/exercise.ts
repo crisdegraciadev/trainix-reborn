@@ -14,6 +14,7 @@ export type ExerciseWithMuscles = Exercise & {
 };
 
 export type ExerciseRow = Exercise & {
+  description?: string;
   difficulty: BadgeData;
   muscles: BadgeData[];
 };

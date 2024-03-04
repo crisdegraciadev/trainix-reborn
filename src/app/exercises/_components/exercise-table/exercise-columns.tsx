@@ -7,20 +7,13 @@ import { DifficultyCell } from "@components/data-table/cells/difficulty-cell";
 import { MusclesCell } from "@components/data-table/cells/muscles-cell";
 import { ExerciseRow } from "@typings/entities/exercise";
 import { truncate } from "@utils/truncate";
+import NameCell from "@components/data-table/cells/name-cell";
 
 export const exerciseColumns: ColumnDef<ExerciseRow>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
-    cell: ({ row }) => {
-      return (
-        <div className="w-[100px]">
-          <span className="w-[50px] truncate font-medium">
-            {truncate(row.getValue("name"), 30)}
-          </span>
-        </div>
-      );
-    },
+    cell: ({ row }) => <NameCell row={row} split={30} />,
     filterFn: (row, id, value) => {
       const rowValue: string = row.getValue(id);
       return rowValue.includes(value);

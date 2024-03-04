@@ -8,7 +8,7 @@ export const useCreateWorkout = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      utils.workouts.findAllWorkouts.invalidate();
+      utils.workouts.findWorkoutRows.invalidate();
     }
   }, [isSuccess, utils]);
 

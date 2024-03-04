@@ -3,8 +3,12 @@
 import { useRouter } from "next/navigation";
 import { CustomCellProps } from "../types";
 import { Row } from "@tanstack/react-table";
+import { truncate } from "@utils/truncate";
+import { cn } from "@lib/utils";
 
-export default function NameCell<T>({ row, path }: CustomCellProps<T> & { path?: string }) {
+type _<T> = CustomCellProps<T> & { path?: string; split?: number; width?: number };
+
+export default function NameCell<T>({ row, path, split, width }: _<T>) {
   const router = useRouter();
 
   const redirectToEntity = () => {
@@ -18,9 +22,15 @@ export default function NameCell<T>({ row, path }: CustomCellProps<T> & { path?:
     return !!(row as Row<{ id: string }>).id;
   };
 
+  const value: string = row.getValue("name");
+  const content = split ? truncate(value, split) : value;
+
   return (
-    <div className="w-[80px] cursor-pointer" onClick={redirectToEntity}>
-      <span className="w-[50px] truncate font-medium">{row.getValue("name")}</span>
+    <div
+      className={cn(`w-[${width ?? 100}px]`, path ? "cursor-pointer" : "")}
+      onClick={redirectToEntity}
+    >
+      <span className="w-[50px] truncate font-medium">{content}</span>
     </div>
   );
 }

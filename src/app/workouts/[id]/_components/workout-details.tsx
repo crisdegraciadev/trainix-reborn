@@ -13,9 +13,9 @@ import {
   CardFooter,
 } from "@components/ui/card";
 
-import WorkoutResume from "./workout-details/workout-resume";
+import WorkoutResume from "./workout-resume/workout-resume";
 import { WorkoutDetails } from "@typings/entities/workout";
-import WorkoutProgression from "./workout-details/workout-progression";
+import WorkoutProgression from "./workout-progression/workout-progression";
 
 type _ = {
   workout: WorkoutDetails;

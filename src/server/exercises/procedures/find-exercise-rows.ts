@@ -13,11 +13,12 @@ export const findExerciseRows = privateProcedure
       include: { difficulty: true, muscles: true },
     });
 
-    return data.map(({ difficulty, muscles, ...rest }) => {
+    return data.map(({ difficulty, muscles, description, ...rest }) => {
       const { level, ...difficultyRest } = difficulty;
 
       return {
         ...rest,
+        description: description ?? "",
         difficulty: { ...difficultyRest },
         muscles: muscles.map(({ id, name, value }) => ({ id, name, value })),
       };

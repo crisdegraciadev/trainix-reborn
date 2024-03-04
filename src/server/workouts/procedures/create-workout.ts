@@ -18,15 +18,12 @@ export const createWorkout = privateProcedure
         },
       });
 
-      const { id: workoutProgressionId } = await tx.workoutProgression.create({
+      const { id: progressionId } = await tx.progression.create({
         data: { workoutId: workout.id },
       });
 
-      await tx.workoutActicity.createMany({
-        data: activities.map((activity) => ({
-          workoutProgressionId,
-          ...activity,
-        })),
+      await tx.acticity.createMany({
+        data: activities.map((activity) => ({ progressionId, ...activity })),
       });
 
       return tx.workout.findUniqueOrThrow({

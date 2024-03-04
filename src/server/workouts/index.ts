@@ -5,7 +5,7 @@ import { updateWorkout } from "./procedures/update-workout";
 import { deleteWorkout } from "./procedures/delete-workout";
 
 export const workoutsRouter = router({
-  findAllWorkouts: findWorkoutRows,
+  findWorkoutRows,
   createWorkout,
   deleteWorkout,
   updateWorkout,

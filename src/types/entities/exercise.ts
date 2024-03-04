@@ -18,3 +18,8 @@ export type ExerciseRow = Exercise & {
   difficulty: BadgeData;
   muscles: BadgeData[];
 };
+
+export type ExerciseDetails = Exercise & {
+  difficulty: BadgeData;
+  muscles: BadgeData[];
+};

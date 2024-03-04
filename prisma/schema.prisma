@@ -25,7 +25,7 @@ model Exercise {
   description String? @db.Text
 
   muscles    Muscle[]
-  activities WorkoutActicity[]
+  activities Acticity[]
 
   User   User   @relation(fields: [userId], references: [id])
   userId String
@@ -43,7 +43,7 @@ model Workout {
   description String? @db.Text
 
   muscles      Muscle[]
-  progressions WorkoutProgression[]
+  progressions Progression[]
 
   user   User   @relation(fields: [userId], references: [id])
   userId String
@@ -55,18 +55,20 @@ model Workout {
   @@index([difficultyId])
 }
 
-model WorkoutProgression {
+model Progression {
   id String @id @unique @default(uuid())
 
   workout   Workout @relation(fields: [workoutId], references: [id], onDelete: Cascade)
   workoutId String
 
-  activities WorkoutActicity[]
+  activities Acticity[]
+
+  createdAt DateTime @default(now())
 
   @@index([workoutId])
 }
 
-model WorkoutActicity {
+model Acticity {
   id String @id @unique @default(uuid())
 
   order   Int
@@ -74,12 +76,12 @@ model WorkoutActicity {
   reps    Int
   improve Boolean?
 
-  workoutProgression   WorkoutProgression @relation(fields: [workoutProgressionId], references: [id], onDelete: Cascade)
-  workoutProgressionId String
-  exercise             Exercise           @relation(fields: [exerciseId], references: [id])
-  exerciseId           String
+  progression   Progression @relation(fields: [progressionId], references: [id], onDelete: Cascade)
+  progressionId String
+  exercise      Exercise    @relation(fields: [exerciseId], references: [id])
+  exerciseId    String
 
-  @@index([workoutProgressionId])
+  @@index([progressionId])
   @@index([exerciseId])
 }
 

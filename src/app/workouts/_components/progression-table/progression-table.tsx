@@ -13,11 +13,14 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
-import { ActivityTableData } from "./activity-columns";
+import { ProgressionTableData } from "./progression-columns";
 import CreateButton from "@components/create-button";
 import { DatePicker } from "@components/ui/date-picker";
 
-export default function ActivityTable<U>({ columns, data }: DataTableProps<ActivityTableData, U>) {
+export default function ProgressionTable<U>({
+  columns,
+  data,
+}: DataTableProps<ProgressionTableData, U>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -43,8 +46,8 @@ export default function ActivityTable<U>({ columns, data }: DataTableProps<Activ
       <div className="flex justify-between mb-4">
         <DatePicker />
         <CreateButton
-          title="Create Activity"
-          description="Add a new activity to your workout progression. Click save when you're done."
+          title="Create Progression"
+          description="Add a new progression to your workout. Click save when you're done."
           label="Progression"
           isDialogOpen={isCreateDialogOpen}
           setIsDialogOpen={setIsCreateDialogOpen}

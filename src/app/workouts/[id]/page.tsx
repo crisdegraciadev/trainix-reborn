@@ -16,7 +16,13 @@ export default async function Page({ params }: _Props) {
 
   const workout = await db.workout.findUnique({
     where: { id },
-    include: { difficulty: true, muscles: true, progressions: true },
+    include: {
+      difficulty: true,
+      muscles: true,
+      progressions: {
+        orderBy: { createdAt: "desc" },
+      },
+    },
   });
 
   if (!workout) {

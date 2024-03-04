@@ -1,6 +1,5 @@
 import { Badge } from "@components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@components/ui/card";
-import { Carousel, CarouselContent } from "@components/ui/carousel";
 import { Separator } from "@components/ui/separator";
 import {
   TableHeader,
@@ -11,7 +10,7 @@ import {
   Table,
 } from "@components/ui/table";
 import { PauseCircle } from "lucide-react";
-import { useWorkoutDetails } from "./use-workout-details";
+import { useWorkoutResume } from "./use-workout-resume";
 import { WorkoutDetails } from "@typings/entities/workout";
 
 type _ = {
@@ -19,7 +18,7 @@ type _ = {
 };
 
 export default function WorkoutResume({ workout }: _) {
-  const { currentProgression } = useWorkoutDetails({ workout });
+  const { currentProgression } = useWorkoutResume({ workout });
 
   return (
     <Card className="min-h-[400px]">

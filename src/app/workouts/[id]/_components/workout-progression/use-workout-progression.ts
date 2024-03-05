@@ -1,32 +1,59 @@
 import { useFindCurrentProgression } from "@hooks/progression/use-find-current-progression";
+import { useFindProgressionDates } from "@hooks/progression/use-find-progression-dates";
 import { ProgressionDetails } from "@typings/entities/progression";
-import { Workout, WorkoutDetails } from "@typings/entities/workout";
-import { useEffect, useState } from "react";
+import { WorkoutDetails } from "@typings/entities/workout";
+import { useEffect, useMemo, useState } from "react";
 
 type _ = {
   workout: WorkoutDetails;
 };
 
 export const useWorkoutProgression = ({ workout }: _) => {
-  const { data, isSuccess, isError } = useFindCurrentProgression({
+  const {
+    data: progression,
+    isSuccess: isSuccessProgression,
+    isError: isErrorProgression,
+  } = useFindCurrentProgression({
     id: workout.progressions[0].id,
   });
 
+  const {
+    data: dates,
+    isSuccess: isSuccessDates,
+    isError: isErrorDates,
+  } = useFindProgressionDates({ workoutId: workout.id });
+
   const [currentProgression, setCurrentProgression] = useState<ProgressionDetails | null>(null);
+  const [progressionDates, setProgressionDates] = useState<Date[]>([]);
 
-  console.log({ currentProgression });
+  const currentProgressionDate = useMemo(
+    () => currentProgression && new Date(currentProgression?.createdAt),
+    [currentProgression]
+  );
 
   useEffect(() => {
-    if (isSuccess && data) {
-      setCurrentProgression(data);
+    if (isSuccessProgression && progression) {
+      setCurrentProgression(progression);
     }
-  }, [isSuccess, data]);
+  }, [isSuccessProgression, progression]);
 
   useEffect(() => {
-    if (isError) {
+    if (isErrorProgression) {
       setCurrentProgression(null);
     }
-  }, [isError]);
+  }, [isErrorProgression]);
 
-  return { currentProgression };
+  useEffect(() => {
+    if (isSuccessDates && dates) {
+      setProgressionDates(dates.map((date) => new Date(date)));
+    }
+  }, [isSuccessDates, dates]);
+
+  useEffect(() => {
+    if (isErrorDates) {
+      setProgressionDates([]);
+    }
+  }, [isErrorDates]);
+
+  return { currentProgression, currentProgressionDate, progressionDates };
 };

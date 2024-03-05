@@ -1,7 +1,7 @@
 "use client";
 
 import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
+import { Calendar as CalendarIcon, Dot } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { Button } from "./button";
 import { cn } from "@lib/utils";
@@ -10,9 +10,10 @@ import { useState } from "react";
 
 type _ = {
   selectedDate?: Date;
+  matchDates?: Date[];
 };
 
-export function DatePicker({ selectedDate }: _) {
+export function DatePicker({ selectedDate, matchDates }: _) {
   const [date, setDate] = useState<Date | undefined>(selectedDate);
 
   return (
@@ -30,7 +31,14 @@ export function DatePicker({ selectedDate }: _) {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
-        <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
+        <Calendar
+          mode="single"
+          selected={date}
+          onSelect={setDate}
+          today={undefined}
+          modifiers={{ match: matchDates ?? [] }}
+          modifiersClassNames={{ match: "bg-accent text-accent-foreground" }}
+        />
       </PopoverContent>
     </Popover>
   );

@@ -10,9 +10,11 @@ type _ = {
 };
 
 export default function WorkoutProgression({ workout }: _) {
-  const { currentProgression } = useWorkoutProgression({ workout });
+  const { currentProgression, currentProgressionDate, progressionDates } = useWorkoutProgression({
+    workout,
+  });
 
-  console.log({ currentProgression });
+  console.log({ progressionDates });
 
   return (
     <Card>
@@ -25,11 +27,14 @@ export default function WorkoutProgression({ workout }: _) {
       </CardHeader>
       <Separator className="mb-8" />
       <CardContent className="space-y-2">
-        {currentProgression ? (
+        {currentProgression && currentProgressionDate ? (
           <ProgressionTable
             data={currentProgression.activities}
             columns={progressionColumns}
-            options={{ progressionDate: new Date(currentProgression.createdAt) }}
+            options={{
+              currentProgressionDate,
+              progressionDates: [...progressionDates],
+            }}
           />
         ) : (
           <p>Loading</p>

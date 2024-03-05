@@ -19,7 +19,8 @@ import { ActivityMerge } from "@typings/entities/activity";
 
 type _<U> = DataTableProps<ActivityMerge, U> & {
   options: {
-    progressionDate: Date;
+    currentProgressionDate: Date;
+    progressionDates: Date[];
   };
 };
 
@@ -47,7 +48,10 @@ export default function ProgressionTable<U>({ columns, data, options }: _<U>) {
   return (
     <div>
       <div className="flex justify-between mb-4">
-        <DatePicker selectedDate={options.progressionDate} />
+        <DatePicker
+          selectedDate={options.currentProgressionDate}
+          matchDates={options.progressionDates}
+        />
         <CreateButton
           title="Create Progression"
           description="Add a new progression to your workout. Click save when you're done."

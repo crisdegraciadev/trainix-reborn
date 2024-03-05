@@ -30,7 +30,7 @@ export const findCurrentProgression = privateProcedure
       return null;
     }
 
-    const { activities } = progression;
+    const { activities, createdAt } = progression;
 
     const mappedActivities: ActivityMerge[] = activities.map((activity) => {
       const { id, exercise, sets, reps } = activity;
@@ -51,6 +51,7 @@ export const findCurrentProgression = privateProcedure
 
     return {
       ...progression,
+      createdAt: createdAt.toString(),
       activities: mappedActivities,
     };
   });

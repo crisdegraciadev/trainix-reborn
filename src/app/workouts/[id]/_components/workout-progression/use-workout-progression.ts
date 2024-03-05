@@ -14,6 +14,8 @@ export const useWorkoutProgression = ({ workout }: _) => {
 
   const [currentProgression, setCurrentProgression] = useState<ProgressionDetails | null>(null);
 
+  console.log({ currentProgression });
+
   useEffect(() => {
     if (isSuccess && data) {
       setCurrentProgression(data);

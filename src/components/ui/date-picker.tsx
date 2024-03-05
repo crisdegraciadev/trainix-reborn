@@ -8,8 +8,12 @@ import { cn } from "@lib/utils";
 import { Calendar } from "./calendar";
 import { useState } from "react";
 
-export function DatePicker() {
-  const [date, setDate] = useState<Date>();
+type _ = {
+  selectedDate?: Date;
+};
+
+export function DatePicker({ selectedDate }: _) {
+  const [date, setDate] = useState<Date | undefined>(selectedDate);
 
   return (
     <Popover>

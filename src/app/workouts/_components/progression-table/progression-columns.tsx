@@ -2,22 +2,11 @@ import { DifficultyCell } from "@components/data-table/cells/difficulty-cell";
 import { MusclesCell } from "@components/data-table/cells/muscles-cell";
 import NameCell from "@components/data-table/cells/name-cell";
 import { ColumnDef } from "@tanstack/react-table";
+import { ActivityMerge } from "@typings/entities/activity";
 import { BadgeData } from "@typings/utils";
 import { CheckCircle2 } from "lucide-react";
 
-export type ProgressionTableData = {
-  id: string;
-  name: string;
-  description?: string;
-  difficulty: BadgeData;
-  muscles: BadgeData[];
-  sets: number;
-  reps: number;
-  total: number;
-  improve: boolean | null;
-};
-
-export const progressionColumns: ColumnDef<ProgressionTableData>[] = [
+export const progressionColumns: ColumnDef<ActivityMerge>[] = [
   {
     accessorKey: "name",
     header: "Name",

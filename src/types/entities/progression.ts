@@ -9,4 +9,5 @@ export type ProgressionPreview = Progression & {
 
 export type ProgressionDetails = Omit<Progression, "createdAt"> & {
   activities: ActivityMerge[];
+  createdAt: string;
 };

@@ -13,14 +13,17 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
-import { ProgressionTableData } from "./progression-columns";
 import CreateButton from "@components/create-button";
 import { DatePicker } from "@components/ui/date-picker";
+import { ActivityMerge } from "@typings/entities/activity";
 
-export default function ProgressionTable<U>({
-  columns,
-  data,
-}: DataTableProps<ProgressionTableData, U>) {
+type _<U> = DataTableProps<ActivityMerge, U> & {
+  options: {
+    progressionDate: Date;
+  };
+};
+
+export default function ProgressionTable<U>({ columns, data, options }: _<U>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -44,7 +47,7 @@ export default function ProgressionTable<U>({
   return (
     <div>
       <div className="flex justify-between mb-4">
-        <DatePicker />
+        <DatePicker selectedDate={options.progressionDate} />
         <CreateButton
           title="Create Progression"
           description="Add a new progression to your workout. Click save when you're done."

@@ -26,7 +26,11 @@ export default function WorkoutProgression({ workout }: _) {
       <Separator className="mb-8" />
       <CardContent className="space-y-2">
         {currentProgression ? (
-          <ProgressionTable data={currentProgression.activities} columns={progressionColumns} />
+          <ProgressionTable
+            data={currentProgression.activities}
+            columns={progressionColumns}
+            options={{ progressionDate: new Date(currentProgression.createdAt) }}
+          />
         ) : (
           <p>Loading</p>
         )}

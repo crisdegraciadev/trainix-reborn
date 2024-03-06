@@ -3,10 +3,28 @@
 import { format } from "date-fns";
 import { Calendar as CalendarIcon, Dot } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
-import { Button } from "./button";
+import { Button, buttonVariants } from "./button";
 import { cn } from "@lib/utils";
 import { Calendar } from "./calendar";
 import { useState } from "react";
+import { Day, DayProps, useActiveModifiers } from "react-day-picker";
+
+function CustomDay(props: DayProps) {
+  const { match, selected } = useActiveModifiers(props.date, props.displayMonth);
+
+  return (
+    <div className="h-10 relative">
+      <Day {...props} />
+      {match && (
+        <Dot
+          className="absolute ml-auto mr-auto left-0 right-0 bottom-0 pointer-events-none"
+          strokeWidth={3}
+          color={selected ? "white" : "black"}
+        />
+      )}
+    </div>
+  );
+}
 
 type _ = {
   selectedDate?: Date;
@@ -37,7 +55,16 @@ export function DatePicker({ selectedDate, matchDates }: _) {
           onSelect={setDate}
           today={undefined}
           modifiers={{ match: matchDates ?? [] }}
-          modifiersClassNames={{ match: "bg-accent text-accent-foreground" }}
+          classNames={{
+            day: cn(
+              buttonVariants({ variant: "ghost" }),
+              "h-11 w-9 p-0 items-start pt-1 font-normal aria-selected:opacity-100"
+            ),
+            row: "flex w-full h-10 mt-2",
+          }}
+          components={{
+            Day: CustomDay,
+          }}
         />
       </PopoverContent>
     </Popover>

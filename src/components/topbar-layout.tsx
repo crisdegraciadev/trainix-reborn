@@ -2,7 +2,7 @@ import Topbar from "./topbar";
 import { PropsWithChildren } from "react";
 import { checkAuthorized } from "../utils/check-authorized";
 
-export default async function TopbarLayout({ children }: _PropsWithChildren) {
+export default async function TopbarLayout({ children }: PropsWithChildren) {
   const { user } = await checkAuthorized();
   const { name, email } = user;
 

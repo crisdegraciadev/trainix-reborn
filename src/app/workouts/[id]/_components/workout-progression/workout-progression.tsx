@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@components/ui/card";
 import { Separator } from "@components/ui/separator";
-import ProgressionTable from "../../../_components/progression-table/progression-table";
-import { progressionColumns } from "../../../_components/progression-table/progression-columns";
+import ProgressionTable from "../progression-table/progression-table";
+import { progressionColumns } from "../progression-table/progression-columns";
 import { useWorkoutProgression } from "./use-workout-progression";
 import { WorkoutDetails } from "@typings/entities/workout";
 

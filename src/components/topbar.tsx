@@ -21,12 +21,11 @@ import { usePathname } from "next/navigation";
 
 export const TABS = ["dashboard", "exercises", "workouts"] as const;
 
-type TopbarProps = {
+type _ = {
   user: Partial<{ name: string; email: string }>;
 };
 
-// TODO add mobile navbar
-export default function Topbar({ user }: TopbarProps) {
+export default function Topbar({ user }: _) {
   const pathname = usePathname();
 
   return (
@@ -47,15 +46,6 @@ export default function Topbar({ user }: TopbarProps) {
             Dashboard
           </Link>
           <Link
-            href={AppRoutes.EXERCISES}
-            className={cn(
-              "text-sm transition-colors hover:text-primary",
-              !pathname.includes(TABS[1]) ? "text-muted-foreground" : ""
-            )}
-          >
-            Exercises
-          </Link>
-          <Link
             href={AppRoutes.WORKOUTS}
             className={cn(
               "text-sm transition-colors hover:text-primary",
@@ -63,6 +53,15 @@ export default function Topbar({ user }: TopbarProps) {
             )}
           >
             Workouts
+          </Link>
+          <Link
+            href={AppRoutes.EXERCISES}
+            className={cn(
+              "text-sm transition-colors hover:text-primary",
+              !pathname.includes(TABS[1]) ? "text-muted-foreground" : ""
+            )}
+          >
+            Exercises
           </Link>
         </nav>
       </div>

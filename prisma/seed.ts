@@ -23,6 +23,12 @@ const difficulties = [
   { name: "Hard", value: "hard", level: 3 },
 ];
 
+const improveStates = [
+  { name: "Improve", value: "+" },
+  { name: "Keep working", value: "=" },
+  { name: "Regression", value: "-" },
+];
+
 async function main() {
   for (const muscle of muscles) {
     const isFound = await prisma.muscle.findFirst({
@@ -47,6 +53,19 @@ async function main() {
     if (!isFound) {
       const added = await prisma.difficulty.create({ data: difficulty });
       console.log("Difficulty added", added);
+    }
+  }
+
+  for (const improveState of improveStates) {
+    const isFound = await prisma.improve.findFirst({
+      where: {
+        value: improveState.value,
+      },
+    });
+
+    if (!isFound) {
+      const added = await prisma.improve.create({ data: improveState });
+      console.log("Improve state added", added);
     }
   }
 }

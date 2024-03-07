@@ -71,18 +71,20 @@ model Progression {
 model Acticity {
   id String @id @unique @default(uuid())
 
-  order   Int
-  sets    Int
-  reps    Int
-  improve Boolean?
+  order Int
+  sets  Int
+  reps  Int
 
   progression   Progression @relation(fields: [progressionId], references: [id], onDelete: Cascade)
   progressionId String
   exercise      Exercise    @relation(fields: [exerciseId], references: [id])
   exerciseId    String
+  improve       Improve     @relation(fields: [improveId], references: [id])
+  improveId     String
 
   @@index([progressionId])
   @@index([exerciseId])
+  @@index([improveId])
 }
 
 model Muscle {
@@ -102,4 +104,12 @@ model Difficulty {
 
   exercises Exercise[]
   workouts  Workout[]
+}
+
+model Improve {
+  id    String @id @unique @default(uuid())
+  name  String @unique
+  value String @unique
+
+  activities Acticity[]
 }

@@ -11,9 +11,11 @@ export const findProgression = privateProcedure
     const progression = await db.progression.findUnique({
       where: { id },
       include: {
-        activities: { include: { exercise: true } },
+        activities: { include: { exercise: true, improve: true } },
       },
     });
+
+    console.log({ progression });
 
     if (!progression) {
       return null;

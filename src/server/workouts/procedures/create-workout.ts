@@ -22,8 +22,19 @@ export const createWorkout = privateProcedure
         data: { workoutId: workout.id },
       });
 
+      const improveState = await tx.improve.findUnique({ where: { name: "Keep working" } });
+
+      if (!improveState) {
+        throw new TRPCError({
+          message: "Default improve state not found",
+          code: "INTERNAL_SERVER_ERROR",
+        });
+      }
+
+      const { id: improveId } = improveState;
+
       await tx.acticity.createMany({
-        data: activities.map((activity) => ({ progressionId, ...activity })),
+        data: activities.map((activity) => ({ progressionId, improveId, ...activity })),
       });
 
       return tx.workout.findUniqueOrThrow({

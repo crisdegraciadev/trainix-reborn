@@ -15,6 +15,7 @@ export const findCurrentProgression = privateProcedure
       include: {
         activities: {
           include: {
+            improve: true,
             exercise: {
               include: {
                 muscles: true,

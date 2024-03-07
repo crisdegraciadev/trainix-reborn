@@ -9,7 +9,7 @@ import {
   TableCell,
   Table,
 } from "@components/ui/table";
-import { PauseCircle } from "lucide-react";
+import { ArrowLeftRight, MoveDownRight, MoveUpRight, PauseCircle } from "lucide-react";
 import { useWorkoutResume } from "./use-workout-resume";
 import { WorkoutDetails } from "@typings/entities/workout";
 
@@ -65,13 +65,13 @@ export default function WorkoutResume({ workout }: _) {
                       {activity.sets * activity.reps}
                     </TableCell>
                     <TableCell className="px-4 flex justify-center items-center">
-                      {/* {activity.improve === "+" ? (
-                        <CheckCircle2 strokeWidth={2} color="#2563eb" className="w6 h-6" />
-                      ) : activity.improve === "-" ? (
-                        <XCircle color="#e11d48" strokeWidth={2} className="w6 h-6" />
-                      ) : ( */}
-                      <PauseCircle strokeWidth={2} color="#94a3b8" className="w-6 h-6" />
-                      {/* )} */}
+                      {activity.improve.value === "+" ? (
+                        <MoveUpRight className="w-4 h-4" />
+                      ) : activity.improve.value === "-" ? (
+                        <MoveDownRight className="w-4 h-4" />
+                      ) : (
+                        <ArrowLeftRight className="w-4 h-4" />
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}

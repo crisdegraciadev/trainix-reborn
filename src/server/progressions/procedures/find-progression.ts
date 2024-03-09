@@ -8,20 +8,10 @@ export const findProgression = privateProcedure
   .query(async ({ input }): Promise<ProgressionPreview | null> => {
     const { id } = input;
 
-    const progression = await db.progression.findUnique({
+    return db.progression.findUnique({
       where: { id },
       include: {
         activities: { include: { exercise: true, improve: true } },
       },
     });
-
-    console.log({ progression });
-
-    if (!progression) {
-      return null;
-    }
-
-    const { createdAt, ...rest } = progression;
-
-    return rest;
   });

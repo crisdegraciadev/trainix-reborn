@@ -1,18 +1,32 @@
 "use client";
 
 import { Button } from "@components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@components/ui/form";
 import { Input } from "@components/ui/input";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@components/ui/select";
 import { Loader2 } from "lucide-react";
 import { ExerciseFormProps, useExerciseForm } from "./use-exercise-form";
 import MultipleSelector from "@components/ui/multi-select";
 import { Textarea } from "@components/ui/textarea";
 
 export default function ExerciseForm(formProps: ExerciseFormProps) {
-  const { form, musclesOptions, difficultiesOptions, isFormLoading, onSubmit } = useExerciseForm({ ...formProps });
-
-  console.log({ musclesOptions });
+  const { form, musclesOptions, difficultiesOptions, isFormLoading, onSubmit } = useExerciseForm({
+    ...formProps,
+  });
 
   return (
     <Form {...form}>
@@ -25,7 +39,13 @@ export default function ExerciseForm(formProps: ExerciseFormProps) {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input id="name" placeholder="Name" type="text" disabled={isFormLoading} {...field} />
+                  <Input
+                    id="name"
+                    placeholder="Name"
+                    type="text"
+                    disabled={isFormLoading}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -44,7 +64,9 @@ export default function ExerciseForm(formProps: ExerciseFormProps) {
                     hidePlaceholderWhenSelected
                     placeholder="Select muscles"
                     emptyIndicator={
-                      <p className="text-center leading-5 text-gray-600 dark:text-gray-400">no results found.</p>
+                      <p className="text-center leading-5 text-gray-600 dark:text-gray-400">
+                        no results found.
+                      </p>
                     }
                     {...field}
                   />
@@ -88,7 +110,12 @@ export default function ExerciseForm(formProps: ExerciseFormProps) {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Textarea id="description" placeholder="Description" disabled={isFormLoading} {...field} />
+                  <Textarea
+                    id="description"
+                    placeholder="Description"
+                    disabled={isFormLoading}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

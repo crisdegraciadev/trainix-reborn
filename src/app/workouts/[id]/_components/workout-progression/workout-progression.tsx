@@ -14,8 +14,6 @@ export default function WorkoutProgression({ workout }: _) {
     workout,
   });
 
-  console.log({ progressionDates });
-
   return (
     <Card>
       <CardHeader>
@@ -29,6 +27,7 @@ export default function WorkoutProgression({ workout }: _) {
       <CardContent className="space-y-2">
         {currentProgression && currentProgressionDate ? (
           <ProgressionTable
+            workoutId={workout.id}
             data={currentProgression.activities}
             columns={progressionColumns}
             options={{

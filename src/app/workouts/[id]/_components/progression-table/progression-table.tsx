@@ -1,6 +1,5 @@
 import DataTableBody from "@components/data-table/data-table-body";
 import DataTableHeader from "@components/data-table/data-table-header";
-import DataTablePagination from "@components/data-table/data-table-pagination";
 import { DataTableProps } from "@components/data-table/types";
 import { Table } from "@components/ui/table";
 import {
@@ -16,15 +15,17 @@ import { useState } from "react";
 import CreateButton from "@components/create-button";
 import { DatePicker } from "@components/ui/date-picker";
 import { ActivityMerge } from "@typings/entities/activity";
+import ProgressionForm from "../progression-form/progression-form";
 
 type _<U> = DataTableProps<ActivityMerge, U> & {
+  workoutId: string;
   options: {
     currentProgressionDate: Date;
     progressionDates: Date[];
   };
 };
 
-export default function ProgressionTable<U>({ columns, data, options }: _<U>) {
+export default function ProgressionTable<U>({ columns, data, workoutId, options }: _<U>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -59,7 +60,7 @@ export default function ProgressionTable<U>({ columns, data, options }: _<U>) {
           isDialogOpen={isCreateDialogOpen}
           setIsDialogOpen={setIsCreateDialogOpen}
         >
-          <div>Activity Form</div>
+          <ProgressionForm workoutId={workoutId} onComplete={() => {}} />
         </CreateButton>
       </div>
 

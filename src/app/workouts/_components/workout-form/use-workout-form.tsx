@@ -2,16 +2,19 @@ import { SelectOption } from "@components/ui/multi-select";
 import { useToast } from "@components/ui/use-toast";
 import { useFindMusclesSelectList } from "@hooks/muscles/use-find-muscles-options";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { WorkoutTableData } from "../workout-table/workout-columns";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFindDifficulties } from "@hooks/difficulties/use-find-difficulties-options";
-import { WorkoutActivityFormSchema, WorkoutFormSchema, workoutSchema } from "./workout-schema";
+import { WorkoutFormSchema, workoutSchema } from "./workout-schema";
 import { useCreateWorkout } from "@hooks/workouts/use-create-workout";
 import { useUpdateWorkout } from "@hooks/workouts/use-update-workout";
 import { TOAST_MESSAGES } from "./toast-messages";
 import { useFindExerciseSelectList } from "app/workouts/_hooks/use-find-exercise-select-list";
+import { redirect } from "next/navigation";
+import { AppRoutes } from "@constants/routes";
+import { ActivityFormSchema } from "@typings/schemas/activity";
 
 export type WorkoutFormProps =
   | {
@@ -40,6 +43,12 @@ const DEFAULT_FORM_VALUES = {
 export const useWorkoutForm = ({ type, rowData, onComplete }: WorkoutFormProps) => {
   const { data: session } = useSession();
 
+  if (!session) {
+    redirect(AppRoutes.LOGIN);
+  }
+
+  const userId = useMemo(() => session.user.id, [session]);
+
   const { isCreateWorkoutSuccess, isCreateWorkoutLoading, isCreateWorkoutError, createWorkout } =
     useCreateWorkout();
 
@@ -62,7 +71,7 @@ export const useWorkoutForm = ({ type, rowData, onComplete }: WorkoutFormProps) 
     data: exercises,
     isSuccess: isExercisesSuccess,
     isError: isExercisesError,
-  } = useFindExerciseSelectList({ userId: session?.user.id! });
+  } = useFindExerciseSelectList({ userId });
 
   const [isFormLoading, setIsFormLoading] = useState(false);
 
@@ -144,12 +153,10 @@ export const useWorkoutForm = ({ type, rowData, onComplete }: WorkoutFormProps) 
   }, [isExercisesError]);
 
   const onSubmit = async (data: WorkoutFormSchema) => {
-    const { user } = session!;
-
     if (type === "create") {
       createWorkout({
         ...data,
-        userId: user.id,
+        userId,
       });
     }
 
@@ -158,7 +165,7 @@ export const useWorkoutForm = ({ type, rowData, onComplete }: WorkoutFormProps) 
         id: rowData.id,
         workout: {
           ...data,
-          userId: user.id,
+          userId,
         },
       });
     }
@@ -166,7 +173,7 @@ export const useWorkoutForm = ({ type, rowData, onComplete }: WorkoutFormProps) 
 
   const appendActivity = (e: React.MouseEvent<Element, MouseEvent>) => {
     e.preventDefault();
-    append({ order: activityFields.length } as WorkoutActivityFormSchema);
+    append({ order: activityFields.length } as ActivityFormSchema);
   };
 
   const removeActivity = (e: React.MouseEvent<Element, MouseEvent>, idx: number) => {

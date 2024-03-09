@@ -79,8 +79,8 @@ model Acticity {
   progressionId String
   exercise      Exercise    @relation(fields: [exerciseId], references: [id])
   exerciseId    String
-  improve       Improve     @relation(fields: [improveId], references: [id])
-  improveId     String
+  improve       Improve?    @relation(fields: [improveId], references: [id])
+  improveId     String?
 
   @@index([progressionId])
   @@index([exerciseId])

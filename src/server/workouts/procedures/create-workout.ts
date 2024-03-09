@@ -34,7 +34,7 @@ export const createWorkout = privateProcedure
       const { id: improveId } = improveState;
 
       await tx.acticity.createMany({
-        data: activities.map((activity) => ({ progressionId, improveId, ...activity })),
+        data: activities.map((activity) => ({ progressionId, ...activity })),
       });
 
       return tx.workout.findUniqueOrThrow({

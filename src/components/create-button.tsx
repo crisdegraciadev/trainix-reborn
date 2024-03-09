@@ -33,7 +33,6 @@ export default function CreateButton({
   isDialogOpen,
   setIsDialogOpen,
 }: PropsWithChildren & _Props) {
-  console.log({ disabled });
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>

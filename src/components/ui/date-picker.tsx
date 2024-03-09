@@ -29,9 +29,10 @@ function CustomDay(props: DayProps) {
 type _ = {
   selectedDate?: Date;
   matchDates?: Date[];
+  styles?: string[];
 };
 
-export function DatePicker({ selectedDate, matchDates }: _) {
+export function DatePicker({ selectedDate, matchDates, styles }: _) {
   const [date, setDate] = useState<Date | undefined>(selectedDate);
 
   return (
@@ -41,7 +42,8 @@ export function DatePicker({ selectedDate, matchDates }: _) {
           variant={"outline"}
           className={cn(
             "w-48 h-8 px-3 justify-start text-left font-medium shadow-sm text-xs",
-            !date && "text-muted-foreground"
+            !date && "text-muted-foreground",
+            styles ? styles : ""
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />

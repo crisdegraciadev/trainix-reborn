@@ -6,7 +6,7 @@ export type Activity = ActivityModel;
 
 export type ActivityDetails = Activity & {
   exercise: Exercise;
-  improve: Improve;
+  improve: Improve | null;
 };
 
 export type ActivityMerge = Activity & ExerciseDetails & { total: number; description: string };

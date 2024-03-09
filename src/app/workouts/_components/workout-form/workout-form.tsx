@@ -36,9 +36,7 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
     exercisesOptions,
     isFormLoading,
     onSubmit,
-  } = useWorkoutForm({
-    ...formProps,
-  });
+  } = useWorkoutForm(formProps);
 
   return (
     <Form {...form}>
@@ -88,6 +86,7 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="difficultyId"

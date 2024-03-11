@@ -51,7 +51,13 @@ export const progressionColumns: ColumnDef<ActivityMerge>[] = [
     accessorKey: "improve",
     header: "Improve",
     cell: ({ row }) => {
-      const { value }: Improve = row.getValue("improve");
+      const improve: Improve = row.getValue("improve");
+
+      if (!improve) {
+        return "";
+      }
+
+      const { value } = improve;
 
       if (value === "+") {
         return (

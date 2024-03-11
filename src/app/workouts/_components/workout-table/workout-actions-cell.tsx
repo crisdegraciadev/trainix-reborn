@@ -21,12 +21,19 @@ import {
   AlertDialogTitle,
 } from "@components/ui/alert-dialog";
 import { Button, buttonVariants } from "@components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@components/ui/dialog";
 import { MoreHorizontal, Trash2, Pencil, Loader2 } from "lucide-react";
 import { useWorkoutActions } from "./use-workout-actions";
 import WorkoutForm from "../workout-form/workout-form";
+import { WorkoutRow } from "@typings/entities/workout";
 
-export default function WorkoutActionsCell({ row }: CustomCellProps<WorkoutTableData>) {
+export default function WorkoutActionsCell({ row }: CustomCellProps<WorkoutRow>) {
   const {
     deleteWorkout,
     toggleDeleteDialog,
@@ -51,11 +58,17 @@ export default function WorkoutActionsCell({ row }: CustomCellProps<WorkoutTable
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="flex justify-start items-center" onClick={toggleDeleteDialog}>
+            <DropdownMenuItem
+              className="flex justify-start items-center"
+              onClick={toggleDeleteDialog}
+            >
               <Trash2 className="w-4 h-4 mr-2" /> Delete
             </DropdownMenuItem>
 
-            <DropdownMenuItem className="flex justify-start items-center" onClick={toggleUpdateDialog}>
+            <DropdownMenuItem
+              className="flex justify-start items-center"
+              onClick={toggleUpdateDialog}
+            >
               <Pencil className="w-4 h-4 mr-2" /> Edit
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -68,8 +81,8 @@ export default function WorkoutActionsCell({ row }: CustomCellProps<WorkoutTable
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your workout and remove the workouts that make
-              use of it.
+              This action cannot be undone. This will permanently delete your workout and remove the
+              workouts that make use of it.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -95,7 +108,11 @@ export default function WorkoutActionsCell({ row }: CustomCellProps<WorkoutTable
               Update a workout from your workout pull. Click save when you&apos;re done.
             </DialogDescription>
           </DialogHeader>
-          <WorkoutForm type="update" rowData={row.original} onComplete={() => toggleUpdateDialog()} />
+          <WorkoutForm
+            type="update"
+            rowData={row.original}
+            onComplete={() => toggleUpdateDialog()}
+          />
         </DialogContent>
       </Dialog>
     </div>

@@ -12,24 +12,12 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
-import CreateButton from "@components/create-button";
-import { DatePicker } from "@components/ui/date-picker";
 import { ActivityMerge } from "@typings/entities/activity";
-import ProgressionForm from "../progression-form/progression-form";
+import ProgressionTableToolbar from "./progression-table-toolbar";
 
-type _<U> = DataTableProps<ActivityMerge, U> & {
-  workoutId: string;
-  options: {
-    currentProgressionDate: Date;
-    progressionDates: Date[];
-  };
-};
-
-export default function ProgressionTable<U>({ columns, data, workoutId, options }: _<U>) {
+export default function ProgressionTable<U>({ columns, data }: DataTableProps<ActivityMerge, U>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
-
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
   const table = useReactTable({
     data,
@@ -48,21 +36,7 @@ export default function ProgressionTable<U>({ columns, data, workoutId, options 
 
   return (
     <div>
-      <div className="flex justify-between mb-4">
-        <DatePicker
-          selectedDate={options.currentProgressionDate}
-          matchDates={options.progressionDates}
-        />
-        <CreateButton
-          title="Create Progression"
-          description="Add a new progression to your workout. Click save when you're done."
-          label="Progression"
-          isDialogOpen={isCreateDialogOpen}
-          setIsDialogOpen={setIsCreateDialogOpen}
-        >
-          <ProgressionForm workoutId={workoutId} onComplete={() => {}} />
-        </CreateButton>
-      </div>
+      <ProgressionTableToolbar />
 
       <div className="rounded-md border">
         <Table>

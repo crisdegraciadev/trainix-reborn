@@ -13,8 +13,6 @@ export const createProgression = privateProcedure
     const { workoutId, progression } = input;
     const { date, activities } = progression;
 
-    console.log({ activities, date });
-
     return prisma?.$transaction(async (tx) => {
       const createdProgression = await tx.progression.create({
         data: {
@@ -22,8 +20,6 @@ export const createProgression = privateProcedure
           createdAt: new Date(date),
         },
       });
-
-      console.log({ createProgression });
 
       const { id: progressionId } = createdProgression;
 

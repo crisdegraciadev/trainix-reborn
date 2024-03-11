@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { WorkoutRow } from "@typings/entities/workout";
 import { useFindWorkoutRows } from "@hooks/workouts/use-find-workout-rows";
 
-type _Props = {
+type _ = {
   userId: string;
 };
 
-export const useWorkoutTable = ({ userId }: _Props) => {
+export const useWorkoutTable = ({ userId }: _) => {
   const { workouts, isWorkoutsSuccess, isWorkoutsError } = useFindWorkoutRows({ userId });
 
   const [workoutRows, setWorkoutRows] = useState<WorkoutRow[]>([]);

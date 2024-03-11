@@ -6,7 +6,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { Button, buttonVariants } from "./button";
 import { cn } from "@lib/utils";
 import { Calendar } from "./calendar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Day, DayProps, useActiveModifiers } from "react-day-picker";
 
 function CustomDay(props: DayProps) {
@@ -30,10 +30,23 @@ type _ = {
   selectedDate?: Date;
   matchDates?: Date[];
   styles?: string[];
+  onDatePicked?: (date: Date) => void;
 };
 
-export function DatePicker({ selectedDate, matchDates, styles }: _) {
+export function DatePicker({ selectedDate, matchDates, styles, onDatePicked }: _) {
   const [date, setDate] = useState<Date | undefined>(selectedDate);
+
+  const handleSelect = (date?: Date) => {
+    setDate(date);
+
+    if (date && onDatePicked) {
+      onDatePicked(date);
+    }
+  };
+
+  useEffect(() => {
+    setDate(selectedDate);
+  }, [selectedDate]);
 
   return (
     <Popover>
@@ -54,7 +67,7 @@ export function DatePicker({ selectedDate, matchDates, styles }: _) {
         <Calendar
           mode="single"
           selected={date}
-          onSelect={setDate}
+          onSelect={handleSelect}
           today={undefined}
           modifiers={{ match: matchDates ?? [] }}
           classNames={{

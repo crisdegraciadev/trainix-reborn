@@ -17,8 +17,9 @@ import { useState } from "react";
 import { WorkoutTableData } from "./workout-columns";
 import CreateButton from "@components/create-button";
 import WorkoutForm from "../workout-form/workout-form";
+import { WorkoutRow } from "@typings/entities/workout";
 
-export default function WorkoutTable<U>({ columns, data }: DataTableProps<WorkoutTableData, U>) {
+export default function WorkoutTable<U>({ columns, data }: DataTableProps<WorkoutRow, U>) {
   // Table state
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);

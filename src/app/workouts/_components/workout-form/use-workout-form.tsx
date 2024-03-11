@@ -15,6 +15,7 @@ import { useFindExerciseSelectList } from "app/workouts/_hooks/use-find-exercise
 import { redirect } from "next/navigation";
 import { AppRoutes } from "@constants/routes";
 import { ActivityFormSchema } from "@typings/schemas/activity";
+import { WorkoutRow } from "@typings/entities/workout";
 
 export type WorkoutFormProps =
   | {
@@ -24,11 +25,11 @@ export type WorkoutFormProps =
     }
   | {
       type: "update";
-      rowData: WorkoutTableData;
+      rowData: WorkoutRow;
       onComplete: () => void;
     };
 
-const rowToFormValues = ({ difficulty: { value }, ...rest }: WorkoutTableData) => ({
+const rowToFormValues = ({ difficulty: { value }, ...rest }: WorkoutRow) => ({
   ...rest,
   difficulty: value,
 });

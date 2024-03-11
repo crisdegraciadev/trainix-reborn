@@ -65,7 +65,9 @@ export default function WorkoutResume({ workout }: _) {
                       {activity.sets * activity.reps}
                     </TableCell>
                     <TableCell className="px-4 flex justify-center items-center">
-                      {activity.improve.value === "+" ? (
+                      {!activity.improve ? (
+                        ""
+                      ) : activity.improve.value === "+" ? (
                         <MoveUpRight className="w-4 h-4" />
                       ) : activity.improve.value === "-" ? (
                         <MoveDownRight className="w-4 h-4" />

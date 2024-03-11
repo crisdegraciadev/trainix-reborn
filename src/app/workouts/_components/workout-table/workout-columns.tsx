@@ -6,6 +6,7 @@ import WorkoutActionsCell from "./workout-actions-cell";
 import NameCell from "@components/data-table/cells/name-cell";
 import { AppRoutes } from "@constants/routes";
 import { BadgeData } from "@typings/utils";
+import { WorkoutRow } from "@typings/entities/workout";
 
 export type WorkoutTableData = {
   id: string;
@@ -15,7 +16,7 @@ export type WorkoutTableData = {
   muscles: BadgeData[];
 };
 
-export const workoutColumns: ColumnDef<WorkoutTableData>[] = [
+export const workoutColumns: ColumnDef<WorkoutRow>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,

@@ -3,12 +3,15 @@ import { useFindProgressionDates } from "@hooks/progression/use-find-progression
 import { ProgressionDetails } from "@typings/entities/progression";
 import { WorkoutDetails } from "@typings/entities/workout";
 import { useEffect, useMemo, useState } from "react";
+import { useWorkoutProgressionContext } from "./workout-progression-context";
 
 type _ = {
   workout: WorkoutDetails;
 };
 
 export const useWorkoutProgression = ({ workout }: _) => {
+  const { setWorkoutId, setProgressionTimeData } = useWorkoutProgressionContext();
+
   const {
     data: progression,
     isSuccess: isSuccessProgression,
@@ -27,9 +30,17 @@ export const useWorkoutProgression = ({ workout }: _) => {
   const [progressionDates, setProgressionDates] = useState<Date[]>([]);
 
   const currentProgressionDate = useMemo(
-    () => currentProgression && new Date(currentProgression?.createdAt),
+    () => (currentProgression ? new Date(currentProgression?.createdAt) : undefined),
     [currentProgression]
   );
+
+  useEffect(() => {
+    setProgressionTimeData({ selectedDate: currentProgressionDate, matchDates: progressionDates });
+  }, [currentProgressionDate, progressionDates, setProgressionTimeData]);
+
+  useEffect(() => {
+    setWorkoutId(workout.id);
+  }, [workout, setWorkoutId]);
 
   useEffect(() => {
     if (isSuccessProgression && progression) {
@@ -55,5 +66,5 @@ export const useWorkoutProgression = ({ workout }: _) => {
     }
   }, [isErrorDates]);
 
-  return { currentProgression, currentProgressionDate, progressionDates };
+  return { currentProgression };
 };

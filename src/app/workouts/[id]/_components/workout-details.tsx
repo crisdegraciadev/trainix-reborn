@@ -16,6 +16,7 @@ import {
 import WorkoutResume from "./workout-resume/workout-resume";
 import { WorkoutDetails } from "@typings/entities/workout";
 import WorkoutProgression from "./workout-progression/workout-progression";
+import { WorkoutProgressionContextProvider } from "./workout-progression/workout-progression-context";
 
 type _ = {
   workout: WorkoutDetails;
@@ -35,7 +36,9 @@ export default function WorkoutDetails({ workout }: _) {
       </TabsContent>
 
       <TabsContent value="progression">
-        <WorkoutProgression workout={workout} />
+        <WorkoutProgressionContextProvider>
+          <WorkoutProgression workout={workout} />
+        </WorkoutProgressionContextProvider>
       </TabsContent>
 
       <TabsContent value="exercises">

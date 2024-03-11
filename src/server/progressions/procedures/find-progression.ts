@@ -4,12 +4,12 @@ import { ProgressionPreview } from "@typings/entities/progression";
 import { z } from "zod";
 
 export const findProgression = privateProcedure
-  .input(z.object({ id: z.string() }))
+  .input(z.object({ id: z.string(), date: z.string().optional() }))
   .query(async ({ input }): Promise<ProgressionPreview | null> => {
-    const { id } = input;
+    const { id, date } = input;
 
     return db.progression.findUnique({
-      where: { id },
+      where: { id, createdAt: date },
       include: {
         activities: { include: { exercise: true, improve: true } },
       },

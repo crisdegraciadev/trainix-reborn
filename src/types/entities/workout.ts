@@ -13,6 +13,7 @@ export type WorkoutDetails = Workout & {
 };
 
 export type WorkoutRow = Workout & {
+  description?: string;
   difficulty: Difficulty;
   muscles: Muscle[];
 };

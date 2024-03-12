@@ -1,5 +1,5 @@
 import { useFindProgression } from "@hooks/progression/use-find-progression";
-import { ProgressionPreview } from "@typings/entities/progression";
+import { ProgressionDetails } from "@typings/entities/progression";
 import { WorkoutDetails } from "@typings/entities/workout";
 import { useEffect, useMemo, useState } from "react";
 
@@ -12,7 +12,7 @@ export const useWorkoutResume = ({ workout }: _) => {
 
   const { data, isSuccess, isError } = useFindProgression({ id: lasProgressionId });
 
-  const [currentProgression, setCurrentProgression] = useState<ProgressionPreview | null>(null);
+  const [currentProgression, setCurrentProgression] = useState<ProgressionDetails | null>(null);
 
   useEffect(() => {
     if (isSuccess && data) {

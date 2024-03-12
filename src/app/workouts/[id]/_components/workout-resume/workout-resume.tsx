@@ -9,7 +9,7 @@ import {
   TableCell,
   Table,
 } from "@components/ui/table";
-import { ArrowLeftRight, MoveDownRight, MoveUpRight, PauseCircle } from "lucide-react";
+import { ArrowLeftRight, MoveDownRight, MoveUpRight } from "lucide-react";
 import { useWorkoutResume } from "./use-workout-resume";
 import { WorkoutDetails } from "@typings/entities/workout";
 
@@ -57,8 +57,8 @@ export default function WorkoutResume({ workout }: _) {
               </TableHeader>
               <TableBody>
                 {currentProgression?.activities.map((activity) => (
-                  <TableRow key={activity.exercise.name}>
-                    <TableCell className="px-4">{activity.exercise.name}</TableCell>
+                  <TableRow key={activity.name}>
+                    <TableCell className="px-4">{activity.name}</TableCell>
                     <TableCell className="px-4 text-center">{activity.sets}</TableCell>
                     <TableCell className="px-4 text-center">{activity.reps}</TableCell>
                     <TableCell className="px-4 text-center">

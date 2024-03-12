@@ -11,25 +11,24 @@ import { ActivityFormSchema } from "@typings/schemas/activity";
 import { useCreateProgression } from "@hooks/progression/use-create-progression";
 import { TOAST_MESSAGES } from "./toast-messages";
 import { toast } from "@components/ui/use-toast";
-
-export type ProgressionFormProps = {
-  workoutId: string;
-  onComplete: () => void;
-};
+import { useWorkoutProgressionContext } from "../workout-progression-context";
 
 const DEFAULT_FORM_VALUES = {
   date: new Date(),
   activities: [{ order: 0 }, { order: 1 }, { order: 2 }, { order: 3 }],
 };
 
-export const useProgressionForm = ({ workoutId, onComplete }: ProgressionFormProps) => {
+export const useProgressionForm = () => {
   const { data: session } = useSession();
 
   if (!session) {
     redirect(AppRoutes.LOGIN);
   }
 
+  const { currentWorkout, setIsCreateDialogOpen } = useWorkoutProgressionContext();
+
   const userId = useMemo(() => session.user.id, [session]);
+  const workoutId = useMemo(() => currentWorkout?.id, [currentWorkout]);
 
   const {
     mutate: createProgression,
@@ -67,9 +66,9 @@ export const useProgressionForm = ({ workoutId, onComplete }: ProgressionFormPro
       setIsFormLoading(false);
       toast(TOAST_MESSAGES.create);
       form.reset();
-      onComplete();
+      setIsCreateDialogOpen(false);
     }
-  }, [form, isCreateProgressionSuccess, onComplete]);
+  }, [form, isCreateProgressionSuccess, setIsCreateDialogOpen]);
 
   useEffect(() => {
     if (isCreateProgressionLoading) {
@@ -96,6 +95,11 @@ export const useProgressionForm = ({ workoutId, onComplete }: ProgressionFormPro
 
   const onSubmit = async (data: ProgressionFormSchema) => {
     const { date, activities } = data;
+
+    if (!workoutId) {
+      throw new Error("Field workoutId is not provided");
+    }
+
     createProgression({
       workoutId,
       progression: {

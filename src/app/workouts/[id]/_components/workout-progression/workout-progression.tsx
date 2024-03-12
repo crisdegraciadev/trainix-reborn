@@ -4,10 +4,6 @@ import { useWorkoutProgression } from "./use-workout-progression";
 import { WorkoutDetails } from "@typings/entities/workout";
 import ProgressionTable from "./progression-table/progression-table";
 import { progressionColumns } from "./progression-table/progression-columns";
-import {
-  WorkoutProgressionContextProvider,
-  useWorkoutProgressionContext,
-} from "./workout-progression-context";
 
 type _ = {
   workout: WorkoutDetails;

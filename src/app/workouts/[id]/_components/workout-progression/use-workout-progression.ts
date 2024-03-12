@@ -1,23 +1,24 @@
-import { useFindCurrentProgression } from "@hooks/progression/use-find-current-progression";
 import { useFindProgressionDates } from "@hooks/progression/use-find-progression-dates";
 import { ProgressionDetails } from "@typings/entities/progression";
 import { WorkoutDetails } from "@typings/entities/workout";
 import { useEffect, useMemo, useState } from "react";
 import { useWorkoutProgressionContext } from "./workout-progression-context";
+import { useFindProgression } from "@hooks/progression/use-find-progression";
 
 type _ = {
   workout: WorkoutDetails;
 };
 
 export const useWorkoutProgression = ({ workout }: _) => {
-  const { setWorkoutId, setProgressionTimeData } = useWorkoutProgressionContext();
+  const { setCurrentWorkout, progressionTimeData, setProgressionTimeData } =
+    useWorkoutProgressionContext();
 
   const {
     data: progression,
     isSuccess: isSuccessProgression,
     isError: isErrorProgression,
-  } = useFindCurrentProgression({
-    id: workout.progressions[0].id,
+  } = useFindProgression({
+    date: progressionTimeData.selectedDate,
   });
 
   const {
@@ -35,12 +36,15 @@ export const useWorkoutProgression = ({ workout }: _) => {
   );
 
   useEffect(() => {
-    setProgressionTimeData({ selectedDate: currentProgressionDate, matchDates: progressionDates });
-  }, [currentProgressionDate, progressionDates, setProgressionTimeData]);
+    setCurrentWorkout(workout);
+  }, [setCurrentWorkout, workout]);
 
   useEffect(() => {
-    setWorkoutId(workout.id);
-  }, [workout, setWorkoutId]);
+    setProgressionTimeData({
+      selectedDate: currentProgressionDate,
+      matchDates: progressionDates,
+    });
+  }, [currentProgressionDate, progressionDates, setProgressionTimeData]);
 
   useEffect(() => {
     if (isSuccessProgression && progression) {
@@ -56,7 +60,7 @@ export const useWorkoutProgression = ({ workout }: _) => {
 
   useEffect(() => {
     if (isSuccessDates && dates) {
-      setProgressionDates(dates.map((date) => new Date(date)));
+      setProgressionDates(dates);
     }
   }, [isSuccessDates, dates]);
 

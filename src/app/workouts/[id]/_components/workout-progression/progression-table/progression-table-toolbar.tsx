@@ -5,25 +5,20 @@ import { useWorkoutProgressionContext } from "../workout-progression-context";
 
 export default function ProgressionTableToolbar() {
   const {
-    workoutId,
     isCreateDialogOpen,
     setIsCreateDialogOpen,
     progressionTimeData: { selectedDate, matchDates },
+    setProgressionTimeData,
   } = useWorkoutProgressionContext();
-
-  if (!workoutId) {
-    return <p>Loading...</p>;
-  }
-
-  console.log({ selectedDate });
 
   return (
     <div className="flex justify-between mb-4">
       <DatePicker
         selectedDate={selectedDate}
         matchDates={matchDates}
-        onDatePicked={(date: Date) => {
-          console.log({ date });
+        disableAllExceptMatchDates={true}
+        onDatePicked={(selectedDate: Date) => {
+          setProgressionTimeData((state) => ({ ...state, selectedDate }));
         }}
       />
 
@@ -34,7 +29,7 @@ export default function ProgressionTableToolbar() {
         isDialogOpen={isCreateDialogOpen}
         setIsDialogOpen={setIsCreateDialogOpen}
       >
-        <ProgressionForm workoutId={workoutId} onComplete={() => setIsCreateDialogOpen(false)} />
+        <ProgressionForm />
       </CreateButton>
     </div>
   );

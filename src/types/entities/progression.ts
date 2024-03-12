@@ -1,13 +1,8 @@
 import { Progression as ProgressionModel } from "@prisma/client";
-import { ActivityDetails, ActivityMerge } from "./activity";
+import { ActivityWithExercise } from "./activity";
 
-export type Progression = Omit<ProgressionModel, "createdAt">;
+export type Progression = ProgressionModel;
 
-export type ProgressionPreview = Progression & {
-  activities: ActivityDetails[];
-};
-
-export type ProgressionDetails = Omit<Progression, "createdAt"> & {
-  activities: ActivityMerge[];
-  createdAt: string;
+export type ProgressionDetails = Progression & {
+  activities: ActivityWithExercise[];
 };

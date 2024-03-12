@@ -5,11 +5,11 @@ import { checkAuthorized } from "@utils/check-authorized";
 import { redirect } from "next/navigation";
 import WorkoutDetails from "./_components/workout-details";
 
-type _Props = {
+type _ = {
   params: { id: string };
 };
 
-export default async function Page({ params }: _Props) {
+export default async function Page({ params }: _) {
   await checkAuthorized();
 
   const { id } = params;

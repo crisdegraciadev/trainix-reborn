@@ -2,12 +2,12 @@ import { DifficultyCell } from "@components/data-table/cells/difficulty-cell";
 import { MusclesCell } from "@components/data-table/cells/muscles-cell";
 import NameCell from "@components/data-table/cells/name-cell";
 import { ColumnDef } from "@tanstack/react-table";
-import { ActivityMerge } from "@typings/entities/activity";
+import { ActivityWithExercise } from "@typings/entities/activity";
 import { Improve } from "@typings/entities/improve";
 import { BadgeData } from "@typings/utils";
 import { ArrowLeftRight, CheckCircle2, MoveDownRight, MoveUpRight } from "lucide-react";
 
-export const progressionColumns: ColumnDef<ActivityMerge>[] = [
+export const progressionColumns: ColumnDef<ActivityWithExercise>[] = [
   {
     accessorKey: "name",
     header: "Name",

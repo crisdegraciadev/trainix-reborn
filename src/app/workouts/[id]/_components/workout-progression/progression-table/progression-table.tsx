@@ -12,10 +12,13 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
-import { ActivityMerge } from "@typings/entities/activity";
+import { ActivityWithExercise } from "@typings/entities/activity";
 import ProgressionTableToolbar from "./progression-table-toolbar";
 
-export default function ProgressionTable<U>({ columns, data }: DataTableProps<ActivityMerge, U>) {
+export default function ProgressionTable<U>({
+  columns,
+  data,
+}: DataTableProps<ActivityWithExercise, U>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
 

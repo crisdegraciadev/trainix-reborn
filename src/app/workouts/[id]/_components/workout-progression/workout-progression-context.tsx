@@ -1,7 +1,16 @@
 "use client";
 
 import { ProgressionDetails } from "@typings/entities/progression";
-import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useState } from "react";
+import { WorkoutDetails } from "@typings/entities/workout";
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 type ProgressionDatesState = {
   selectedDate?: Date;
@@ -9,10 +18,10 @@ type ProgressionDatesState = {
 };
 
 type _ContextProps = {
-  workoutId?: string;
+  currentWorkout?: WorkoutDetails;
   isCreateDialogOpen: boolean;
   progressionTimeData: ProgressionDatesState;
-  setWorkoutId: Dispatch<SetStateAction<string | undefined>>;
+  setCurrentWorkout: Dispatch<SetStateAction<WorkoutDetails | undefined>>;
   setIsCreateDialogOpen: Dispatch<SetStateAction<boolean>>;
   setProgressionTimeData: Dispatch<SetStateAction<ProgressionDatesState>>;
 };
@@ -24,7 +33,7 @@ type _ProviderProps = {
 };
 
 export const WorkoutProgressionContextProvider = ({ children }: _ProviderProps) => {
-  const [workoutId, setWorkoutId] = useState<string | undefined>();
+  const [currentWorkout, setCurrentWorkout] = useState<WorkoutDetails>();
 
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
@@ -36,8 +45,8 @@ export const WorkoutProgressionContextProvider = ({ children }: _ProviderProps) 
   return (
     <WorkoutProgressionContext.Provider
       value={{
-        workoutId,
-        setWorkoutId,
+        currentWorkout,
+        setCurrentWorkout,
         isCreateDialogOpen,
         setIsCreateDialogOpen,
         progressionTimeData,

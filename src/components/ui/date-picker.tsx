@@ -1,6 +1,6 @@
 "use client";
 
-import { format } from "date-fns";
+import { format, isSameDay } from "date-fns";
 import { Calendar as CalendarIcon, Dot } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { Button, buttonVariants } from "./button";
@@ -26,21 +26,29 @@ function CustomDay(props: DayProps) {
   );
 }
 
-type _ = {
-  selectedDate?: Date;
-  matchDates?: Date[];
-  styles?: string[];
-  onDatePicked?: (date: Date) => void;
-};
+type _ = Partial<{
+  selectedDate: Date;
+  matchDates: Date[];
+  styles: string[];
+  onDatePicked: (date: Date) => void;
+  disableAllExceptMatchDates: boolean;
+}>;
 
-export function DatePicker({ selectedDate, matchDates, styles, onDatePicked }: _) {
+export function DatePicker({
+  selectedDate,
+  matchDates,
+  styles,
+  onDatePicked,
+  disableAllExceptMatchDates,
+}: _) {
   const [date, setDate] = useState<Date | undefined>(selectedDate);
 
   const handleSelect = (date?: Date) => {
     setDate(date);
 
     if (date && onDatePicked) {
-      onDatePicked(date);
+      var userTimezoneOffset = date.getTimezoneOffset() * 60000;
+      onDatePicked(new Date(date.getTime() - userTimezoneOffset));
     }
   };
 
@@ -65,6 +73,13 @@ export function DatePicker({ selectedDate, matchDates, styles, onDatePicked }: _
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
         <Calendar
+          disabled={(day) =>
+            !(
+              disableAllExceptMatchDates &&
+              matchDates &&
+              matchDates.some((disabledDay) => isSameDay(day, disabledDay))
+            )
+          }
           mode="single"
           selected={date}
           onSelect={handleSelect}

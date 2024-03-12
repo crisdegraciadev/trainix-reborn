@@ -19,10 +19,10 @@ import {
 } from "@components/ui/select";
 import { cn } from "@lib/utils";
 import { Loader2, PlusCircle, Trash2 } from "lucide-react";
-import { ProgressionFormProps, useProgressionForm } from "./use-progression-form";
+import { useProgressionForm } from "./use-progression-form";
 import { DatePicker } from "@components/ui/date-picker";
 
-export default function ProgressionForm(formProps: ProgressionFormProps) {
+export default function ProgressionForm() {
   const {
     form,
     activityFields,
@@ -31,7 +31,7 @@ export default function ProgressionForm(formProps: ProgressionFormProps) {
     exercisesOptions,
     isFormLoading,
     onSubmit,
-  } = useProgressionForm(formProps);
+  } = useProgressionForm();
 
   return (
     <Form {...form}>

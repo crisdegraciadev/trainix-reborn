@@ -7,11 +7,9 @@ export const useCreateProgression = () => {
   const { mutate, isSuccess, isError, error, isLoading } =
     trpc.progressions.createProgression.useMutation();
 
-  console.log({ error });
-
   useEffect(() => {
     if (isSuccess) {
-      utils.progressions.findCurrentProgression.invalidate();
+      utils.progressions.findProgression.invalidate();
     }
   }, [isSuccess, utils]);
 

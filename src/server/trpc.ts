@@ -1,7 +1,10 @@
 import { initTRPC } from "@trpc/server";
 import { checkAuthorized } from "../utils/check-authorized";
+import SuperJSON from "superjson";
 
-const t = initTRPC.create();
+const t = initTRPC.create({
+  transformer: SuperJSON,
+});
 
 const isAuth = t.middleware(async ({ ctx, next }) => {
   await checkAuthorized();

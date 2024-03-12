@@ -2,6 +2,7 @@ import db from "@lib/prisma";
 import { privateProcedure } from "@server/trpc";
 import { ActivityWithExercise } from "@typings/entities/activity";
 import { ProgressionDetails } from "@typings/entities/progression";
+import { convertToUTC } from "@utils/convert-to-utc";
 import { z } from "zod";
 
 export const findProgression = privateProcedure
@@ -9,9 +10,7 @@ export const findProgression = privateProcedure
   .query(async ({ input }): Promise<ProgressionDetails | null> => {
     const { id, date } = input;
 
-    const dateFilter = date ? buildDateFilter(date) : {};
-
-    console.log({ date, dateFilter });
+    const dateFilter = date ? buildDateFilter(convertToUTC(date)) : {};
 
     const progression = await db.progression.findFirst({
       where: {

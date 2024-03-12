@@ -103,7 +103,7 @@ export const useProgressionForm = () => {
     createProgression({
       workoutId,
       progression: {
-        date: String(date),
+        date,
         activities,
       },
     });

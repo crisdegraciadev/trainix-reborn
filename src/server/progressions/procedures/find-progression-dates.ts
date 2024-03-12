@@ -11,9 +11,5 @@ export const findProgressionDates = privateProcedure
       where: { workoutId },
     });
 
-    console.log(
-      progressions.map(({ createdAt }) => createdAt).toSorted((a, b) => a.getTime() - b.getTime())
-    );
-
     return progressions.map(({ createdAt }) => createdAt);
   });

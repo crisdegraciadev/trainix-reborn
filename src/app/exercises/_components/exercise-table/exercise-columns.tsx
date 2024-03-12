@@ -6,7 +6,6 @@ import { DataTableColumnHeader } from "@components/data-table/data-table-column-
 import { DifficultyCell } from "@components/data-table/cells/difficulty-cell";
 import { MusclesCell } from "@components/data-table/cells/muscles-cell";
 import { ExerciseRow } from "@typings/entities/exercise";
-import { truncate } from "@utils/truncate";
 import NameCell from "@components/data-table/cells/name-cell";
 
 export const exerciseColumns: ColumnDef<ExerciseRow>[] = [

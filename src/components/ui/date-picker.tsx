@@ -30,7 +30,7 @@ type _ = Partial<{
   selectedDate: Date;
   matchDates: Date[];
   styles: string[];
-  onDatePicked: (date: Date) => void;
+  onSelect: (date?: Date) => void;
   disableAllExceptMatchDates: boolean;
 }>;
 
@@ -38,19 +38,10 @@ export function DatePicker({
   selectedDate,
   matchDates,
   styles,
-  onDatePicked,
+  onSelect,
   disableAllExceptMatchDates,
 }: _) {
   const [date, setDate] = useState<Date | undefined>(selectedDate);
-
-  const handleSelect = (date?: Date) => {
-    setDate(date);
-
-    if (date && onDatePicked) {
-      var userTimezoneOffset = date.getTimezoneOffset() * 60000;
-      onDatePicked(new Date(date.getTime() - userTimezoneOffset));
-    }
-  };
 
   useEffect(() => {
     setDate(selectedDate);
@@ -74,15 +65,12 @@ export function DatePicker({
       <PopoverContent className="w-auto p-0">
         <Calendar
           disabled={(day) =>
-            !(
-              disableAllExceptMatchDates &&
-              matchDates &&
-              matchDates.some((disabledDay) => isSameDay(day, disabledDay))
-            )
+            !!disableAllExceptMatchDates &&
+            !(matchDates && matchDates.some((disabledDay) => isSameDay(day, disabledDay)))
           }
           mode="single"
           selected={date}
-          onSelect={handleSelect}
+          onSelect={onSelect}
           today={undefined}
           modifiers={{ match: matchDates ?? [] }}
           classNames={{

@@ -10,6 +10,7 @@ export const useCreateProgression = () => {
   useEffect(() => {
     if (isSuccess) {
       utils.progressions.findProgression.invalidate();
+      utils.progressions.findProgressionDates.invalidate();
     }
   }, [isSuccess, utils]);
 

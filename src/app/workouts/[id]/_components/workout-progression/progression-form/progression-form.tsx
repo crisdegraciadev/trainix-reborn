@@ -44,7 +44,12 @@ export default function ProgressionForm() {
               render={({ field }) => (
                 <FormItem className="flex flex-col">
                   <FormLabel>Creation date</FormLabel>
-                  <DatePicker styles={["w-full"]} selectedDate={field.value} />
+                  <DatePicker
+                    styles={["w-full"]}
+                    selectedDate={field.value}
+                    onSelect={field.onChange}
+                    {...field}
+                  />
                   <FormMessage />
                 </FormItem>
               )}

@@ -11,15 +11,19 @@ export default function ProgressionTableToolbar() {
     setProgressionTimeData,
   } = useWorkoutProgressionContext();
 
+  const handleSelect = (date?: Date) => {
+    if (date) {
+      setProgressionTimeData((state) => ({ ...state, selectedDate: date }));
+    }
+  };
+
   return (
     <div className="flex justify-between mb-4">
       <DatePicker
         selectedDate={selectedDate}
         matchDates={matchDates}
         disableAllExceptMatchDates={true}
-        onDatePicked={(selectedDate: Date) => {
-          setProgressionTimeData((state) => ({ ...state, selectedDate }));
-        }}
+        onSelect={handleSelect}
       />
 
       <CreateButton

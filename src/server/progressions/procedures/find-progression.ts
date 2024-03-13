@@ -39,23 +39,27 @@ export const findProgression = privateProcedure
 
     const { activities, createdAt } = progression;
 
-    const mappedActivities: ActivityWithExercise[] = activities.map((activity) => {
-      const { id, exercise, sets, reps, improve } = activity;
+    const mappedActivities: ActivityWithExercise[] = activities
+      .map((activity) => {
+        const { id, exercise, sets, reps, improve } = activity;
 
-      const { difficulty, muscles, description } = exercise;
-      const { level, ...difficultyRest } = difficulty;
+        console.log({ improve });
 
-      return {
-        ...activity,
-        ...exercise,
-        id,
-        total: sets * reps,
-        difficulty: { ...difficultyRest },
-        improve,
-        description: description ?? "",
-        muscles: muscles.map(({ id, name, value }) => ({ id, name, value })),
-      };
-    });
+        const { difficulty, muscles, description } = exercise;
+        const { level, ...difficultyRest } = difficulty;
+
+        return {
+          ...activity,
+          ...exercise,
+          id,
+          total: sets * reps,
+          difficulty: { ...difficultyRest },
+          improve: improve,
+          description: description ?? "",
+          muscles: muscles.map(({ id, name, value }) => ({ id, name, value })),
+        };
+      })
+      .toSorted((a, b) => a.order - b.order);
 
     return {
       ...progression,

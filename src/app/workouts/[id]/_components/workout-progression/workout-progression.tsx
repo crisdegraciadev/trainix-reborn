@@ -14,6 +14,8 @@ export default function WorkoutProgression({ workout }: _) {
     workout,
   });
 
+  console.log({ currentProgression });
+
   return (
     <Card>
       <CardHeader>

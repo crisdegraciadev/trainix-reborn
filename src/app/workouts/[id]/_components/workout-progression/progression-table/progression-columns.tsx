@@ -1,11 +1,12 @@
 import { DifficultyCell } from "@components/data-table/cells/difficulty-cell";
 import { MusclesCell } from "@components/data-table/cells/muscles-cell";
 import NameCell from "@components/data-table/cells/name-cell";
+import { CircleCheck } from "@components/ui/custom-icons";
+
 import { ColumnDef } from "@tanstack/react-table";
 import { ActivityWithExercise } from "@typings/entities/activity";
 import { Improve } from "@typings/entities/improve";
-import { BadgeData } from "@typings/utils";
-import { ArrowLeftRight, CheckCircle2, MoveDownRight, MoveUpRight } from "lucide-react";
+import { Circle, CircleX } from "lucide-react";
 
 export const progressionColumns: ColumnDef<ActivityWithExercise>[] = [
   {
@@ -49,7 +50,7 @@ export const progressionColumns: ColumnDef<ActivityWithExercise>[] = [
   },
   {
     accessorKey: "improve",
-    header: "Improve",
+    header: "Improvement",
     cell: ({ row }) => {
       const improve: Improve = row.getValue("improve");
 
@@ -61,23 +62,26 @@ export const progressionColumns: ColumnDef<ActivityWithExercise>[] = [
 
       if (value === "+") {
         return (
-          <div className="w-[65px] flex justify-center">
-            <MoveUpRight className="w-4 h-4" />
+          <div className="flex items-center">
+            <CircleCheck className="w-4 h-4 mr-2 text-green-600" />
+            Move On
           </div>
         );
       }
 
       if (value === "-") {
         return (
-          <div className="w-[65px] flex justify-center">
-            <MoveDownRight className="w-4 h-4" />
+          <div className="flex items-center">
+            <CircleX className="w-4 h-4 mr-2 text-red-600" />
+            Slow Down
           </div>
         );
       }
 
       return (
-        <div className="w-[65px] flex justify-center">
-          <ArrowLeftRight className="w-4 h-4" />
+        <div className="flex items-center">
+          <Circle className="w-4 h-4 mr-2 text-blue-600" />
+          Keep Working
         </div>
       );
     },

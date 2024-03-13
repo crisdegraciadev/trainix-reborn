@@ -1,5 +1,5 @@
 import { Acticity as ActivityModel } from "@prisma/client";
-import { Exercise, ExerciseDetails } from "./exercise";
+import { ExerciseDetails } from "./exercise";
 import { Improve } from "./improve";
 
 export type Activity = ActivityModel;

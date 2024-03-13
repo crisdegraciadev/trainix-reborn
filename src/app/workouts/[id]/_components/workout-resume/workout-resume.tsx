@@ -9,9 +9,10 @@ import {
   TableCell,
   Table,
 } from "@components/ui/table";
-import { ArrowLeftRight, MoveDownRight, MoveUpRight } from "lucide-react";
+import { Circle, CircleX } from "lucide-react";
 import { useWorkoutResume } from "./use-workout-resume";
 import { WorkoutDetails } from "@typings/entities/workout";
+import { CircleCheck } from "@components/ui/custom-icons";
 
 type _ = {
   workout: WorkoutDetails;
@@ -52,7 +53,7 @@ export default function WorkoutResume({ workout }: _) {
                   <TableHead className="w-[50px]">Sets</TableHead>
                   <TableHead className="w-[50px]">Reps</TableHead>
                   <TableHead className="w-[50px]">Total</TableHead>
-                  <TableHead className="w-[50px]">Improve</TableHead>
+                  <TableHead className="w-[150px]">Improve</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -64,15 +65,24 @@ export default function WorkoutResume({ workout }: _) {
                     <TableCell className="px-4 text-center">
                       {activity.sets * activity.reps}
                     </TableCell>
-                    <TableCell className="px-4 flex justify-center items-center">
+                    <TableCell className="px-4 flex items-center">
                       {!activity.improve ? (
                         ""
                       ) : activity.improve.value === "+" ? (
-                        <MoveUpRight className="w-4 h-4" />
+                        <div className="flex items-center">
+                          <CircleCheck className="w-4 h-4 mr-2 text-green-600" />
+                          Move On
+                        </div>
                       ) : activity.improve.value === "-" ? (
-                        <MoveDownRight className="w-4 h-4" />
+                        <div className="flex items-center">
+                          <CircleX className="w-4 h-4 mr-2 text-red-600" />
+                          Slow Down
+                        </div>
                       ) : (
-                        <ArrowLeftRight className="w-4 h-4" />
+                        <div className="flex items-center w-48">
+                          <Circle className="w-4 h-4 mr-2 text-blue-600" />
+                          Keep Working
+                        </div>
                       )}
                     </TableCell>
                   </TableRow>

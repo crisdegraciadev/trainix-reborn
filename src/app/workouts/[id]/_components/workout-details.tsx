@@ -28,8 +28,12 @@ export default function WorkoutDetails({ workout }: _) {
       <TabsList className="grid w-full grid-cols-4">
         <TabsTrigger value="resume">Resume</TabsTrigger>
         <TabsTrigger value="progression">Progression</TabsTrigger>
-        <TabsTrigger value="exercises">Exercises</TabsTrigger>
-        <TabsTrigger value="resources">Resources</TabsTrigger>
+        <TabsTrigger value="exercises" disabled>
+          Exercises
+        </TabsTrigger>
+        <TabsTrigger value="resources" disabled>
+          Resources
+        </TabsTrigger>
       </TabsList>
       <TabsContent value="resume">
         <WorkoutResume workout={workout} />

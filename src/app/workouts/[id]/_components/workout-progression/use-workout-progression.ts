@@ -10,14 +10,20 @@ type _ = {
 };
 
 export const useWorkoutProgression = ({ workout }: _) => {
-  const { setCurrentWorkout, progressionTimeData, setProgressionTimeData } =
-    useWorkoutProgressionContext();
+  const {
+    setCurrentWorkout,
+    setCurrentProgression,
+    currentProgression,
+    progressionTimeData,
+    setProgressionTimeData,
+  } = useWorkoutProgressionContext();
 
   const {
     data: progression,
     isSuccess: isSuccessProgression,
     isError: isErrorProgression,
   } = useFindProgression({
+    workoutId: workout.id,
     date: progressionTimeData.selectedDate,
   });
 
@@ -27,7 +33,6 @@ export const useWorkoutProgression = ({ workout }: _) => {
     isError: isErrorDates,
   } = useFindProgressionDates({ workoutId: workout.id });
 
-  const [currentProgression, setCurrentProgression] = useState<ProgressionDetails | null>(null);
   const [progressionDates, setProgressionDates] = useState<Date[]>([]);
 
   const currentProgressionDate = useMemo(
@@ -50,13 +55,13 @@ export const useWorkoutProgression = ({ workout }: _) => {
     if (isSuccessProgression && progression) {
       setCurrentProgression(progression);
     }
-  }, [isSuccessProgression, progression]);
+  }, [isSuccessProgression, setCurrentProgression, progression]);
 
   useEffect(() => {
     if (isErrorProgression) {
-      setCurrentProgression(null);
+      setCurrentProgression(undefined);
     }
-  }, [isErrorProgression]);
+  }, [isErrorProgression, setCurrentProgression]);
 
   useEffect(() => {
     if (isSuccessDates && dates) {

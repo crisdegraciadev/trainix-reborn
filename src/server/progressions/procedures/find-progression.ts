@@ -6,15 +6,16 @@ import { convertToUTC } from "@utils/convert-to-utc";
 import { z } from "zod";
 
 export const findProgression = privateProcedure
-  .input(z.object({ id: z.string().optional(), date: z.date().optional() }))
+  .input(z.object({ workoutId: z.string(), id: z.string().optional(), date: z.date().optional() }))
   .query(async ({ input }): Promise<ProgressionDetails | null> => {
-    const { id, date } = input;
+    const { workoutId, id, date } = input;
 
     const dateFilter = date ? buildDateFilter(convertToUTC(date)) : {};
 
     const progression = await db.progression.findFirst({
       where: {
         id,
+        workoutId,
         ...dateFilter,
       },
       orderBy: { createdAt: "desc" },

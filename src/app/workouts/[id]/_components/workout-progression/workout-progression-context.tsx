@@ -2,15 +2,7 @@
 
 import { ProgressionDetails } from "@typings/entities/progression";
 import { WorkoutDetails } from "@typings/entities/workout";
-import {
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useState } from "react";
 
 type ProgressionDatesState = {
   selectedDate?: Date;
@@ -19,9 +11,11 @@ type ProgressionDatesState = {
 
 type _ContextProps = {
   currentWorkout?: WorkoutDetails;
+  currentProgression?: ProgressionDetails;
   isCreateDialogOpen: boolean;
   progressionTimeData: ProgressionDatesState;
   setCurrentWorkout: Dispatch<SetStateAction<WorkoutDetails | undefined>>;
+  setCurrentProgression: Dispatch<SetStateAction<ProgressionDetails | undefined>>;
   setIsCreateDialogOpen: Dispatch<SetStateAction<boolean>>;
   setProgressionTimeData: Dispatch<SetStateAction<ProgressionDatesState>>;
 };
@@ -34,6 +28,7 @@ type _ProviderProps = {
 
 export const WorkoutProgressionContextProvider = ({ children }: _ProviderProps) => {
   const [currentWorkout, setCurrentWorkout] = useState<WorkoutDetails>();
+  const [currentProgression, setCurrentProgression] = useState<ProgressionDetails>();
 
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
@@ -47,6 +42,8 @@ export const WorkoutProgressionContextProvider = ({ children }: _ProviderProps) 
       value={{
         currentWorkout,
         setCurrentWorkout,
+        currentProgression,
+        setCurrentProgression,
         isCreateDialogOpen,
         setIsCreateDialogOpen,
         progressionTimeData,

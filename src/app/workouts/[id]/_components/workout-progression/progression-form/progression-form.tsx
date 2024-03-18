@@ -28,6 +28,8 @@ export default function ProgressionForm() {
     activityFields,
     appendActivity,
     removeActivity,
+    improvementFields,
+    currentProgression,
     exercisesOptions,
     isFormLoading,
     onSubmit,
@@ -60,13 +62,53 @@ export default function ProgressionForm() {
                 <h3
                   className={cn(
                     "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+                    form.formState.errors.improvements?.length ? "text-destructive" : ""
+                  )}
+                >
+                  Improvements
+                </h3>
+
+                {improvementFields.map(({ id, name }, idx) => (
+                  <div key={id}>
+                    <FormField
+                      control={form.control}
+                      name={`improvements.${idx}.improve`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>{name}</FormLabel>
+                          <Select onValueChange={field.onChange}>
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="State" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="+">Improve</SelectItem>
+                              <SelectItem value="=">Keep Working</SelectItem>
+                              <SelectItem value="-">Slow Down</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="space-y-2">
+                <h3
+                  className={cn(
+                    "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
                     form.formState.errors.activities?.length ? "text-destructive" : ""
                   )}
                 >
                   Exercises
                 </h3>
 
-                {activityFields.map(({ id }, idx) => (
+                {activityFields.map(({ id, exerciseId }, idx) => (
                   <div key={id}>
                     <div className="mt-2 flex items-center gap-1">
                       <FormField
@@ -75,7 +117,7 @@ export default function ProgressionForm() {
                         render={({ field }) => (
                           <FormItem className="w-full">
                             <FormControl>
-                              <Select onValueChange={field.onChange}>
+                              <Select onValueChange={field.onChange} defaultValue={exerciseId}>
                                 <SelectTrigger>
                                   <SelectValue placeholder={`Select exercise ${idx + 1}`} />
                                 </SelectTrigger>

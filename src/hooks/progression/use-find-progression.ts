@@ -1,12 +1,13 @@
 import { trpc } from "@server/client";
 
-type _ = Partial<{
+type _ = { workoutId: string } & Partial<{
   id: string;
   date: Date;
 }>;
 
-export const useFindProgression = ({ id, date }: _) => {
+export const useFindProgression = ({ workoutId, id, date }: _) => {
   const { data, isSuccess, isLoading, isError } = trpc.progressions.findProgression.useQuery({
+    workoutId,
     id,
     date,
   });

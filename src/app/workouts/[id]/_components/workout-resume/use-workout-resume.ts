@@ -10,7 +10,10 @@ type _ = {
 export const useWorkoutResume = ({ workout }: _) => {
   const lasProgressionId = useMemo(() => workout.progressions[0].id, [workout]);
 
-  const { data, isSuccess, isError } = useFindProgression({ id: lasProgressionId });
+  const { data, isSuccess, isError } = useFindProgression({
+    id: lasProgressionId,
+    workoutId: workout.id,
+  });
 
   const [currentProgression, setCurrentProgression] = useState<ProgressionDetails | null>(null);
 

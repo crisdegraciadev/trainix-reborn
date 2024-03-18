@@ -14,6 +14,7 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@components/ui/select";
@@ -69,27 +70,34 @@ export default function ProgressionForm() {
                 </h3>
 
                 {improvementFields.map(({ id, name }, idx) => (
-                  <div key={id}>
+                  <div className="flex" key={id}>
                     <FormField
                       control={form.control}
                       name={`improvements.${idx}.improve`}
                       render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{name}</FormLabel>
-                          <Select onValueChange={field.onChange}>
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="State" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="+">Improve</SelectItem>
-                              <SelectItem value="=">Keep Working</SelectItem>
-                              <SelectItem value="-">Slow Down</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
+                        <div className="flex grow items-center">
+                          <span className="w-1/5 scroll-m-20 text-sm font-medium tracking-tight">
+                            {name}
+                          </span>
+                          <FormItem className="w-full">
+                            <Select onValueChange={field.onChange}>
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder={`Select state of ${name}`} />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectGroup>
+                                  <SelectLabel>{name}</SelectLabel>
+                                  <SelectItem value="+">Improve</SelectItem>
+                                  <SelectItem value="=">Keep Working</SelectItem>
+                                  <SelectItem value="-">Slow Down</SelectItem>
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        </div>
                       )}
                     />
                   </div>

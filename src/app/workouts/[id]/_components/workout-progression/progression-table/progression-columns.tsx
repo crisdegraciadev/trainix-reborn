@@ -54,6 +54,8 @@ export const progressionColumns: ColumnDef<ActivityWithExercise>[] = [
     cell: ({ row }) => {
       const improve: Improve = row.getValue("improve");
 
+      console.log({ improve });
+
       if (!improve) {
         return "";
       }
@@ -81,7 +83,7 @@ export const progressionColumns: ColumnDef<ActivityWithExercise>[] = [
       return (
         <div className="flex items-center">
           <Circle className="w-4 h-4 mr-2 text-blue-600" />
-          Keep Working
+          Maintain
         </div>
       );
     },

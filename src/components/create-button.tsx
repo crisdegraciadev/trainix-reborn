@@ -12,6 +12,7 @@ import {
 import { PlusCircle } from "lucide-react";
 import { Dispatch, PropsWithChildren, SetStateAction, useState } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { cn } from "@lib/utils";
 
 type _Props = {
   title: string;
@@ -21,6 +22,7 @@ type _Props = {
   disabledMessage?: string;
   isDialogOpen: boolean;
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
+  dialogClassNames?: string;
 };
 
 export default function CreateButton({
@@ -32,6 +34,7 @@ export default function CreateButton({
   disabledMessage,
   isDialogOpen,
   setIsDialogOpen,
+  dialogClassNames,
 }: PropsWithChildren & _Props) {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -62,7 +65,7 @@ export default function CreateButton({
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-w-xl flex flex-col gap-0">
+      <DialogContent className={cn("max-w-xl flex flex-col gap-0", dialogClassNames)}>
         <DialogHeader className="mb-4">
           <DialogTitle className="text-xl">{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>

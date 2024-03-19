@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { ImprovementSchema, ProgressionFormSchema, progressionSchema } from "./progression-schema";
+import { ProgressionFormSchema, progressionSchema } from "./progression-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ActivityFormSchema } from "@typings/schemas/activity";
 import { useCreateProgression } from "@hooks/progression/use-create-progression";
@@ -46,6 +46,7 @@ export const useProgressionForm = () => {
   } = useFindExerciseSelectList({ userId });
 
   const [isFormLoading, setIsFormLoading] = useState(false);
+  const [isActivityFieldSetup, setIsActivityFieldSetup] = useState(false);
 
   const [exercisesOptions, setExercisesOptions] = useState<SelectOption[]>([]);
 
@@ -53,10 +54,6 @@ export const useProgressionForm = () => {
     resolver: zodResolver(progressionSchema),
     defaultValues: DEFAULT_FORM_VALUES,
   });
-
-  const activitiesControl = form.getFieldState("activities");
-
-  console.log({ activitiesControl });
 
   const {
     fields: activityFields,
@@ -78,10 +75,18 @@ export const useProgressionForm = () => {
 
   useEffect(() => {
     const improvementsValue = form.getValues("improvements");
+    console.log({ currentProgression });
 
     if (currentProgression && improvementsValue.length < currentProgression.activities.length) {
-      currentProgression?.activities.forEach(({ name, exerciseId }) => {
-        appendImprovementField({ name, exerciseId, improve: "=" });
+      currentProgression?.activities.forEach(({ id, name, exerciseId, sets, reps }) => {
+        appendImprovementField({
+          name,
+          exerciseId,
+          activityId: id,
+          sets,
+          reps,
+          improve: "=",
+        });
       });
     }
   }, [currentProgression, improvementFields, form, appendImprovementField]);
@@ -89,12 +94,18 @@ export const useProgressionForm = () => {
   useEffect(() => {
     const activitiesValue = form.getValues("activities");
 
-    if (currentProgression && activitiesValue.length < currentProgression.activities.length) {
+    if (
+      currentProgression &&
+      activitiesValue.length < currentProgression.activities.length &&
+      !isActivityFieldSetup
+    ) {
       currentProgression?.activities.forEach(({ exerciseId, sets, reps, order }) => {
         appendActivityField({ exerciseId, sets, reps, order });
       });
+
+      setIsActivityFieldSetup(true);
     }
-  }, [currentProgression, activityFields, form, appendActivityField]);
+  }, [currentProgression, activityFields, form, appendActivityField, isActivityFieldSetup]);
 
   useEffect(() => {
     if (isCreateProgressionSuccess && form.formState.isSubmitSuccessful) {
@@ -129,7 +140,7 @@ export const useProgressionForm = () => {
   }, [isExercisesError]);
 
   const onSubmit = async (data: ProgressionFormSchema) => {
-    const { date, activities } = data;
+    const { date, activities, improvements } = data;
 
     console.log({ data });
 
@@ -139,6 +150,8 @@ export const useProgressionForm = () => {
 
     createProgression({
       workoutId,
+      improvements,
+      currentProgressionId: currentProgression?.id,
       progression: {
         date,
         activities,
@@ -153,6 +166,7 @@ export const useProgressionForm = () => {
 
   const removeActivity = (e: React.MouseEvent<Element, MouseEvent>, idx: number) => {
     e.preventDefault();
+    console.log({ activityFields });
     removeActivityField(idx);
   };
 

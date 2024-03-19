@@ -19,9 +19,10 @@ import {
   SelectValue,
 } from "@components/ui/select";
 import { cn } from "@lib/utils";
-import { Loader2, PlusCircle, Trash2 } from "lucide-react";
+import { Circle, CircleX, Loader2, PlusCircle, Trash2 } from "lucide-react";
 import { useProgressionForm } from "./use-progression-form";
 import { DatePicker } from "@components/ui/date-picker";
+import { CircleCheck } from "@components/ui/custom-icons";
 
 export default function ProgressionForm() {
   const {
@@ -69,29 +70,44 @@ export default function ProgressionForm() {
                   Improvements
                 </h3>
 
-                {improvementFields.map(({ id, name }, idx) => (
+                {improvementFields.map(({ id, name, sets, reps }, idx) => (
                   <div className="flex" key={id}>
                     <FormField
                       control={form.control}
                       name={`improvements.${idx}.improve`}
                       render={({ field }) => (
-                        <div className="flex grow items-center">
-                          <span className="w-1/5 scroll-m-20 text-sm font-medium tracking-tight">
-                            {name}
-                          </span>
-                          <FormItem className="w-full">
+                        <div className="flex grow gap-1">
+                          <Input className="w-3/6" value={name} disabled />
+                          <Input className="w-1/6" value={sets} disabled />
+                          <Input className="w-1/6" value={reps} disabled />
+                          <FormItem className="w-2/6">
                             <Select onValueChange={field.onChange}>
                               <FormControl>
                                 <SelectTrigger>
-                                  <SelectValue placeholder={`Select state of ${name}`} />
+                                  <SelectValue placeholder={`Select state`} />
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
                                 <SelectGroup>
                                   <SelectLabel>{name}</SelectLabel>
-                                  <SelectItem value="+">Improve</SelectItem>
-                                  <SelectItem value="=">Keep Working</SelectItem>
-                                  <SelectItem value="-">Slow Down</SelectItem>
+                                  <SelectItem value="+">
+                                    <div className="flex items-center">
+                                      <CircleCheck className="w-4 h-4 mr-2 text-green-600" />
+                                      Move On
+                                    </div>
+                                  </SelectItem>
+                                  <SelectItem value="=">
+                                    <div className="flex items-center">
+                                      <Circle className="w-4 h-4 mr-2 text-blue-600" />
+                                      Maintain
+                                    </div>
+                                  </SelectItem>
+                                  <SelectItem value="-">
+                                    <div className="flex items-center">
+                                      <CircleX className="w-4 h-4 mr-2 text-red-600" />
+                                      Slow Down
+                                    </div>
+                                  </SelectItem>
                                 </SelectGroup>
                               </SelectContent>
                             </Select>

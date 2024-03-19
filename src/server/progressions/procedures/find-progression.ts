@@ -44,8 +44,6 @@ export const findProgression = privateProcedure
       .map((activity) => {
         const { id, exercise, sets, reps, improve } = activity;
 
-        console.log({ improve });
-
         const { difficulty, muscles, description } = exercise;
         const { level, ...difficultyRest } = difficulty;
 

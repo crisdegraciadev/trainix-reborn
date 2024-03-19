@@ -1,11 +1,6 @@
 import { activitySchema } from "@typings/schemas/activity";
+import { improvementSchema } from "@typings/schemas/improvement";
 import { z } from "zod";
-
-const improvementSchema = z.object({
-  exerciseId: z.string(),
-  name: z.string(),
-  improve: z.union([z.literal("+"), z.literal("="), z.literal("-")]),
-});
 
 export const progressionSchema = z.object({
   date: z.date(),
@@ -14,5 +9,3 @@ export const progressionSchema = z.object({
 });
 
 export type ProgressionFormSchema = z.infer<typeof progressionSchema>;
-
-export type ImprovementSchema = z.infer<typeof improvementSchema>;

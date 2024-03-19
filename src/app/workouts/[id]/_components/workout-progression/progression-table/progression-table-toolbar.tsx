@@ -30,6 +30,7 @@ export default function ProgressionTableToolbar() {
         title="Create Progression"
         description="Add a new progression to your workout. Click save when you're done."
         label="Progression"
+        dialogClassNames="max-w-2xl"
         isDialogOpen={isCreateDialogOpen}
         setIsDialogOpen={setIsCreateDialogOpen}
       >

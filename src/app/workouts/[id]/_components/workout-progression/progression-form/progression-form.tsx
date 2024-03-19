@@ -50,6 +50,7 @@ export default function ProgressionForm() {
                   <FormLabel>Creation date</FormLabel>
                   <DatePicker
                     styles={["w-full"]}
+                    disableDays={{ beforeToday: true }}
                     selectedDate={field.value}
                     onSelect={field.onChange}
                     {...field}

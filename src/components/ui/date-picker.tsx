@@ -31,21 +31,24 @@ type _ = Partial<{
   matchDates: Date[];
   styles: string[];
   onSelect: (date?: Date) => void;
-  disableAllExceptMatchDates: boolean;
+  disableDays: Partial<{
+    match: boolean;
+    beforeToday: boolean;
+  }>;
 }>;
 
-export function DatePicker({
-  selectedDate,
-  matchDates,
-  styles,
-  onSelect,
-  disableAllExceptMatchDates,
-}: _) {
+export function DatePicker({ selectedDate, matchDates, styles, onSelect, disableDays }: _) {
   const [date, setDate] = useState<Date | undefined>(selectedDate);
 
   useEffect(() => {
     setDate(selectedDate);
   }, [selectedDate]);
+
+  const disableAllExceptMatchDays = (day: Date) =>
+    !!disableDays?.match &&
+    !(matchDates && matchDates.some((disabledDay) => isSameDay(day, disabledDay)));
+
+  const disableAllBeforeToday = (day: Date) => !!disableDays?.beforeToday && day < new Date();
 
   return (
     <Popover>
@@ -64,10 +67,7 @@ export function DatePicker({
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
         <Calendar
-          disabled={(day) =>
-            !!disableAllExceptMatchDates &&
-            !(matchDates && matchDates.some((disabledDay) => isSameDay(day, disabledDay)))
-          }
+          disabled={(day) => disableAllExceptMatchDays(day) || disableAllBeforeToday(day)}
           mode="single"
           selected={date}
           onSelect={onSelect}

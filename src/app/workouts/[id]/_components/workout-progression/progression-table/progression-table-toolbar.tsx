@@ -22,7 +22,7 @@ export default function ProgressionTableToolbar() {
       <DatePicker
         selectedDate={selectedDate}
         matchDates={matchDates}
-        disableAllExceptMatchDates={true}
+        disableDays={{ match: true }}
         onSelect={handleSelect}
       />
 

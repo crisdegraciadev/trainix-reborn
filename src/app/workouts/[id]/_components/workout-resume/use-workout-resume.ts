@@ -1,3 +1,4 @@
+import { useFindLastProgression } from "@hooks/progression/use-find-last-progression";
 import { useFindProgression } from "@hooks/progression/use-find-progression";
 import { ProgressionDetails } from "@typings/entities/progression";
 import { WorkoutDetails } from "@typings/entities/workout";
@@ -8,11 +9,9 @@ type _ = {
 };
 
 export const useWorkoutResume = ({ workout }: _) => {
-  const lasProgressionId = useMemo(() => workout.progressions[0].id, [workout]);
-
-  const { data, isSuccess, isError } = useFindProgression({
-    id: lasProgressionId,
+  const { data, isSuccess, isError } = useFindLastProgression({
     workoutId: workout.id,
+    isCompleted: true,
   });
 
   const [currentProgression, setCurrentProgression] = useState<ProgressionDetails | null>(null);

@@ -22,14 +22,14 @@ export const createProgression = privateProcedure
 
     return prisma?.$transaction(async (tx) => {
       // Create progression entity
-      const createdProgression = await tx.progression.create({
+      const newProgression = await tx.progression.create({
         data: {
           workoutId,
           createdAt,
         },
       });
 
-      const { id: progressionId } = createdProgression;
+      const { id: progressionId } = newProgression;
 
       // Create the activities and link them to the progression (improve unset)
       const activitiesToCreate = activities.map((activity) => ({
@@ -41,20 +41,16 @@ export const createProgression = privateProcedure
 
       // If it's not the first progression, update the old one with the improvements
       if (improvements && currentProgressionId) {
-        const currentProgression = await tx.progression.findUnique({
+        const oldProgression = await tx.progression.findUnique({
           where: { id: currentProgressionId },
           include: { activities: true },
         });
 
-        if (!currentProgression) {
+        if (!oldProgression) {
           throw new TRPCError({ message: "Current Progression not found", code: "NOT_FOUND" });
         }
 
-        console.log({ currentProgression });
-
-        const { activities } = currentProgression;
-
-        console.log({ activities, improvements });
+        const { activities } = oldProgression;
 
         // Update the improve state in each activity
         await Promise.all(
@@ -62,8 +58,6 @@ export const createProgression = privateProcedure
             const activityUpdate = improvements.find(
               (improvement) => improvement.activityId === activityId
             );
-
-            // console.log({ improvements, activityId });
 
             if (!activityUpdate) {
               throw new Error("This seems like a bug");
@@ -78,8 +72,6 @@ export const createProgression = privateProcedure
             }
 
             const { id: improveId } = improvementOption;
-
-            console.log({ improveId });
 
             await tx.acticity.update({
               where: { id: activityId },

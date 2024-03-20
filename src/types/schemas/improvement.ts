@@ -6,7 +6,9 @@ export const improvementSchema = z.object({
   name: z.string(),
   sets: z.number(),
   reps: z.number(),
-  improve: z.union([z.literal("+"), z.literal("="), z.literal("-")]),
+  improve: z.union([z.literal("+"), z.literal("="), z.literal("-")], {
+    required_error: "Fill all",
+  }),
 });
 
 export type ImprovementSchema = z.infer<typeof improvementSchema>;

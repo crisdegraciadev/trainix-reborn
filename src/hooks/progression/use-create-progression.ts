@@ -11,6 +11,7 @@ export const useCreateProgression = () => {
     if (isSuccess) {
       utils.progressions.findProgression.invalidate();
       utils.progressions.findProgressionDates.invalidate();
+      utils.progressions.findLastProgression.invalidate();
     }
   }, [isSuccess, utils]);
 

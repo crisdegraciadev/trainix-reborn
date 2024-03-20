@@ -1,6 +1,6 @@
 "use client";
 
-import { format, isSameDay } from "date-fns";
+import { format, isAfter, isBefore, isSameDay, subDays } from "date-fns";
 import { Calendar as CalendarIcon, Dot } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { Button, buttonVariants } from "./button";
@@ -33,7 +33,7 @@ type _ = Partial<{
   onSelect: (date?: Date) => void;
   disableDays: Partial<{
     match: boolean;
-    beforeToday: boolean;
+    beforeDate: Date;
   }>;
 }>;
 
@@ -48,7 +48,8 @@ export function DatePicker({ selectedDate, matchDates, styles, onSelect, disable
     !!disableDays?.match &&
     !(matchDates && matchDates.some((disabledDay) => isSameDay(day, disabledDay)));
 
-  const disableAllBeforeToday = (day: Date) => !!disableDays?.beforeToday && day < new Date();
+  const disableAllBeforeDate = (day: Date) =>
+    !!disableDays?.beforeDate && isBefore(day, subDays(disableDays.beforeDate, 1));
 
   return (
     <Popover>
@@ -67,7 +68,7 @@ export function DatePicker({ selectedDate, matchDates, styles, onSelect, disable
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
         <Calendar
-          disabled={(day) => disableAllExceptMatchDays(day) || disableAllBeforeToday(day)}
+          disabled={(day) => disableAllExceptMatchDays(day) || disableAllBeforeDate(day)}
           mode="single"
           selected={date}
           onSelect={onSelect}

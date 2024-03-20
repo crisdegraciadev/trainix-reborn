@@ -1,9 +1,11 @@
 import { privateProcedure } from "@server/trpc";
 import { TRPCError } from "@trpc/server";
 import { activitySchema } from "@typings/schemas/activity";
-import { improvementSchema } from "@typings/schemas/improvement";
+import { ImprovementSchema, improvementSchema } from "@typings/schemas/improvement";
 import { convertToUTC } from "@utils/convert-to-utc";
 import { z } from "zod";
+import { buildTodayDateFilter } from "../utils/build-today-date-filter";
+import { PrismaTx } from "@typings/prisma";
 
 export const createProgression = privateProcedure
   .input(
@@ -19,8 +21,21 @@ export const createProgression = privateProcedure
     const { date, activities } = progression;
 
     const createdAt = convertToUTC(date);
+    const todayFilter = buildTodayDateFilter(createdAt);
 
     return prisma?.$transaction(async (tx) => {
+      // Check if there is some progression on this date
+      const progressionOnSameDate = await tx.progression.findFirst({
+        where: { ...todayFilter },
+      });
+
+      // Delete it to replace it with the incomming progression
+      if (progressionOnSameDate) {
+        await tx.progression.delete({
+          where: { id: progressionOnSameDate.id },
+        });
+      }
+
       // Create progression entity
       const newProgression = await tx.progression.create({
         data: {
@@ -39,48 +54,19 @@ export const createProgression = privateProcedure
 
       await tx.acticity.createMany({ data: activitiesToCreate });
 
-      // If it's not the first progression, update the old one with the improvements
-      if (improvements && currentProgressionId) {
-        const oldProgression = await tx.progression.findUnique({
-          where: { id: currentProgressionId },
-          include: { activities: true },
-        });
+      // If it's not the first progression, update the anterior with the improvements
+      const progressionsCount = await tx.progression.count();
+      const isLastUpdatable =
+        progressionsCount > 1 &&
+        improvements &&
+        currentProgressionId &&
+        currentProgressionId !== progressionOnSameDate?.id;
 
-        if (!oldProgression) {
-          throw new TRPCError({ message: "Current Progression not found", code: "NOT_FOUND" });
-        }
-
-        const { activities } = oldProgression;
-
-        // Update the improve state in each activity
-        await Promise.all(
-          activities.map(async ({ id: activityId }) => {
-            const activityUpdate = improvements.find(
-              (improvement) => improvement.activityId === activityId
-            );
-
-            if (!activityUpdate) {
-              throw new Error("This seems like a bug");
-            }
-
-            const { improve } = activityUpdate;
-
-            const improvementOption = await tx.improve.findUnique({ where: { value: improve } });
-
-            if (!improvementOption) {
-              throw new TRPCError({ message: "Improvement Option not found", code: "NOT_FOUND" });
-            }
-
-            const { id: improveId } = improvementOption;
-
-            await tx.acticity.update({
-              where: { id: activityId },
-              data: { improveId },
-            });
-          })
-        );
+      if (isLastUpdatable) {
+        await updateOldProgression(tx, { improvements, currentProgressionId });
       }
 
+      // Finally return the created progression
       return tx.progression.findFirst({
         where: { id: progressionId },
         include: {
@@ -89,3 +75,62 @@ export const createProgression = privateProcedure
       });
     });
   });
+
+type UpdateOldProgressionArgs = {
+  currentProgressionId: string;
+  improvements: ImprovementSchema[];
+};
+
+const updateOldProgression = async (tx: PrismaTx, args: UpdateOldProgressionArgs) => {
+  const { currentProgressionId, improvements } = args;
+
+  console.log({ currentProgressionId });
+
+  const oldProgression = await tx.progression.findUnique({
+    where: { id: currentProgressionId },
+    include: { activities: true },
+  });
+
+  console.log({ oldProgression });
+
+  if (!oldProgression) {
+    throw new TRPCError({ message: "Current Progression not found", code: "NOT_FOUND" });
+  }
+
+  const { activities } = oldProgression;
+
+  // Update the improve state in each activity
+  await Promise.all(
+    activities.map(async ({ id: activityId }) => updateActivities(tx, { improvements, activityId }))
+  );
+};
+
+type UpdateActivitiesArgs = {
+  activityId: string;
+  improvements: ImprovementSchema[];
+};
+
+const updateActivities = async (tx: PrismaTx, args: UpdateActivitiesArgs) => {
+  const { activityId, improvements } = args;
+
+  const activityUpdate = improvements.find((improvement) => improvement.activityId === activityId);
+
+  if (!activityUpdate) {
+    throw new Error("This seems like a bug");
+  }
+
+  const { improve } = activityUpdate;
+
+  const improvementOption = await tx.improve.findUnique({ where: { value: improve } });
+
+  if (!improvementOption) {
+    throw new TRPCError({ message: "Improvement Option not found", code: "NOT_FOUND" });
+  }
+
+  const { id: improveId } = improvementOption;
+
+  await tx.acticity.update({
+    where: { id: activityId },
+    data: { improveId },
+  });
+};

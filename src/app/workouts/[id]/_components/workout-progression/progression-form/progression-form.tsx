@@ -31,11 +31,13 @@ export default function ProgressionForm() {
     appendActivity,
     removeActivity,
     improvementFields,
-    currentProgression,
     exercisesOptions,
     isFormLoading,
+    lastProgression,
     onSubmit,
   } = useProgressionForm();
+
+  console.log({ lastDate: lastProgression?.createdAt });
 
   return (
     <Form {...form}>
@@ -50,7 +52,7 @@ export default function ProgressionForm() {
                   <FormLabel>Creation date</FormLabel>
                   <DatePicker
                     styles={["w-full"]}
-                    disableDays={{ beforeToday: true }}
+                    disableDays={{ beforeDate: lastProgression?.createdAt }}
                     selectedDate={field.value}
                     onSelect={field.onChange}
                     {...field}
@@ -82,7 +84,7 @@ export default function ProgressionForm() {
                           <Input className="w-1/6" value={sets} disabled />
                           <Input className="w-1/6" value={reps} disabled />
                           <FormItem className="w-2/6">
-                            <Select onValueChange={field.onChange}>
+                            <Select onValueChange={field.onChange} defaultValue="=">
                               <FormControl>
                                 <SelectTrigger>
                                   <SelectValue placeholder={`Select state`} />

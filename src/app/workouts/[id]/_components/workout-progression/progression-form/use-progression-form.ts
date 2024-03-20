@@ -12,9 +12,10 @@ import { useCreateProgression } from "@hooks/progression/use-create-progression"
 import { TOAST_MESSAGES } from "./toast-messages";
 import { toast } from "@components/ui/use-toast";
 import { useWorkoutProgressionContext } from "../workout-progression-context";
+import { useFindLastProgression } from "@hooks/progression/use-find-last-progression";
 
 const DEFAULT_FORM_VALUES = {
-  date: new Date(),
+  date: undefined,
   activities: [],
   improvements: [],
 };
@@ -30,7 +31,7 @@ export const useProgressionForm = () => {
     useWorkoutProgressionContext();
 
   const userId = useMemo(() => session.user.id, [session]);
-  const workoutId = useMemo(() => currentWorkout?.id, [currentWorkout]);
+  const workoutId = useMemo(() => currentWorkout?.id ?? "", [currentWorkout]);
 
   const {
     mutate: createProgression,
@@ -39,21 +40,45 @@ export const useProgressionForm = () => {
     isError: isCreateProgressionError,
   } = useCreateProgression();
 
+  useEffect(() => {
+    if (isCreateProgressionLoading) {
+      setIsFormLoading(true);
+    }
+  }, [isCreateProgressionLoading]);
+
+  useEffect(() => {
+    if (isCreateProgressionError) toast(TOAST_MESSAGES.createError);
+    setIsFormLoading(false);
+  }, [isCreateProgressionError]);
+
   const {
     data: exercises,
     isSuccess: isExercisesSuccess,
     isError: isExercisesError,
   } = useFindExerciseSelectList({ userId });
 
-  const [isFormLoading, setIsFormLoading] = useState(false);
-  const [isActivityFieldSetup, setIsActivityFieldSetup] = useState(false);
+  useEffect(() => {
+    if (isExercisesSuccess && exercises) {
+      setExercisesOptions(exercises);
+    }
+  }, [isExercisesSuccess, exercises]);
 
-  const [exercisesOptions, setExercisesOptions] = useState<SelectOption[]>([]);
+  useEffect(() => {
+    if (isExercisesError) {
+      setExercisesOptions([]);
+    }
+  }, [isExercisesError]);
+
+  const { data: lastProgression } = useFindLastProgression({ workoutId });
 
   const form = useForm<ProgressionFormSchema>({
     resolver: zodResolver(progressionSchema),
     defaultValues: DEFAULT_FORM_VALUES,
   });
+
+  const [isFormLoading, setIsFormLoading] = useState(false);
+  const [isActivityFieldSetup, setIsActivityFieldSetup] = useState(false);
+  const [exercisesOptions, setExercisesOptions] = useState<SelectOption[]>([]);
 
   const {
     fields: activityFields,
@@ -74,39 +99,40 @@ export const useProgressionForm = () => {
   });
 
   useEffect(() => {
-    const improvementsValue = form.getValues("improvements");
-    console.log({ currentProgression });
+    if (lastProgression) {
+      form.setValue("date", lastProgression.createdAt);
+    }
+  }, [lastProgression, form]);
 
-    if (currentProgression && improvementsValue.length < currentProgression.activities.length) {
-      currentProgression?.activities.forEach(({ id, name, exerciseId, sets, reps }) => {
-        appendImprovementField({
-          name,
-          exerciseId,
-          activityId: id,
-          sets,
-          reps,
-          improve: "=",
-        });
+  // Append improvements fields dinamically on mount
+  useEffect(() => {
+    const improvementsValue = form.getValues("improvements");
+
+    if (lastProgression && improvementsValue.length < lastProgression.activities.length) {
+      lastProgression?.activities.forEach(({ id, name, exerciseId, sets, reps }) => {
+        appendImprovementField({ name, exerciseId, activityId: id, sets, reps, improve: "=" });
       });
     }
-  }, [currentProgression, improvementFields, form, appendImprovementField]);
+  }, [lastProgression, improvementFields, form, appendImprovementField]);
 
+  // Append activity fields dinamically on mount
   useEffect(() => {
     const activitiesValue = form.getValues("activities");
 
     if (
-      currentProgression &&
-      activitiesValue.length < currentProgression.activities.length &&
+      lastProgression &&
+      activitiesValue.length < lastProgression.activities.length &&
       !isActivityFieldSetup
     ) {
-      currentProgression?.activities.forEach(({ exerciseId, sets, reps, order }) => {
+      lastProgression?.activities.forEach(({ exerciseId, sets, reps, order }) => {
         appendActivityField({ exerciseId, sets, reps, order });
       });
 
       setIsActivityFieldSetup(true);
     }
-  }, [currentProgression, activityFields, form, appendActivityField, isActivityFieldSetup]);
+  }, [lastProgression, activityFields, form, appendActivityField, isActivityFieldSetup]);
 
+  // Display spinner when creating a progression
   useEffect(() => {
     if (isCreateProgressionSuccess && form.formState.isSubmitSuccessful) {
       setIsFormLoading(false);
@@ -115,29 +141,6 @@ export const useProgressionForm = () => {
       setIsCreateDialogOpen(false);
     }
   }, [form, isCreateProgressionSuccess, setIsCreateDialogOpen]);
-
-  useEffect(() => {
-    if (isCreateProgressionLoading) {
-      setIsFormLoading(true);
-    }
-  }, [isCreateProgressionLoading]);
-
-  useEffect(() => {
-    if (isCreateProgressionError) toast(TOAST_MESSAGES.createError);
-    setIsFormLoading(false);
-  }, [isCreateProgressionError]);
-
-  useEffect(() => {
-    if (isExercisesSuccess && exercises) {
-      setExercisesOptions(exercises);
-    }
-  }, [isExercisesSuccess, exercises]);
-
-  useEffect(() => {
-    if (isExercisesError) {
-      setExercisesOptions([]);
-    }
-  }, [isExercisesError]);
 
   const onSubmit = async (data: ProgressionFormSchema) => {
     const { date, activities, improvements } = data;
@@ -176,6 +179,7 @@ export const useProgressionForm = () => {
     activityFields,
     improvementFields,
     isFormLoading,
+    lastProgression,
     currentProgression,
     onSubmit,
     appendActivity,

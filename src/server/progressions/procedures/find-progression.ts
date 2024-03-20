@@ -4,13 +4,14 @@ import { ActivityWithExercise } from "@typings/entities/activity";
 import { ProgressionDetails } from "@typings/entities/progression";
 import { convertToUTC } from "@utils/convert-to-utc";
 import { z } from "zod";
+import { buildTodayDateFilter } from "../utils/build-today-date-filter";
 
 export const findProgression = privateProcedure
   .input(z.object({ workoutId: z.string(), id: z.string().optional(), date: z.date().optional() }))
   .query(async ({ input }): Promise<ProgressionDetails | null> => {
     const { workoutId, id, date } = input;
 
-    const dateFilter = date ? buildDateFilter(convertToUTC(date)) : {};
+    const dateFilter = date ? buildTodayDateFilter(convertToUTC(date)) : {};
 
     const progression = await db.progression.findFirst({
       where: {
@@ -66,18 +67,3 @@ export const findProgression = privateProcedure
       activities: mappedActivities,
     };
   });
-
-const buildDateFilter = (date: Date) => {
-  const start = new Date(date?.getTime());
-  start.setUTCHours(0, 0, 0, 0);
-
-  const end = new Date(date?.getTime());
-  end.setUTCHours(23, 59, 59, 999);
-
-  return {
-    createdAt: {
-      gte: start,
-      lte: end,
-    },
-  };
-};

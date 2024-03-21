@@ -54,8 +54,6 @@ export const progressionColumns: ColumnDef<ActivityWithExercise>[] = [
     cell: ({ row }) => {
       const improve: Improve = row.getValue("improve");
 
-      console.log({ improve });
-
       if (!improve) {
         return "";
       }

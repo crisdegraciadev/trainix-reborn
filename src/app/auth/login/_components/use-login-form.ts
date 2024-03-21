@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@components/ui/use-toast";
 import { HttpStatus } from "@constants/http";
 import { LoginFormSchema, loginFormSchema } from "./login-form-schema";
+import { AppRoutes } from "@constants/routes";
 
 export const useLoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -36,7 +37,7 @@ export const useLoginForm = () => {
       });
     }
 
-    router.push("/dashboard");
+    router.push(AppRoutes.WORKOUTS);
     router.refresh();
   };
 

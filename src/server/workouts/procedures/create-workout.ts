@@ -2,6 +2,7 @@ import { privateProcedure } from "@server/trpc";
 import { workoutSchema } from "../schemas/workout-schema";
 import { Workout } from "@typings/entities/workout";
 import { TRPCError } from "@trpc/server";
+import { convertToUTC } from "@utils/convert-to-utc";
 
 export const createWorkout = privateProcedure
   .input(workoutSchema)
@@ -18,8 +19,11 @@ export const createWorkout = privateProcedure
         },
       });
 
+      const progressionCreationDate = convertToUTC(new Date());
+      progressionCreationDate.setUTCHours(0, 0, 0, 0);
+
       const { id: progressionId } = await tx.progression.create({
-        data: { workoutId: workout.id },
+        data: { workoutId: workout.id, createdAt: progressionCreationDate },
       });
 
       const improveState = await tx.improve.findUnique({ where: { name: "Keep working" } });

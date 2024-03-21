@@ -76,6 +76,8 @@ export const useProgressionForm = () => {
     defaultValues: DEFAULT_FORM_VALUES,
   });
 
+  console.log({ formData: form.getValues() });
+
   const [isFormLoading, setIsFormLoading] = useState(false);
   const [isActivityFieldSetup, setIsActivityFieldSetup] = useState(false);
   const [exercisesOptions, setExercisesOptions] = useState<SelectOption[]>([]);
@@ -169,7 +171,6 @@ export const useProgressionForm = () => {
 
   const removeActivity = (e: React.MouseEvent<Element, MouseEvent>, idx: number) => {
     e.preventDefault();
-    console.log({ activityFields });
     removeActivityField(idx);
   };
 

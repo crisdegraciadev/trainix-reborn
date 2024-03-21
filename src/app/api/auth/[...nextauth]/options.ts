@@ -25,8 +25,7 @@ export const authOptions: NextAuthOptions = {
 
         const { passwordHash } = user;
 
-        // const passwordMatch = bcrypt.compareSync(password, passwordHash);
-        const passwordMatch = true;
+        const passwordMatch = bcrypt.compareSync(password, passwordHash);
 
         if (!passwordMatch) {
           throw new Error("Wrong credentials");

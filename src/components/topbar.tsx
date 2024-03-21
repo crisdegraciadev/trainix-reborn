@@ -36,7 +36,7 @@ export default function Topbar({ user }: _) {
           <span className="font-bold">Trainix</span>
         </div>
         <nav className="flex items-center gap-6 text-sm">
-          <Link
+          {/* <Link
             href={AppRoutes.DASHBOARD}
             className={cn(
               "text-sm transition-colors hover:text-primary",
@@ -44,7 +44,7 @@ export default function Topbar({ user }: _) {
             )}
           >
             Dashboard
-          </Link>
+          </Link> */}
           <Link
             href={AppRoutes.WORKOUTS}
             className={cn(

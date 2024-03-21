@@ -37,8 +37,6 @@ export default function ProgressionForm() {
     onSubmit,
   } = useProgressionForm();
 
-  console.log({ lastDate: lastProgression?.createdAt });
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="grid">

@@ -1,6 +1,16 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
+
+const users = [
+  {
+    name: "cristian",
+    surname: "de gracia nuero",
+    email: "admin@admin.com",
+    passwordHash: bcrypt.hashSync("123456789", 8),
+  },
+];
 
 const muscles = [
   { name: "Chest", value: "chest" },
@@ -30,6 +40,17 @@ const improveStates = [
 ];
 
 async function main() {
+  for (const user of users) {
+    const isFound = await prisma.user.findFirst({
+      where: { email: user.email },
+    });
+
+    if (!isFound) {
+      const added = await prisma.user.create({ data: user });
+      console.log("User added", added);
+    }
+  }
+
   for (const muscle of muscles) {
     const isFound = await prisma.muscle.findFirst({
       where: {

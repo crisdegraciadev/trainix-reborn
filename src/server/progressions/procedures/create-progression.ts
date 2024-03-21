@@ -23,6 +23,8 @@ export const createProgression = privateProcedure
     const createdAt = convertToUTC(date);
     const todayFilter = buildTodayDateFilter(createdAt);
 
+    console.log({ createdAt, todayFilter });
+
     return prisma?.$transaction(async (tx) => {
       // Check if there is some progression on this date
       const progressionOnSameDate = await tx.progression.findFirst({
@@ -84,14 +86,10 @@ type UpdateOldProgressionArgs = {
 const updateOldProgression = async (tx: PrismaTx, args: UpdateOldProgressionArgs) => {
   const { currentProgressionId, improvements } = args;
 
-  console.log({ currentProgressionId });
-
   const oldProgression = await tx.progression.findUnique({
     where: { id: currentProgressionId },
     include: { activities: true },
   });
-
-  console.log({ oldProgression });
 
   if (!oldProgression) {
     throw new TRPCError({ message: "Current Progression not found", code: "NOT_FOUND" });

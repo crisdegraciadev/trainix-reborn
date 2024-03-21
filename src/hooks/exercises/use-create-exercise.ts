@@ -13,9 +13,9 @@ export const useCreateExercise = () => {
   }, [isSuccess, utils]);
 
   return {
-    createExercise: mutate,
-    isCreateExerciseSuccess: isSuccess,
-    isCreateExerciseError: isError,
-    isCreateExerciseLoading: isLoading,
+    mutate,
+    isSuccess,
+    isError,
+    isLoading,
   };
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2, MoreHorizontal, Pencil, PlusCircle, Trash2 } from "lucide-react";
+import { Loader2, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,13 +20,19 @@ import {
   AlertDialogTitle,
 } from "@components/ui/alert-dialog";
 import { Button, buttonVariants } from "@components/ui/button";
-import { ExerciseTableData } from "./exercise-columns";
 import { useExerciseActions } from "./use-exercise-actions";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@components/ui/dialog";
 import ExerciseForm from "../exercise-form/exercise-form";
 import { CustomCellProps } from "@components/data-table/types";
+import { ExerciseRow } from "@typings/entities/exercise";
 
-export default function ExerciseActionsCell({ row }: CustomCellProps<ExerciseTableData>) {
+export default function ExerciseActionsCell({ row }: CustomCellProps<ExerciseRow>) {
   const {
     deleteExercise,
     toggleDeleteDialog,
@@ -51,11 +57,17 @@ export default function ExerciseActionsCell({ row }: CustomCellProps<ExerciseTab
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="flex justify-start items-center" onClick={toggleDeleteDialog}>
+            <DropdownMenuItem
+              className="flex justify-start items-center"
+              onClick={toggleDeleteDialog}
+            >
               <Trash2 className="w-4 h-4 mr-2" /> Delete
             </DropdownMenuItem>
 
-            <DropdownMenuItem className="flex justify-start items-center" onClick={toggleUpdateDialog}>
+            <DropdownMenuItem
+              className="flex justify-start items-center"
+              onClick={toggleUpdateDialog}
+            >
               <Pencil className="w-4 h-4 mr-2" /> Edit
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -68,8 +80,8 @@ export default function ExerciseActionsCell({ row }: CustomCellProps<ExerciseTab
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your exercise and remove the workouts that make
-              use of it.
+              This action cannot be undone. This will permanently delete your exercise and remove
+              the workouts that make use of it.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -95,7 +107,11 @@ export default function ExerciseActionsCell({ row }: CustomCellProps<ExerciseTab
               Update a exercise from your exercise pull. Click save when you&apos;re done.
             </DialogDescription>
           </DialogHeader>
-          <ExerciseForm type="update" rowData={row.original} onComplete={() => toggleUpdateDialog()} />
+          <ExerciseForm
+            type="update"
+            rowData={row.original}
+            onComplete={() => toggleUpdateDialog()}
+          />
         </DialogContent>
       </Dialog>
     </div>

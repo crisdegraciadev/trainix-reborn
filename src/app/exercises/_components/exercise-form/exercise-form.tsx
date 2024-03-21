@@ -22,11 +22,45 @@ import { Loader2 } from "lucide-react";
 import { ExerciseFormProps, useExerciseForm } from "./use-exercise-form";
 import MultipleSelector from "@components/ui/multi-select";
 import { Textarea } from "@components/ui/textarea";
+import { Skeleton } from "@components/ui/skeleton";
+
+function ExerciseFormSkeleton() {
+  return (
+    <div className="flex items-center space-x-4 mt-2">
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[100px]" />
+          <Skeleton className="h-10 w-[500px]" />
+        </div>
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[100px]" />
+          <Skeleton className="h-10 w-[500px]" />
+        </div>
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[100px]" />
+          <Skeleton className="h-10 w-[500px]" />
+        </div>
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[100px]" />
+          <Skeleton className="h-20 w-[500px]" />
+        </div>
+
+        <div className="w-full flex justify-end">
+          <Skeleton className="h-10 w-[100px]" />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function ExerciseForm(formProps: ExerciseFormProps) {
-  const { form, musclesOptions, difficultiesOptions, isFormLoading, onSubmit } = useExerciseForm({
+  const { form, isFormLoading, onSubmit, muscles, difficulties } = useExerciseForm({
     ...formProps,
   });
+
+  if (!muscles || !difficulties) {
+    return <ExerciseFormSkeleton />;
+  }
 
   return (
     <Form {...form}>
@@ -60,7 +94,7 @@ export default function ExerciseForm(formProps: ExerciseFormProps) {
                 <FormLabel>Muscles</FormLabel>
                 <FormControl>
                   <MultipleSelector
-                    options={musclesOptions}
+                    options={muscles}
                     hidePlaceholderWhenSelected
                     placeholder="Select muscles"
                     emptyIndicator={
@@ -78,7 +112,7 @@ export default function ExerciseForm(formProps: ExerciseFormProps) {
 
           <FormField
             control={form.control}
-            name="difficulty"
+            name="difficultyId"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Difficulty</FormLabel>
@@ -89,9 +123,9 @@ export default function ExerciseForm(formProps: ExerciseFormProps) {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        {difficultiesOptions.map(({ id, value, name: label }) => (
-                          <SelectItem key={id} value={value}>
-                            {label}
+                        {difficulties.map((difficulty) => (
+                          <SelectItem key={difficulty.id} value={difficulty.id}>
+                            {difficulty.name}
                           </SelectItem>
                         ))}
                       </SelectGroup>
@@ -108,7 +142,7 @@ export default function ExerciseForm(formProps: ExerciseFormProps) {
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea
                     id="description"

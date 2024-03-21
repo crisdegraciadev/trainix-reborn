@@ -13,9 +13,9 @@ export const useUpdateExercise = () => {
   }, [isSuccess, utils]);
 
   return {
-    updateExercise: mutate,
-    isUpdateExerciseSuccess: isSuccess,
-    isUpdateExerciseLoading: isLoading,
-    isUpdateExerciseError: isError,
+    mutate,
+    isSuccess,
+    isLoading,
+    isError,
   };
 };

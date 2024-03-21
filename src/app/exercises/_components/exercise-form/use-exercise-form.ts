@@ -6,10 +6,12 @@ import { useForm } from "react-hook-form";
 import { ExerciseFormSchema, exerciseSchema } from "./exercise-schema";
 import { TOAST_MESSAGES } from "./toast-messages";
 import { ExerciseRow } from "@typings/entities/exercise";
-import { useExerciseMutations } from "./use-exercise-mutations";
 import { redirect } from "next/navigation";
 import { AppRoutes } from "@constants/routes";
-import { useExerciseQueries } from "./use-exercise-queries";
+import { useCreateExercise } from "@hooks/exercises/use-create-exercise";
+import { useUpdateExercise } from "@hooks/exercises/use-update-exercise";
+import { useFindDifficulties } from "@hooks/difficulties/use-find-difficulties-options";
+import { useFindMusclesSelectList } from "@hooks/muscles/use-find-muscles-options";
 
 type BaseProps = {
   onComplete: () => void;
@@ -18,37 +20,47 @@ type BaseProps = {
 export type ExerciseFormProps = BaseProps &
   ({ type: "create"; rowData?: null } | { type: "update"; rowData: ExerciseRow });
 
+const DEFAULT_FORM_VALUES = {};
+
 export const useExerciseForm = ({ type, rowData, onComplete }: ExerciseFormProps) => {
-  const {
-    isCreateExerciseSuccess,
-    isCreateExerciseLoading,
-    isCreateExerciseError,
-    isUpdateExerciseSuccess,
-    isUpdateExerciseLoading,
-    isUpdateExerciseError,
-    createExercise,
-    updateExercise,
-  } = useExerciseMutations();
-
-  const { muscles, difficulties } = useExerciseQueries();
-
   const { data: session } = useSession();
+
+  if (!session) {
+    redirect(AppRoutes.LOGIN);
+  }
+
+  const { data: muscles } = useFindMusclesSelectList();
+
+  const { data: difficulties } = useFindDifficulties();
+
+  const {
+    isSuccess: isCreateExerciseSuccess,
+    isLoading: isCreateExerciseLoading,
+    isError: isCreateExerciseError,
+    mutate: createExercise,
+  } = useCreateExercise();
+
+  const {
+    isSuccess: isUpdateExerciseSuccess,
+    isLoading: isUpdateExerciseLoading,
+    isError: isUpdateExerciseError,
+    mutate: updateExercise,
+  } = useUpdateExercise();
+
   const { toast } = useToast();
 
-  const [isFormLoading, setIsFormLoading] = useState(false);
+  const [isFormSubmitting, setIsFormSubmitting] = useState(false);
 
   const form = useForm<ExerciseFormSchema>({
     resolver: zodResolver(exerciseSchema),
-    defaultValues: rowData ?? {},
+    defaultValues: rowData ?? DEFAULT_FORM_VALUES,
   });
 
   useEffect(() => {
     const { isSubmitSuccessful: isSubmitSuccess } = form.formState;
-    const isMutationSuccess =
-      (isCreateExerciseSuccess || isUpdateExerciseSuccess) && isSubmitSuccess;
 
-    if (isMutationSuccess) {
-      setIsFormLoading(false);
+    if ((isCreateExerciseSuccess || isUpdateExerciseSuccess) && isSubmitSuccess) {
+      setIsFormSubmitting(false);
       toast(TOAST_MESSAGES[type]);
       form.reset();
       onComplete();
@@ -56,10 +68,8 @@ export const useExerciseForm = ({ type, rowData, onComplete }: ExerciseFormProps
   }, [form, isCreateExerciseSuccess, isUpdateExerciseSuccess, onComplete, toast, type]);
 
   useEffect(() => {
-    const isMutationLoading = isCreateExerciseLoading || isUpdateExerciseLoading;
-
-    if (isMutationLoading) {
-      setIsFormLoading(true);
+    if (isCreateExerciseLoading || isUpdateExerciseLoading) {
+      setIsFormSubmitting(true);
     }
   }, [isCreateExerciseLoading, isUpdateExerciseLoading]);
 
@@ -72,14 +82,10 @@ export const useExerciseForm = ({ type, rowData, onComplete }: ExerciseFormProps
       toast(TOAST_MESSAGES.updateError);
     }
 
-    setIsFormLoading(false);
+    setIsFormSubmitting(false);
   }, [isCreateExerciseError, isUpdateExerciseError, toast]);
 
   const onSubmit = async (data: ExerciseFormSchema) => {
-    if (!session) {
-      redirect(AppRoutes.LOGIN);
-    }
-
     const { user } = session;
 
     if (type === "create") {
@@ -102,7 +108,7 @@ export const useExerciseForm = ({ type, rowData, onComplete }: ExerciseFormProps
 
   return {
     form,
-    isFormLoading,
+    isFormSubmitting,
     onSubmit,
     muscles,
     difficulties,

@@ -54,11 +54,13 @@ function ExerciseFormSkeleton() {
 }
 
 export default function ExerciseForm(formProps: ExerciseFormProps) {
-  const { form, isFormLoading, onSubmit, muscles, difficulties } = useExerciseForm({
+  const { form, isFormSubmitting, onSubmit, muscles, difficulties } = useExerciseForm({
     ...formProps,
   });
 
-  if (!muscles || !difficulties) {
+  const isFormLoading = !muscles || !difficulties;
+
+  if (isFormLoading) {
     return <ExerciseFormSkeleton />;
   }
 
@@ -77,7 +79,7 @@ export default function ExerciseForm(formProps: ExerciseFormProps) {
                     id="name"
                     placeholder="Name"
                     type="text"
-                    disabled={isFormLoading}
+                    disabled={isFormSubmitting}
                     {...field}
                   />
                 </FormControl>
@@ -117,7 +119,11 @@ export default function ExerciseForm(formProps: ExerciseFormProps) {
               <FormItem>
                 <FormLabel>Difficulty</FormLabel>
                 <FormControl>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={isFormSubmitting}
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="Select difficulty" />
                     </SelectTrigger>
@@ -147,7 +153,7 @@ export default function ExerciseForm(formProps: ExerciseFormProps) {
                   <Textarea
                     id="description"
                     placeholder="Description"
-                    disabled={isFormLoading}
+                    disabled={isFormSubmitting}
                     {...field}
                   />
                 </FormControl>
@@ -158,8 +164,8 @@ export default function ExerciseForm(formProps: ExerciseFormProps) {
         </div>
 
         <div className="flex justify-end">
-          <Button type="submit" className="mt-4" disabled={isFormLoading}>
-            {isFormLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          <Button type="submit" className="mt-4" disabled={isFormSubmitting}>
+            {isFormSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Save
           </Button>
         </div>

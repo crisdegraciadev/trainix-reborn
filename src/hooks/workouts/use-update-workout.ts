@@ -13,9 +13,9 @@ export const useUpdateWorkout = () => {
   }, [isSuccess, utils]);
 
   return {
-    updateWorkout: mutate,
-    isUpdateWorkoutSuccess: isSuccess,
-    isUpdateWorkoutLoading: isLoading,
-    isUpdateWorkoutError: isError,
+    mutate,
+    isSuccess,
+    isLoading,
+    isError,
   };
 };

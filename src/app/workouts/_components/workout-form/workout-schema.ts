@@ -7,7 +7,7 @@ export const workoutSchema = z.object({
   difficultyId: z.string(),
   description: z.string().optional(),
   muscles: z.array(muscleSchema).min(1),
-  activities: z.array(activitySchema).min(1),
+  activities: z.array(activitySchema),
 });
 
 export type WorkoutFormSchema = z.infer<typeof workoutSchema>;

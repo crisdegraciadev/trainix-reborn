@@ -8,15 +8,17 @@ export const updateWorkout = privateProcedure
   .input(z.object({ id: z.string(), workout: workoutSchema }))
   .mutation(async ({ input }): Promise<Workout> => {
     const { id, workout } = input;
-    const { muscles: musclesIds, ...workoutData } = workout;
+    const { muscles: musclesIds, activities, ...workoutData } = workout;
+
+    console.log({ workout });
 
     return db.workout.update({
+      where: { id },
       data: {
         ...workoutData,
         muscles: {
           connect: musclesIds,
         },
       },
-      where: { id },
     });
   });

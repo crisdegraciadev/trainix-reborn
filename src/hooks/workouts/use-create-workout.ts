@@ -13,9 +13,9 @@ export const useCreateWorkout = () => {
   }, [isSuccess, utils]);
 
   return {
-    createWorkout: mutate,
-    isCreateWorkoutSuccess: isSuccess,
-    isCreateWorkoutError: isError,
-    isCreateWorkoutLoading: isLoading,
+    mutate,
+    isSuccess,
+    isError,
+    isLoading,
   };
 };

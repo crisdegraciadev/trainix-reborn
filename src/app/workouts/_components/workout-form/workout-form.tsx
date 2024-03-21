@@ -24,6 +24,45 @@ import { Textarea } from "@components/ui/textarea";
 import { WorkoutFormProps, useWorkoutForm } from "./use-workout-form";
 import { ScrollArea } from "@components/ui/scroll-area";
 import { cn } from "@lib/utils";
+import { Skeleton } from "@components/ui/skeleton";
+
+function WorkoutFormSkeleton() {
+  return (
+    <div className="flex items-center space-x-4 mt-2">
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[100px]" />
+          <Skeleton className="h-10 w-[500px]" />
+        </div>
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[100px]" />
+          <Skeleton className="h-10 w-[500px]" />
+        </div>
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[100px]" />
+          <Skeleton className="h-10 w-[500px]" />
+        </div>
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[100px]" />
+          <Skeleton className="h-20 w-[500px]" />
+        </div>
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[100px]" />
+          <Skeleton className="h-10 w-[500px]" />
+          <Skeleton className="h-10 w-[500px]" />
+          <Skeleton className="h-10 w-[500px]" />
+          <Skeleton className="h-10 w-[500px]" />
+        </div>
+
+        <div className="w-full flex justify-end">
+          <Skeleton className="h-10 w-[100px]" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DynamicExerciseFields() {}
 
 export default function WorkoutForm(formProps: WorkoutFormProps) {
   const {
@@ -31,12 +70,20 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
     activityFields,
     appendActivity,
     removeActivity,
-    musclesOptions,
-    difficultiesOptions,
-    exercisesOptions,
-    isFormLoading,
+    muscles,
+    difficulties,
+    exercises,
+    isFormSubmitting,
     onSubmit,
   } = useWorkoutForm(formProps);
+
+  const { type } = formProps;
+
+  const isFormDataLoading = !muscles || !difficulties || !exercises;
+
+  if (isFormDataLoading) {
+    return <WorkoutFormSkeleton />;
+  }
 
   return (
     <Form {...form}>
@@ -54,7 +101,7 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
                       id="name"
                       placeholder="Name"
                       type="text"
-                      disabled={isFormLoading}
+                      disabled={isFormSubmitting}
                       {...field}
                     />
                   </FormControl>
@@ -71,7 +118,7 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
                   <FormLabel>Muscles</FormLabel>
                   <FormControl>
                     <MultipleSelector
-                      options={musclesOptions}
+                      options={muscles}
                       hidePlaceholderWhenSelected
                       placeholder="Select muscles"
                       emptyIndicator={
@@ -94,15 +141,19 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
                 <FormItem>
                   <FormLabel>Difficulty</FormLabel>
                   <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      disabled={isFormSubmitting}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Select difficulty" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {difficultiesOptions.map(({ id, name }) => (
-                            <SelectItem key={id} value={id!}>
-                              {name}
+                          {difficulties.map((difficulty) => (
+                            <SelectItem key={difficulty.id} value={difficulty.id}>
+                              {difficulty.name}
                             </SelectItem>
                           ))}
                         </SelectGroup>
@@ -124,7 +175,7 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
                     <Textarea
                       id="description"
                       placeholder="Description"
-                      disabled={isFormLoading}
+                      disabled={isFormSubmitting}
                       {...field}
                     />
                   </FormControl>
@@ -152,15 +203,15 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
                       render={({ field }) => (
                         <FormItem className="w-full">
                           <FormControl>
-                            <Select onValueChange={field.onChange}>
+                            <Select onValueChange={field.onChange} disabled={isFormSubmitting}>
                               <SelectTrigger>
                                 <SelectValue placeholder={`Select exercise ${idx + 1}`} />
                               </SelectTrigger>
                               <SelectContent>
                                 <SelectGroup>
-                                  {exercisesOptions.map(({ id, value, name: label }) => (
-                                    <SelectItem key={id} value={value}>
-                                      {label}
+                                  {exercises.map((exercise) => (
+                                    <SelectItem key={id} value={exercise.id}>
+                                      {exercise.name}
                                     </SelectItem>
                                   ))}
                                 </SelectGroup>
@@ -177,7 +228,12 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
                       render={({ field }) => (
                         <FormItem className="w-32">
                           <FormControl>
-                            <Input type="number" placeholder="Sets" {...field} />
+                            <Input
+                              type="number"
+                              placeholder="Sets"
+                              disabled={isFormSubmitting}
+                              {...field}
+                            />
                           </FormControl>
                         </FormItem>
                       )}
@@ -189,7 +245,12 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
                       render={({ field }) => (
                         <FormItem className="w-32">
                           <FormControl>
-                            <Input type="number" placeholder="Reps" {...field} />
+                            <Input
+                              type="number"
+                              placeholder="Reps"
+                              disabled={isFormSubmitting}
+                              {...field}
+                            />
                           </FormControl>
                         </FormItem>
                       )}
@@ -199,6 +260,7 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
                       className="mt-0 w-16"
                       onClick={(e) => removeActivity(e, idx)}
                       size="icon"
+                      disabled={isFormSubmitting}
                       variant="outline"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -218,7 +280,7 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
               className="w-full h-10 mt-2"
               onClick={(e) => appendActivity(e)}
               variant="secondary"
-              disabled={isFormLoading}
+              disabled={isFormSubmitting}
             >
               <PlusCircle />
             </Button>
@@ -226,8 +288,8 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
         </ScrollArea>
 
         <div className="flex justify-end">
-          <Button type="submit" className="mt-4" disabled={isFormLoading}>
-            {isFormLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          <Button type="submit" className="mt-4" disabled={isFormSubmitting}>
+            {isFormSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Save
           </Button>
         </div>

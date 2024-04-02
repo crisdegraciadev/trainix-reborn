@@ -12,9 +12,6 @@ export const CircleCheck = ({ className }: _) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
     className={cn("lucide lucide-circle-check", className)}
   >
     <circle cx="12" cy="12" r="10" />

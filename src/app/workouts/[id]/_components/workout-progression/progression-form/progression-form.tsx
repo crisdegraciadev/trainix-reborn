@@ -53,7 +53,8 @@ export default function ProgressionForm() {
                     disableDays={{ beforeDate: lastProgression?.createdAt }}
                     selectedDate={field.value}
                     onSelect={field.onChange}
-                    {...field}
+                    // Ref error?
+                    // {...field}
                   />
                   <FormMessage />
                 </FormItem>
@@ -65,7 +66,7 @@ export default function ProgressionForm() {
                 <h3
                   className={cn(
                     "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
-                    form.formState.errors.improvements?.length ? "text-destructive" : ""
+                    form.formState.errors.improvements?.length ? "text-destructive" : "",
                   )}
                 >
                   Improvements
@@ -127,7 +128,7 @@ export default function ProgressionForm() {
                 <h3
                   className={cn(
                     "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
-                    form.formState.errors.activities?.length ? "text-destructive" : ""
+                    form.formState.errors.activities?.length ? "text-destructive" : "",
                   )}
                 >
                   Exercises

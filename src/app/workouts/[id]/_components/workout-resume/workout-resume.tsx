@@ -9,7 +9,7 @@ import {
   TableCell,
   Table,
 } from "@components/ui/table";
-import { Circle, CircleX } from "lucide-react";
+import { Circle, CircleX, LoaderCircle } from "lucide-react";
 import { useWorkoutResume } from "./use-workout-resume";
 import { WorkoutDetails } from "@typings/entities/workout";
 import { CircleCheck } from "@components/ui/custom-icons";
@@ -20,6 +20,15 @@ type _ = {
 
 export default function WorkoutResume({ workout }: _) {
   const { currentProgression } = useWorkoutResume({ workout });
+
+  if (!currentProgression) {
+    return (
+      <div className="w-full pt-64 flex flex-col items-center">
+        <LoaderCircle className="animate-spin w-20 h-20" />
+        <p className="leading-7 [&:not(:first-child)]:mt-6">Loading workout resume...</p>
+      </div>
+    );
+  }
 
   return (
     <Card className="min-h-[400px]">
@@ -57,7 +66,7 @@ export default function WorkoutResume({ workout }: _) {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {currentProgression?.activities.map((activity) => (
+                {currentProgression.activities.map((activity) => (
                   <TableRow key={activity.name}>
                     <TableCell className="px-4">{activity.name}</TableCell>
                     <TableCell className="px-4 text-center">{activity.sets}</TableCell>

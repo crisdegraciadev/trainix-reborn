@@ -27,7 +27,7 @@ export const useProgressionForm = () => {
     redirect(AppRoutes.LOGIN);
   }
 
-  const { currentWorkout, currentProgression, setIsCreateDialogOpen } =
+  const { currentWorkout, currentProgression, setIsCreateDialogOpen, setProgressionTimeData } =
     useWorkoutProgressionContext();
 
   const userId = useMemo(() => session.user.id, [session]);
@@ -141,8 +141,10 @@ export const useProgressionForm = () => {
       toast(TOAST_MESSAGES.create);
       form.reset();
       setIsCreateDialogOpen(false);
+      console.log({ date: form.getValues("date") });
+      setProgressionTimeData((state) => ({ ...state, selectedDate: form.getValues("date") }));
     }
-  }, [form, isCreateProgressionSuccess, setIsCreateDialogOpen]);
+  }, [form, isCreateProgressionSuccess, setIsCreateDialogOpen, setProgressionTimeData]);
 
   const onSubmit = async (data: ProgressionFormSchema) => {
     const { date, activities, improvements } = data;

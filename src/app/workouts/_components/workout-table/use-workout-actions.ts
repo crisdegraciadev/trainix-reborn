@@ -5,10 +5,10 @@ import { useDeleteWorkout } from "@hooks/workouts/use-delete-workout";
 import { useState, useEffect } from "react";
 
 export const useWorkoutActions = () => {
-  const { deleteWorkout, isDeleteWorkoutSuccess, isDeleteWorkoutLoading, isDeleteWorkoutError } = useDeleteWorkout();
+  const { deleteWorkout, isDeleteWorkoutSuccess, isDeleteWorkoutLoading, isDeleteWorkoutError } =
+    useDeleteWorkout();
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
 
   const { toast } = useToast();
 
@@ -40,16 +40,10 @@ export const useWorkoutActions = () => {
     setIsDeleteDialogOpen((state) => !state);
   };
 
-  const toggleUpdateDialog = () => {
-    setIsUpdateDialogOpen((state) => !state);
-  };
-
   return {
     deleteWorkout,
     toggleDeleteDialog,
     isDeleteDialogOpen,
     isDeleteWorkoutLoading,
-    toggleUpdateDialog,
-    isUpdateDialogOpen,
   };
 };

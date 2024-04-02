@@ -10,9 +10,9 @@ export const useFindWorkoutRows = ({ userId }: _Props) => {
   });
 
   return {
-    workouts: data ?? [],
-    isWorkoutsSuccess: isSuccess,
-    isWorkoutsLoading: isLoading,
-    isWorkoutsError: isError,
+    data,
+    isSuccess,
+    isLoading,
+    isError,
   };
 };

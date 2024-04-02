@@ -1,7 +1,6 @@
 import TopbarLayout from "@components/topbar-layout";
 import Workouts from "./_components/workouts";
 import { checkAuthorized } from "@utils/check-authorized";
-import db from "@lib/prisma";
 
 export default async function Page() {
   const { user } = await checkAuthorized();

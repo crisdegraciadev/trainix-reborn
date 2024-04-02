@@ -142,25 +142,26 @@ export default function ExerciseForm(formProps: ExerciseFormProps) {
               </FormItem>
             )}
           />
-
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Textarea
-                    id="description"
-                    placeholder="Description"
-                    disabled={isFormSubmitting}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {/*
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      id="description"
+                      placeholder="Description"
+                      disabled={isFormSubmitting}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+        */}
         </div>
 
         <div className="flex justify-end">

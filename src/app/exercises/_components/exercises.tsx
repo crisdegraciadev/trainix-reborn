@@ -3,17 +3,17 @@
 import { User } from "@typings/next-auth";
 import { exerciseColumns } from "./exercise-table/exercise-columns";
 import ExerciseTable from "./exercise-table/exercise-table";
-import { useExerciseTable } from "./exercise-table/use-exercise-table";
 import { LoaderCircle } from "lucide-react";
+import { useFindExerciseRows } from "../_hooks/use-find-exercise-rows";
 
 type _ = {
   user: User;
 };
 
 export default function Exercises({ user }: _) {
-  const { exerciseRows } = useExerciseTable({ userId: user.id });
+  const { data, isLoading } = useFindExerciseRows({ userId: user.id });
 
-  if (!exerciseRows) {
+  if (isLoading || !data) {
     return (
       <div className="w-full pt-64 flex flex-col items-center">
         <LoaderCircle className="animate-spin w-20 h-20" />
@@ -24,7 +24,7 @@ export default function Exercises({ user }: _) {
 
   return (
     <>
-      <ExerciseTable data={exerciseRows} columns={exerciseColumns} />
+      <ExerciseTable data={data} columns={exerciseColumns} />
     </>
   );
 }

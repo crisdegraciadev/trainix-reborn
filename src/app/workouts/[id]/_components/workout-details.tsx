@@ -25,15 +25,17 @@ type _ = {
 export default function WorkoutDetails({ workout }: _) {
   return (
     <Tabs defaultValue="resume" className="w-full">
-      <TabsList className="grid w-full grid-cols-4">
+      <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="resume">Resume</TabsTrigger>
         <TabsTrigger value="progression">Progression</TabsTrigger>
-        <TabsTrigger value="exercises" disabled>
-          Exercises
-        </TabsTrigger>
-        <TabsTrigger value="resources" disabled>
-          Resources
-        </TabsTrigger>
+        {/*
+          <TabsTrigger value="exercises" disabled>
+            Exercises
+          </TabsTrigger>
+          <TabsTrigger value="resources" disabled>
+            Resources
+          </TabsTrigger>
+        */}
       </TabsList>
       <TabsContent value="resume">
         <WorkoutResume workout={workout} />

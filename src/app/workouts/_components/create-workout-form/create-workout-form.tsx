@@ -21,12 +21,13 @@ import {
 import { Loader2, PlusCircle, Trash2 } from "lucide-react";
 import MultipleSelector from "@components/ui/multi-select";
 import { Textarea } from "@components/ui/textarea";
-import { WorkoutFormProps, useWorkoutForm } from "./use-workout-form";
+import { WorkoutFormProps, useWorkoutForm } from "./use-create-workout-form";
 import { ScrollArea } from "@components/ui/scroll-area";
 import { cn } from "@lib/utils";
 import { Skeleton } from "@components/ui/skeleton";
+import { useId } from "react";
 
-function WorkoutFormSkeleton() {
+function LoadingFormSkeleton() {
   return (
     <div className="flex items-center space-x-4 mt-2">
       <div className="space-y-4">
@@ -62,9 +63,7 @@ function WorkoutFormSkeleton() {
   );
 }
 
-function DynamicExerciseFields() {}
-
-export default function WorkoutForm(formProps: WorkoutFormProps) {
+export default function CreateWorkoutForm(formProps: WorkoutFormProps) {
   const {
     form,
     activityFields,
@@ -77,12 +76,10 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
     onSubmit,
   } = useWorkoutForm(formProps);
 
-  const { type } = formProps;
-
   const isFormDataLoading = !muscles || !difficulties || !exercises;
 
   if (isFormDataLoading) {
-    return <WorkoutFormSkeleton />;
+    return <LoadingFormSkeleton />;
   }
 
   return (
@@ -188,7 +185,7 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
               <h3
                 className={cn(
                   "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
-                  form.formState.errors.activities?.length ? "text-destructive" : ""
+                  form.formState.errors.activities?.length ? "text-destructive" : "",
                 )}
               >
                 Exercises
@@ -210,7 +207,7 @@ export default function WorkoutForm(formProps: WorkoutFormProps) {
                               <SelectContent>
                                 <SelectGroup>
                                   {exercises.map((exercise) => (
-                                    <SelectItem key={id} value={exercise.id}>
+                                    <SelectItem key={exercise.id} value={exercise.id}>
                                       {exercise.name}
                                     </SelectItem>
                                   ))}

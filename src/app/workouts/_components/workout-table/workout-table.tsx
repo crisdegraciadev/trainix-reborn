@@ -14,10 +14,9 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
-import { WorkoutTableData } from "./workout-columns";
 import CreateButton from "@components/create-button";
-import WorkoutForm from "../workout-form/workout-form";
 import { WorkoutRow } from "@typings/entities/workout";
+import CreateWorkoutForm from "../create-workout-form/create-workout-form";
 
 export default function WorkoutTable<U>({ columns, data }: DataTableProps<WorkoutRow, U>) {
   // Table state
@@ -60,7 +59,7 @@ export default function WorkoutTable<U>({ columns, data }: DataTableProps<Workou
           isDialogOpen={isCreateDialogOpen}
           setIsDialogOpen={setIsCreateDialogOpen}
         >
-          <WorkoutForm type="create" onComplete={() => setIsCreateDialogOpen(false)} />
+          <CreateWorkoutForm onComplete={() => setIsCreateDialogOpen(false)} />
         </CreateButton>
       </div>
 

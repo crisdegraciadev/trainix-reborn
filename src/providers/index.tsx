@@ -3,7 +3,7 @@ import AuthProvider from "./auth";
 import TrpcProvider from "./trpc";
 import { TooltipProvider } from "@components/ui/tooltip";
 
-export default function Providers({ children }: _PropsWithChildren) {
+export default function Providers({ children }: PropsWithChildren) {
   return (
     <AuthProvider>
       <TrpcProvider>

@@ -15,7 +15,7 @@ import { useWorkoutProgressionContext } from "../workout-progression-context";
 import { useFindLastProgression } from "@hooks/progression/use-find-last-progression";
 
 const DEFAULT_FORM_VALUES = {
-  date: undefined,
+  date: new Date(),
   activities: [],
   improvements: [],
 };
@@ -47,7 +47,9 @@ export const useProgressionForm = () => {
   }, [isCreateProgressionLoading]);
 
   useEffect(() => {
-    if (isCreateProgressionError) toast(TOAST_MESSAGES.createError);
+    if (isCreateProgressionError) {
+      toast(TOAST_MESSAGES.createError);
+    }
     setIsFormLoading(false);
   }, [isCreateProgressionError]);
 
@@ -76,8 +78,6 @@ export const useProgressionForm = () => {
     defaultValues: DEFAULT_FORM_VALUES,
   });
 
-  console.log({ formData: form.getValues() });
-
   const [isFormLoading, setIsFormLoading] = useState(false);
   const [isActivityFieldSetup, setIsActivityFieldSetup] = useState(false);
   const [exercisesOptions, setExercisesOptions] = useState<SelectOption[]>([]);
@@ -91,18 +91,17 @@ export const useProgressionForm = () => {
     name: "activities",
   });
 
-  const {
-    fields: improvementFields,
-    append: appendImprovementField,
-    remove: removeImprovementField,
-  } = useFieldArray({
+  const { fields: improvementFields, append: appendImprovementField } = useFieldArray({
     control: form.control,
     name: "improvements",
   });
 
   useEffect(() => {
     if (lastProgression) {
-      form.setValue("date", lastProgression.createdAt);
+      const today = new Date();
+      const { createdAt } = lastProgression;
+
+      form.setValue("date", today > createdAt ? today : createdAt);
     }
   }, [lastProgression, form]);
 
@@ -134,22 +133,21 @@ export const useProgressionForm = () => {
     }
   }, [lastProgression, activityFields, form, appendActivityField, isActivityFieldSetup]);
 
-  // Display spinner when creating a progression
   useEffect(() => {
     if (isCreateProgressionSuccess && form.formState.isSubmitSuccessful) {
       setIsFormLoading(false);
       toast(TOAST_MESSAGES.create);
-      form.reset();
-      setIsCreateDialogOpen(false);
-      console.log({ date: form.getValues("date") });
+
       setProgressionTimeData((state) => ({ ...state, selectedDate: form.getValues("date") }));
+
+      form.reset();
+
+      setIsCreateDialogOpen(false);
     }
   }, [form, isCreateProgressionSuccess, setIsCreateDialogOpen, setProgressionTimeData]);
 
   const onSubmit = async (data: ProgressionFormSchema) => {
     const { date, activities, improvements } = data;
-
-    console.log({ data });
 
     if (!workoutId) {
       throw new Error("Field workoutId is not provided");

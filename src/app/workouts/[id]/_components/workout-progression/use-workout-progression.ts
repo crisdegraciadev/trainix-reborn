@@ -1,5 +1,4 @@
 import { useFindProgressionDates } from "@hooks/progression/use-find-progression-dates";
-import { ProgressionDetails } from "@typings/entities/progression";
 import { WorkoutDetails } from "@typings/entities/workout";
 import { useEffect, useMemo, useState } from "react";
 import { useWorkoutProgressionContext } from "./workout-progression-context";
@@ -37,7 +36,7 @@ export const useWorkoutProgression = ({ workout }: _) => {
 
   const currentProgressionDate = useMemo(
     () => (currentProgression ? new Date(currentProgression?.createdAt) : undefined),
-    [currentProgression]
+    [currentProgression],
   );
 
   useEffect(() => {

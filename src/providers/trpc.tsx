@@ -7,14 +7,12 @@ import { trpc } from "../server/client";
 import superjson from "superjson";
 
 export default function TrpcProvider({ children }: PropsWithChildren) {
-  console.log({ ...window.location });
-
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: `${window.location.origin}/api/trpc`,
+          url: `${process.env.SERVER_TRCP_ORIGIN}/api/trpc`,
         }),
       ],
       transformer: superjson,

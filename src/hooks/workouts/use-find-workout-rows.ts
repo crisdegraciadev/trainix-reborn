@@ -5,14 +5,16 @@ type _Props = {
 };
 
 export const useFindWorkoutRows = ({ userId }: _Props) => {
-  const { data, isSuccess, isLoading, isError } = trpc.workouts.findWorkoutRows.useQuery({
-    userId,
-  });
+  const { data, isSuccess, isLoading, isRefetching, isError } =
+    trpc.workouts.findWorkoutRows.useQuery({
+      userId,
+    });
 
   return {
     data,
     isSuccess,
     isLoading,
+    isRefetching,
     isError,
   };
 };

@@ -11,9 +11,9 @@ type _ = {
 };
 
 export default function Exercises({ user }: _) {
-  const { data, isLoading } = useFindExerciseRows({ userId: user.id });
+  const { data, isLoading, isRefetching } = useFindExerciseRows({ userId: user.id });
 
-  if (isLoading || !data) {
+  if (isLoading || isRefetching || !data) {
     return (
       <div className="w-full pt-64 flex flex-col items-center">
         <LoaderCircle className="animate-spin w-20 h-20" />

@@ -11,9 +11,9 @@ type _Props = {
 };
 
 export default function Workouts({ user }: _Props) {
-  const { data, isLoading } = useFindWorkoutRows({ userId: user.id });
+  const { data, isLoading, isRefetching } = useFindWorkoutRows({ userId: user.id });
 
-  if (isLoading || !data) {
+  if (isLoading || isRefetching || !data) {
     return (
       <div className="w-full pt-64 flex flex-col items-center">
         <LoaderCircle className="animate-spin w-20 h-20" />

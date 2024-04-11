@@ -5,7 +5,8 @@ type _ = {
 };
 
 export const useFindExerciseRows = ({ userId }: _) => {
-  const { data, isSuccess, isLoading, isError } = trpc.exercises.findExerciseRows.useQuery({ userId });
+  const { data, isSuccess, isLoading, isRefetching, isError } =
+    trpc.exercises.findExerciseRows.useQuery({ userId });
 
-  return { data, isSuccess, isLoading, isError };
+  return { data, isSuccess, isLoading, isRefetching, isError };
 };

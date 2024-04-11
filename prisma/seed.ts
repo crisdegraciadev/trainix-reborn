@@ -10,6 +10,12 @@ const users = [
     email: "admin@admin.com",
     passwordHash: bcrypt.hashSync("123456789", 8),
   },
+  {
+    name: "Marcos",
+    surname: "de Gracia Nuero",
+    email: "marcos@gmail.com",
+    passwordHash: bcrypt.hashSync("123456789", 8),
+  },
 ];
 
 const muscles = [

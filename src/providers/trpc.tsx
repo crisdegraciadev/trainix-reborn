@@ -7,7 +7,6 @@ import { trpc } from "../server/client";
 import superjson from "superjson";
 
 export default function TrpcProvider({ children }: PropsWithChildren) {
-  console.log({ origin: process.env.SERVER_TRCP_ORIGIN });
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({

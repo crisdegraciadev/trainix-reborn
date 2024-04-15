@@ -6,6 +6,7 @@ import { convertToUTC } from "@utils/convert-to-utc";
 import { z } from "zod";
 import { buildTodayDateFilter } from "../utils/build-today-date-filter";
 import { PrismaTx } from "@typings/prisma";
+import db from "@lib/prisma";
 
 export const createProgression = privateProcedure
   .input(
@@ -14,7 +15,7 @@ export const createProgression = privateProcedure
       progression: z.object({ date: z.date(), activities: z.array(activitySchema) }),
       currentProgressionId: z.string().optional(),
       improvements: z.array(improvementSchema).optional(),
-    })
+    }),
   )
   .mutation(async ({ input }) => {
     const { workoutId, progression, improvements, currentProgressionId } = input;
@@ -25,7 +26,7 @@ export const createProgression = privateProcedure
 
     console.log({ createdAt, todayFilter });
 
-    return prisma?.$transaction(async (tx) => {
+    return db.$transaction(async (tx) => {
       // Check if there is some progression on this date
       const progressionOnSameDate = await tx.progression.findFirst({
         where: { ...todayFilter },
@@ -99,7 +100,9 @@ const updateOldProgression = async (tx: PrismaTx, args: UpdateOldProgressionArgs
 
   // Update the improve state in each activity
   await Promise.all(
-    activities.map(async ({ id: activityId }) => updateActivities(tx, { improvements, activityId }))
+    activities.map(async ({ id: activityId }) =>
+      updateActivities(tx, { improvements, activityId }),
+    ),
   );
 };
 

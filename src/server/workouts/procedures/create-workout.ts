@@ -19,26 +19,32 @@ export const createWorkout = privateProcedure
         },
       });
 
+      console.log("Workout created", {
+        workout,
+      });
+
       const progressionCreationDate = convertToUTC(new Date());
       progressionCreationDate.setUTCHours(0, 0, 0, 0);
 
-      const { id: progressionId } = await tx.progression.create({
+      const progression = await tx.progression.create({
         data: { workoutId: workout.id, createdAt: progressionCreationDate },
       });
 
-      const improveState = await tx.improve.findUnique({ where: { name: "Keep working" } });
+      console.log("Progression created for workout", {
+        progression,
+        workoutId: workout.id,
+      });
 
-      if (!improveState) {
-        throw new TRPCError({
-          message: "Default improve state not found",
-          code: "INTERNAL_SERVER_ERROR",
-        });
-      }
+      const { id: progressionId } = progression;
 
-      const { id: improveId } = improveState;
-
-      await tx.acticity.createMany({
+      const createdActivities = await tx.acticity.createMany({
         data: activities.map((activity) => ({ progressionId, ...activity })),
+      });
+
+      console.log("Activities created for progression", {
+        createdActivities,
+        progressionId,
+        workoutId: workout.id,
       });
 
       return tx.workout.findUniqueOrThrow({

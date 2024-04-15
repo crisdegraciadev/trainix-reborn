@@ -55,52 +55,52 @@ export const createWorkout = privateProcedure
     // });
     //
 
-    const workout = prisma?.$transaction(async (tx) => {
-      const workout = await tx.workout.create({
-        data: {
-          ...workoutData,
-          muscles: {
-            connect: [...musclesIds],
+    try {
+      const workout = prisma?.$transaction(async (tx) => {
+        const workout = await tx.workout.create({
+          data: {
+            ...workoutData,
+            muscles: {
+              connect: [...musclesIds],
+            },
           },
-        },
+        });
+
+        console.log("Workout created", {
+          workout,
+        });
+
+        const progressionCreationDate = convertToUTC(new Date());
+        progressionCreationDate.setUTCHours(0, 0, 0, 0);
+
+        const progression = await tx.progression.create({
+          data: { workoutId: workout.id, createdAt: progressionCreationDate },
+        });
+
+        console.log("Progression created for workout", {
+          progression,
+          workoutId: workout.id,
+        });
+
+        const { id: progressionId } = progression;
+
+        const createdActivities = await tx.acticity.createMany({
+          data: activities.map((activity) => ({ progressionId, ...activity })),
+        });
+
+        console.log("Activities created for progression", {
+          createdActivities,
+          progressionId,
+          workoutId: workout.id,
+        });
+
+        return tx.workout.findUniqueOrThrow({
+          where: { id: workout.id },
+        });
       });
-
-      console.log("Workout created", {
-        workout,
-      });
-
-      const progressionCreationDate = convertToUTC(new Date());
-      progressionCreationDate.setUTCHours(0, 0, 0, 0);
-
-      const progression = await tx.progression.create({
-        data: { workoutId: workout.id, createdAt: progressionCreationDate },
-      });
-
-      console.log("Progression created for workout", {
-        progression,
-        workoutId: workout.id,
-      });
-
-      const { id: progressionId } = progression;
-
-      const createdActivities = await tx.acticity.createMany({
-        data: activities.map((activity) => ({ progressionId, ...activity })),
-      });
-
-      console.log("Activities created for progression", {
-        createdActivities,
-        progressionId,
-        workoutId: workout.id,
-      });
-
-      return tx.workout.findUniqueOrThrow({
-        where: { id: workout.id },
-      });
-    });
-
-    if (!workout) {
-      throw new TRPCError({ message: "Error creating the workout", code: "BAD_REQUEST" });
+    } catch (err) {
+      console.error(err);
     }
 
-    return workout;
+    throw new TRPCError({ message: "Error creating the workout", code: "BAD_REQUEST" });
   });

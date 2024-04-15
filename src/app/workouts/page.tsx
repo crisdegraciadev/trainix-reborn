@@ -1,16 +1,12 @@
-import TopbarLayout from "@components/topbar-layout";
+import { serverClient } from "@server/server-client";
 import Workouts from "./_components/workouts";
 import { checkAuthorized } from "@utils/check-authorized";
 
 export default async function Page() {
   const { user } = await checkAuthorized();
+  const workouts = await serverClient.workouts.findWorkoutRows({ userId: user.id });
 
-  return (
-    <TopbarLayout>
-      <div className="flex flex-col h-full ">
-        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-8">Workouts</h3>
-        <Workouts user={user} />
-      </div>
-    </TopbarLayout>
-  );
+  console.log({ workouts });
+
+  return <Workouts user={user} />;
 }

@@ -1,4 +1,3 @@
-import TopbarLayout from "@components/topbar-layout";
 import { AppRoutes } from "@constants/routes";
 import db from "@lib/prisma";
 import { checkAuthorized } from "@utils/check-authorized";

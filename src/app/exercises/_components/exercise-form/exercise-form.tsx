@@ -10,6 +10,7 @@ import {
   FormMessage,
 } from "@components/ui/form";
 import { Input } from "@components/ui/input";
+import MultipleSelector from "@components/ui/multi-select";
 import {
   Select,
   SelectContent,
@@ -18,11 +19,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@components/ui/select";
+import { Skeleton } from "@components/ui/skeleton";
 import { Loader2 } from "lucide-react";
 import { ExerciseFormProps, useExerciseForm } from "./use-exercise-form";
-import MultipleSelector from "@components/ui/multi-select";
-import { Textarea } from "@components/ui/textarea";
-import { Skeleton } from "@components/ui/skeleton";
 
 function ExerciseFormSkeleton() {
   return (
@@ -39,10 +38,6 @@ function ExerciseFormSkeleton() {
         <div className="space-y-2">
           <Skeleton className="h-4 w-[100px]" />
           <Skeleton className="h-10 w-[500px]" />
-        </div>
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-[100px]" />
-          <Skeleton className="h-20 w-[500px]" />
         </div>
 
         <div className="w-full flex justify-end">

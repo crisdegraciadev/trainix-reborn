@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@components/ui/button";
 import {
   Dialog,
@@ -9,10 +7,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@components/ui/dialog";
-import { PlusCircle } from "lucide-react";
-import { Dispatch, PropsWithChildren, SetStateAction, useState } from "react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { cn } from "@lib/utils";
+import { PlusCircle } from "lucide-react";
+import { Dispatch, PropsWithChildren, SetStateAction } from "react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 type _Props = {
   title: string;

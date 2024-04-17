@@ -1,9 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { useState } from "react";
-import { cn } from "../lib/utils";
-import { Dumbbell } from "lucide-react";
+import { Avatar, AvatarFallback } from "@components/ui/avatar";
+import { Button } from "@components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,11 +10,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "@components/ui/dropdown-menu";
+import { AppRoutes } from "@constants/routes";
+import { cn } from "@lib/utils";
+import { Dumbbell } from "lucide-react";
 import { signOut } from "next-auth/react";
-import { Button } from "./ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { AppRoutes } from "../constants/routes";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export const TABS = ["dashboard", "exercises", "workouts"] as const;
@@ -49,7 +48,7 @@ export default function Topbar({ user }: _) {
             href={AppRoutes.WORKOUTS}
             className={cn(
               "text-sm transition-colors hover:text-primary",
-              !pathname.includes(TABS[2]) ? "text-muted-foreground" : ""
+              !pathname.includes(TABS[2]) ? "text-muted-foreground" : "",
             )}
           >
             Workouts
@@ -58,7 +57,7 @@ export default function Topbar({ user }: _) {
             href={AppRoutes.EXERCISES}
             className={cn(
               "text-sm transition-colors hover:text-primary",
-              !pathname.includes(TABS[1]) ? "text-muted-foreground" : ""
+              !pathname.includes(TABS[1]) ? "text-muted-foreground" : "",
             )}
           >
             Exercises

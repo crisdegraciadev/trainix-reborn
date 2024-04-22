@@ -1,18 +1,20 @@
 import { Badge } from "@components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@components/ui/card";
+import { CircleCheck } from "@components/ui/custom-icons";
 import { Separator } from "@components/ui/separator";
+import { Skeleton } from "@components/ui/skeleton";
 import {
-  TableHeader,
-  TableRow,
-  TableHead,
+  Table,
   TableBody,
   TableCell,
-  Table,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@components/ui/table";
-import { Circle, CircleX, LoaderCircle } from "lucide-react";
-import { useWorkoutResume } from "./use-workout-resume";
 import { WorkoutDetails } from "@typings/entities/workout";
-import { CircleCheck } from "@components/ui/custom-icons";
+import { Circle, CircleX } from "lucide-react";
+import { useWorkoutResume } from "./use-workout-resume";
+import WorkoutDetailsSkeleton from "../workout-details-skeleton";
 
 type _ = {
   workout: WorkoutDetails;
@@ -23,10 +25,10 @@ export default function WorkoutResume({ workout }: _) {
 
   if (!currentProgression) {
     return (
-      <div className="w-full pt-64 flex flex-col items-center">
-        <LoaderCircle className="animate-spin w-20 h-20" />
-        <p className="leading-7 [&:not(:first-child)]:mt-6">Loading workout resume...</p>
-      </div>
+      <WorkoutDetailsSkeleton
+        title="Resume"
+        description="Sum up of your workout will be displayed here in detail."
+      />
     );
   }
 
@@ -36,11 +38,17 @@ export default function WorkoutResume({ workout }: _) {
         <CardTitle>Resume</CardTitle>
         <CardDescription>Sum up of your workout will be displayed here in detail.</CardDescription>
       </CardHeader>
+
       <Separator className="mb-8" />
+
       <CardContent className="flex gap-16">
         <div className="w-1/3">
-          <h4 className="text-lg font-semibold mb-2">Description</h4>
-          <p className="text-sm mb-6">{workout.description}</p>
+          {workout.description && (
+            <>
+              <h4 className="text-lg font-semibold mb-2">Description</h4>
+              <p className="text-sm mb-6">{workout.description}</p>
+            </>
+          )}
 
           <h4 className="text-lg font-semibold mb-2">Difficulty</h4>
           <Badge className="mb-6">{workout.difficulty.name}</Badge>
@@ -52,6 +60,7 @@ export default function WorkoutResume({ workout }: _) {
             </Badge>
           ))}
         </div>
+
         <div className="w-2/3">
           <h4 className="scroll-m-20 text-lg font-semibold tracking-tight mb-2">Last Workout</h4>
           <div className="rounded-md border">
@@ -65,9 +74,10 @@ export default function WorkoutResume({ workout }: _) {
                   <TableHead className="w-[150px]">Improve</TableHead>
                 </TableRow>
               </TableHeader>
+
               <TableBody>
                 {currentProgression.activities.map((activity) => (
-                  <TableRow key={activity.name}>
+                  <TableRow key={activity.id}>
                     <TableCell className="px-4">{activity.name}</TableCell>
                     <TableCell className="px-4 text-center">{activity.sets}</TableCell>
                     <TableCell className="px-4 text-center">{activity.reps}</TableCell>

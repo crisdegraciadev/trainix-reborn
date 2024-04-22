@@ -1,10 +1,10 @@
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@components/ui/card";
 import { Separator } from "@components/ui/separator";
-import { useWorkoutProgression } from "./use-workout-progression";
 import { WorkoutDetails } from "@typings/entities/workout";
-import ProgressionTable from "./progression-table/progression-table";
+import WorkoutDetailsSkeleton from "../workout-details-skeleton";
 import { progressionColumns } from "./progression-table/progression-columns";
-import { LoaderCircle } from "lucide-react";
+import ProgressionTable from "./progression-table/progression-table";
+import { useWorkoutProgression } from "./use-workout-progression";
 
 type _ = {
   workout: WorkoutDetails;
@@ -17,10 +17,10 @@ export default function WorkoutProgression({ workout }: _) {
 
   if (!currentProgression) {
     return (
-      <div className="w-full pt-64 flex flex-col items-center">
-        <LoaderCircle className="animate-spin w-20 h-20" />
-        <p className="leading-7 [&:not(:first-child)]:mt-6">Loading workout progressions...</p>
-      </div>
+      <WorkoutDetailsSkeleton
+        title="Progression"
+        description="Document your workout progression here. Update your last workout to address progresive overload."
+      />
     );
   }
 

@@ -1,5 +1,5 @@
 import { AppRoutes } from "@constants/routes";
-import db from "@lib/prisma";
+import { serverClient } from "@server/server-client";
 import { checkAuthorized } from "@utils/check-authorized";
 import { redirect } from "next/navigation";
 import WorkoutDetails from "./_components/workout-details";
@@ -13,15 +13,8 @@ export default async function Page({ params }: _) {
 
   const { id } = params;
 
-  const workout = await db.workout.findUnique({
-    where: { id },
-    include: {
-      difficulty: true,
-      muscles: true,
-      progressions: {
-        orderBy: { createdAt: "desc" },
-      },
-    },
+  const workout = await serverClient.workouts.findWorkout({
+    workoutId: id,
   });
 
   if (!workout) {

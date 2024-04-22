@@ -2,12 +2,20 @@
 
 import { httpBatchLink } from "@trpc/client";
 import { PropsWithChildren, useState } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientConfig, QueryClientProvider } from "@tanstack/react-query";
 import { trpc } from "../server/client";
 import superjson from "superjson";
 
+const QUERY_CLIENT_CONFIG: QueryClientConfig = {
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+};
+
 export default function TrpcProvider({ children }: PropsWithChildren) {
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(() => new QueryClient(QUERY_CLIENT_CONFIG));
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [

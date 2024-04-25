@@ -25,7 +25,7 @@ jobs:
 
       - name: install dependencies and verify Cypress
         run: |
-          bun ci
+          bun install
           bun cypress verify
           bun cypress info
           bun cypress version

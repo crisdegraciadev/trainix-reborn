@@ -37,16 +37,16 @@ jobs:
           bun cypress version --component node
 
       - name: Build app
-        run: bun build
+        run: bun run build
 
       - name: Start app
-        run: bun start
+        run: bun run start
 
       - name: Wait for app
         run: bunx wait-on tcp:3000
 
       - name: Cypress tests
-        run: bun cy:run
+        run: bun run cy:run
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}

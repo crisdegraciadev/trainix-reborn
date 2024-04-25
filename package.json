@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "cy:open": "cypress open",
+    "cy:run": "cypress run",
     "shad:add": "bunx shadcn-ui@latest add",
     "db:update": "bunx prisma db push",
     "db:seed": "bunx prisma db seed",

@@ -9,8 +9,30 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
       - name: Install bun
         uses: oven-sh/setup-bun@v1
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun
+          key: ${{ runner.os }}-node-${{ hashFiles('**/bun.lockb') }}
+
+      - name: install dependencies and verify Cypress
+        run: |
+          bun ci
+          bun cypress verify
+          bun cypress info
+          bun cypress version
+          bun cypress version --component package
+          bun cypress version --component binary
+          bun cypress version --component electron
+          bun cypress version --component node
 
       - name: Cypress run
         uses: cypress-io/github-action@v3

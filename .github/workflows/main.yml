@@ -23,9 +23,11 @@ jobs:
           path: ~/.bun
           key: ${{ runner.os }}-node-${{ hashFiles('**/bun.lockb') }}
 
-      - name: install dependencies and verify Cypress
+      - name: Install dependencies
+        run: bun install
+
+      - name: Verify Cypress
         run: |
-          bun install
           bun cypress verify
           bun cypress info
           bun cypress version
@@ -33,6 +35,15 @@ jobs:
           bun cypress version --component binary
           bun cypress version --component electron
           bun cypress version --component node
+
+      - name: Build app
+        run: bun build
+
+      - name: Start app
+        run: bun start
+
+      - name: Wait for app
+        run: bunx wait-on tcp:3000
 
       - name: Cypress tests
         run: bun cy:run

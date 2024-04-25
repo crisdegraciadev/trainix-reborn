@@ -10,13 +10,13 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Cypress run
-          uses: cypress-io/github-action@v3
-          with:
-            project: ./site
-            browser: chrome
-            build: bun build
-            start: bun start
-            wait-on: "http://localhost:3000"
-          env:
-            DATABASE_URL: ${{ secrets.DATABASE_URL }}
-            NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+        uses: cypress-io/github-action@v3
+        with:
+          project: ./site
+          browser: chrome
+          build: bun build
+          start: bun start
+          wait-on: "http://localhost:3000"
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}

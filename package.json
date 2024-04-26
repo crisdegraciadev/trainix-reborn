@@ -5,6 +5,7 @@
   "scripts": {
     "postinstall": "prisma generate",
     "dev": "next dev",
+    "build": "next build",
     "build:dev": "npm run cp:dev && next build",
     "build:prod": "npm run cp:prod && next build",
     "build:test": "npm run cp:test && next build",

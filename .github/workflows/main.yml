@@ -3,8 +3,14 @@ name: E2E on Chrome
 on: [push]
 
 jobs:
-  install:
+  cypress-run:
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false # https://github.com/cypress-io/github-action/issues/48
+      matrix:
+        containers: [1, 2]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -14,39 +20,27 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install bun
-        uses: oven-sh/setup-bun@v1
-
       - name: Cache node modules
         uses: actions/cache@v4
         with:
-          path: ~/.bun
-          key: ${{ runner.os }}-node-${{ hashFiles('**/bun.lockb') }}
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install dependencies
-        run: bun install
-
-      - name: Verify Cypress
-        run: |
-          bun cypress verify
-          bun cypress info
-          bun cypress version
-          bun cypress version --component package
-          bun cypress version --component binary
-          bun cypress version --component electron
-          bun cypress version --component node
+        run: npm install
 
       - name: Build app
-        run: bun run build
-
-      - name: Start app
-        run: bun run start &
-
-      - name: Wait for app
-        run: bunx wait-on tcp:3000
+        run: npm run build
 
       - name: Cypress tests
-        run: bun run cy:run
+        uses: cypress-io/github-action@v6
+        with:
+          start: npm start
+          wait-on: "http://localhost:3000"
+          record: true
+          parallel: false
         env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}

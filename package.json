@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "postinstall": "prisma generate",
-    "dev": "next dev",
+    "dev": "npm run cp:dev && next dev",
     "build": "next build",
     "build:dev": "npm run cp:dev && next build",
     "build:prod": "npm run cp:prod && next build",

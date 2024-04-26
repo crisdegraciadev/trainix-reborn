@@ -25,6 +25,7 @@ const muscles = [
   { name: "Quadriceps", value: "quadriceps" },
   { name: "Hamstrings", value: "hamstrings" },
   { name: "Trapezius", value: "trapezius" },
+  { name: "Hip", value: "hip" },
 ];
 
 const difficulties = [

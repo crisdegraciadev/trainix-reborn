@@ -5,15 +5,20 @@
   "scripts": {
     "postinstall": "prisma generate",
     "dev": "next dev",
-    "build": "next build",
+    "build:dev": "npm run cp:dev && next build",
+    "build:prod": "npm run cp:prod && next build",
+    "build:test": "npm run cp:test && next build",
+    "cp:dev": "cp .env.dev .env",
+    "cp:prod": "cp .env.prod .env",
+    "cp:test": "cp .env.test .env",
     "start": "next start",
     "lint": "next lint",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
-    "shad:add": "bunx shadcn-ui@latest add",
-    "db:update": "bunx prisma db push",
-    "db:seed": "bunx prisma db seed",
-    "db:studio": "bunx prisma studio --browser chrome"
+    "shad:add": "npx shadcn-ui@latest add",
+    "db:update": "npx prisma db push",
+    "db:seed": "npx prisma db seed",
+    "db:studio": "npx prisma studio --browser chrome"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
@@ -48,6 +53,7 @@
     "cors": "^2.8.5",
     "date-fns": "^3.4.0",
     "embla-carousel-react": "^8.0.0-rc23",
+    "env-cmd": "^10.1.0",
     "lucide-react": "0.352.0",
     "next": "^14.1.3",
     "next-auth": "^4.24.5",

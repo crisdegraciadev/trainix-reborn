@@ -11,13 +11,13 @@ import {
   TableHeader,
   TableRow,
 } from "@components/ui/table";
-import { WorkoutDetails } from "@typings/entities/workout";
+import { WorkoutWithRelations } from "@typings/entities/workout";
 import { Circle, CircleX } from "lucide-react";
 import { useWorkoutResume } from "./use-workout-resume";
 import WorkoutDetailsSkeleton from "../workout-details-skeleton";
 
 type _ = {
-  workout: WorkoutDetails;
+  workout: WorkoutWithRelations;
 };
 
 export default function WorkoutResume({ workout }: _) {

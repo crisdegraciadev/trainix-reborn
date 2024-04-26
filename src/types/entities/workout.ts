@@ -6,7 +6,7 @@ import { Progression } from "./progression";
 
 export type Workout = WorkoutModel;
 
-export type WorkoutDetails = Workout & {
+export type WorkoutWithRelations = Workout & {
   difficulty: Difficulty;
   muscles: Muscle[];
   progressions: Progression[];

@@ -1,7 +1,7 @@
 "use client";
 
 import { ProgressionDetails } from "@typings/entities/progression";
-import { WorkoutDetails } from "@typings/entities/workout";
+import { WorkoutWithRelations } from "@typings/entities/workout";
 import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useState } from "react";
 
 type ProgressionDatesState = {
@@ -10,11 +10,11 @@ type ProgressionDatesState = {
 };
 
 type _ContextProps = {
-  currentWorkout?: WorkoutDetails;
+  currentWorkout?: WorkoutWithRelations;
   currentProgression?: ProgressionDetails;
   isCreateDialogOpen: boolean;
   progressionTimeData: ProgressionDatesState;
-  setCurrentWorkout: Dispatch<SetStateAction<WorkoutDetails | undefined>>;
+  setCurrentWorkout: Dispatch<SetStateAction<WorkoutWithRelations | undefined>>;
   setCurrentProgression: Dispatch<SetStateAction<ProgressionDetails | undefined>>;
   setIsCreateDialogOpen: Dispatch<SetStateAction<boolean>>;
   setProgressionTimeData: Dispatch<SetStateAction<ProgressionDatesState>>;
@@ -27,7 +27,7 @@ type _ProviderProps = {
 };
 
 export const WorkoutProgressionContextProvider = ({ children }: _ProviderProps) => {
-  const [currentWorkout, setCurrentWorkout] = useState<WorkoutDetails>();
+  const [currentWorkout, setCurrentWorkout] = useState<WorkoutWithRelations>();
   const [currentProgression, setCurrentProgression] = useState<ProgressionDetails>();
 
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);

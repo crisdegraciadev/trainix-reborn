@@ -2,13 +2,13 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/ui/tabs";
 
-import { WorkoutDetails } from "@typings/entities/workout";
+import { WorkoutWithRelations } from "@typings/entities/workout";
 import WorkoutProgression from "./workout-progression/workout-progression";
 import { WorkoutProgressionContextProvider } from "./workout-progression/workout-progression-context";
 import WorkoutResume from "./workout-resume/workout-resume";
 
 type _ = {
-  workout: WorkoutDetails;
+  workout: WorkoutWithRelations;
 };
 
 export default function WorkoutDetails({ workout }: _) {

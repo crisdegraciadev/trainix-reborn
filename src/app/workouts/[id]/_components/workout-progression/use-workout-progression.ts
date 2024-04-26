@@ -1,11 +1,11 @@
 import { useFindProgressionDates } from "@hooks/progression/use-find-progression-dates";
-import { WorkoutDetails } from "@typings/entities/workout";
+import { WorkoutWithRelations } from "@typings/entities/workout";
 import { useEffect, useMemo, useState } from "react";
 import { useWorkoutProgressionContext } from "./workout-progression-context";
 import { useFindProgression } from "@hooks/progression/use-find-progression";
 
 type _ = {
-  workout: WorkoutDetails;
+  workout: WorkoutWithRelations;
 };
 
 export const useWorkoutProgression = ({ workout }: _) => {

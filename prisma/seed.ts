@@ -7,13 +7,7 @@ const users = [
   {
     name: "cristian",
     surname: "de gracia nuero",
-    email: "admin@admin.com",
-    passwordHash: bcrypt.hashSync("123456789", 8),
-  },
-  {
-    name: "Marcos",
-    surname: "de Gracia Nuero",
-    email: "marcos@gmail.com",
+    email: "test@test.com",
     passwordHash: bcrypt.hashSync("123456789", 8),
   },
 ];

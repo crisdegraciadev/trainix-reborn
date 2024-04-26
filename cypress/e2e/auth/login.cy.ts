@@ -34,5 +34,12 @@ describe("login", () => {
     cy.contains("The provided credentials are not correct");
   });
 
-  it("should login and navigate", () => {});
+  it("should login and navigate", () => {
+    cy.get("#email").type("test@test.com");
+    cy.get("#password").type("123456789");
+
+    cy.get("button").contains("Login").click();
+
+    cy.location("pathname").should("include", "/workouts");
+  });
 });

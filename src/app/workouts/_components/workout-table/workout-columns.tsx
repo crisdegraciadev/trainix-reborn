@@ -5,15 +5,15 @@ import { ColumnDef } from "@tanstack/react-table";
 import WorkoutActionsCell from "./workout-actions-cell";
 import NameCell from "@components/data-table/cells/name-cell";
 import { AppRoutes } from "@constants/routes";
-import { BadgeData } from "@typings/utils";
+import { NameValue } from "@typings/utils";
 import { WorkoutRow } from "@typings/entities/workout";
 
 export type WorkoutTableData = {
   id: string;
   name: string;
   description?: string;
-  difficulty: BadgeData;
-  muscles: BadgeData[];
+  difficulty: NameValue;
+  muscles: NameValue[];
 };
 
 export const workoutColumns: ColumnDef<WorkoutRow>[] = [

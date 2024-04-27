@@ -1,8 +1,8 @@
 import db from "@lib/prisma";
 import { privateProcedure } from "@server/trpc";
-import { SelectItem } from "@typings/utils";
+import { NameValue } from "@typings/utils";
 
-export const findDifficultySelectList = privateProcedure.query(async (): Promise<SelectItem[]> => {
+export const findDifficultySelectList = privateProcedure.query(async (): Promise<NameValue[]> => {
   const data = await db.difficulty.findMany();
 
   return data

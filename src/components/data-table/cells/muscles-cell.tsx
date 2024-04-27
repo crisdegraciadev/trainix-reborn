@@ -1,9 +1,9 @@
-import { BadgeData } from "@typings/utils";
+import { NameValue } from "@typings/utils";
 import { CustomCellProps } from "../types";
 import { Badge } from "@components/ui/badge";
 
 export function MusclesCell<T>({ row }: CustomCellProps<T>) {
-  const muscles: BadgeData[] = row.getValue("muscles");
+  const muscles: NameValue[] = row.getValue("muscles");
 
   return (
     <div className="w-[500px]">

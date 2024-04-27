@@ -14,7 +14,7 @@ import {
   Select,
   SelectContent,
   SelectGroup,
-  SelectItem,
+  NameValue,
   SelectTrigger,
   SelectValue,
 } from "@components/ui/select";
@@ -149,9 +149,9 @@ export default function CreateWorkoutForm(formProps: WorkoutFormProps) {
                       <SelectContent>
                         <SelectGroup>
                           {difficulties.map((difficulty) => (
-                            <SelectItem key={difficulty.id} value={difficulty.id}>
+                            <NameValue key={difficulty.id} value={difficulty.id}>
                               {difficulty.name}
-                            </SelectItem>
+                            </NameValue>
                           ))}
                         </SelectGroup>
                       </SelectContent>
@@ -207,9 +207,9 @@ export default function CreateWorkoutForm(formProps: WorkoutFormProps) {
                               <SelectContent>
                                 <SelectGroup>
                                   {exercises.map((exercise) => (
-                                    <SelectItem key={exercise.id} value={exercise.id}>
+                                    <NameValue key={exercise.id} value={exercise.id}>
                                       {exercise.name}
-                                    </SelectItem>
+                                    </NameValue>
                                   ))}
                                 </SelectGroup>
                               </SelectContent>

@@ -1,5 +1,5 @@
 import { Button } from "@components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@components/ui/select";
+import { Select, SelectContent, NameValue, SelectTrigger, SelectValue } from "@components/ui/select";
 import { ChevronLeftIcon, ChevronRightIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from "@radix-ui/react-icons";
 import { DataTablePaginationProps } from "./types";
 
@@ -20,9 +20,9 @@ export default function DataTablePagination<T>({ table }: DataTablePaginationPro
             </SelectTrigger>
             <SelectContent side="top">
               {[10, 20, 30, 40, 50].map((pageSize) => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
+                <NameValue key={pageSize} value={`${pageSize}`}>
                   {pageSize}
-                </SelectItem>
+                </NameValue>
               ))}
             </SelectContent>
           </Select>

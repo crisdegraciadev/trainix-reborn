@@ -1,11 +1,11 @@
 import db from "@lib/prisma";
 import { privateProcedure } from "@server/trpc";
-import { SelectItem } from "@typings/utils";
+import { NameValue } from "@typings/utils";
 import { z } from "zod";
 
 export const findExerciseSelectList = privateProcedure
   .input(z.object({ userId: z.string() }))
-  .query(async ({ input }): Promise<SelectItem[]> => {
+  .query(async ({ input }): Promise<NameValue[]> => {
     const { userId } = input;
 
     const data = await db.exercise.findMany({

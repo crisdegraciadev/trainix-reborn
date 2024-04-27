@@ -13,7 +13,7 @@ import {
   Select,
   SelectContent,
   SelectGroup,
-  SelectItem,
+  NameValue,
   SelectLabel,
   SelectTrigger,
   SelectValue,
@@ -92,24 +92,24 @@ export default function ProgressionForm() {
                               <SelectContent>
                                 <SelectGroup>
                                   <SelectLabel>{name}</SelectLabel>
-                                  <SelectItem value="+">
+                                  <NameValue value="+">
                                     <div className="flex items-center">
                                       <CircleCheck className="w-4 h-4 mr-2 text-green-600" />
                                       Move On
                                     </div>
-                                  </SelectItem>
-                                  <SelectItem value="=">
+                                  </NameValue>
+                                  <NameValue value="=">
                                     <div className="flex items-center">
                                       <Circle className="w-4 h-4 mr-2 text-blue-600" />
                                       Maintain
                                     </div>
-                                  </SelectItem>
-                                  <SelectItem value="-">
+                                  </NameValue>
+                                  <NameValue value="-">
                                     <div className="flex items-center">
                                       <CircleX className="w-4 h-4 mr-2 text-red-600" />
                                       Slow Down
                                     </div>
-                                  </SelectItem>
+                                  </NameValue>
                                 </SelectGroup>
                               </SelectContent>
                             </Select>
@@ -150,9 +150,9 @@ export default function ProgressionForm() {
                                 <SelectContent>
                                   <SelectGroup>
                                     {exercisesOptions.map(({ id, value, name: label }) => (
-                                      <SelectItem key={id} value={value}>
+                                      <NameValue key={id} value={value}>
                                         {label}
-                                      </SelectItem>
+                                      </NameValue>
                                     ))}
                                   </SelectGroup>
                                 </SelectContent>

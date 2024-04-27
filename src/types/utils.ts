@@ -1,10 +1,4 @@
-export type BadgeData = {
-  id: string;
-  name: string;
-  value: string;
-};
-
-export type SelectItem = {
+export type NameValue = {
   id: string;
   name: string;
   value: string;

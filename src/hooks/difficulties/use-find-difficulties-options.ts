@@ -1,6 +1,6 @@
 import { trpc } from "@server/client";
 
-export const useFindDifficulties = () => {
+export const useFindDifficultiesOptions = () => {
   const { data, isSuccess, isError } = trpc.difficulties.findDifficultySelectList.useQuery();
 
   return {

@@ -1,10 +1,10 @@
 import { useToast } from "@components/ui/use-toast";
-import { useFindMusclesSelectList } from "@hooks/muscles/use-find-muscles-options";
+import { useFindMusclesOptions } from "@hooks/muscles/use-find-muscles-options";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFindDifficulties } from "@hooks/difficulties/use-find-difficulties-options";
+import { useFindDifficultiesOptions } from "@hooks/difficulties/use-find-difficulties-options";
 import { WorkoutFormSchema, workoutSchema } from "./workout-schema";
 import { useCreateWorkout } from "@hooks/workouts/use-create-workout";
 import { TOAST_MESSAGES } from "./toast-messages";
@@ -40,8 +40,8 @@ export const useWorkoutForm = ({ onComplete }: WorkoutFormProps) => {
     mutate: createWorkout,
   } = useCreateWorkout();
 
-  const { data: difficulties } = useFindDifficulties();
-  const { data: muscles } = useFindMusclesSelectList();
+  const { data: difficulties } = useFindDifficultiesOptions();
+  const { data: muscles } = useFindMusclesOptions();
   const { data: exercises } = useFindExerciseSelectList({ userId });
 
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);

@@ -10,8 +10,8 @@ import { redirect } from "next/navigation";
 import { AppRoutes } from "@constants/routes";
 import { useCreateExercise } from "@hooks/exercises/use-create-exercise";
 import { useUpdateExercise } from "@hooks/exercises/use-update-exercise";
-import { useFindDifficulties } from "@hooks/difficulties/use-find-difficulties-options";
-import { useFindMusclesSelectList } from "@hooks/muscles/use-find-muscles-options";
+import { useFindDifficultiesOptions } from "@hooks/difficulties/use-find-difficulties-options";
+import { useFindMusclesOptions } from "@hooks/muscles/use-find-muscles-options";
 
 type BaseProps = {
   onComplete: () => void;
@@ -29,9 +29,9 @@ export const useExerciseForm = ({ type, rowData, onComplete }: ExerciseFormProps
     redirect(AppRoutes.LOGIN);
   }
 
-  const { data: muscles } = useFindMusclesSelectList();
+  const { data: muscles } = useFindMusclesOptions();
 
-  const { data: difficulties } = useFindDifficulties();
+  const { data: difficulties } = useFindDifficultiesOptions();
 
   const {
     isSuccess: isCreateExerciseSuccess,

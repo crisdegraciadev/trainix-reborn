@@ -1,7 +1,7 @@
 import { Exercise as ExerciseModel } from "@prisma/client";
 import { Difficulty } from "./difficulty";
 import { Muscle } from "./muscle";
-import { BadgeData } from "@typings/utils";
+import { NameValue } from "@typings/utils";
 
 export type Exercise = ExerciseModel;
 
@@ -15,11 +15,11 @@ export type ExerciseWithMuscles = Exercise & {
 
 export type ExerciseRow = Exercise & {
   description?: string | null;
-  difficulty: BadgeData;
-  muscles: BadgeData[];
+  difficulty: NameValue;
+  muscles: NameValue[];
 };
 
 export type ExerciseDetails = Exercise & {
-  difficulty: BadgeData;
-  muscles: BadgeData[];
+  difficulty: NameValue;
+  muscles: NameValue[];
 };

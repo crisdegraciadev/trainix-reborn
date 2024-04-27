@@ -6,6 +6,8 @@ describe("exercises", () => {
 
     cy.contains("Exercise deleted");
     cy.contains("The exercise has been deleted.");
+
+    cy.get("table", { timeout: 10_000 }).should("exist");
   };
 
   const createExercise = (name: string, muscles: string[], difficulty: string) => {
@@ -28,6 +30,8 @@ describe("exercises", () => {
 
     cy.contains("Exercise created");
     cy.contains("The exercise has been created.");
+
+    cy.get("table", { timeout: 10_000 }).should("exist");
   };
 
   beforeEach(() => {
@@ -71,7 +75,6 @@ describe("exercises", () => {
 
   it("should not create exercise with the same name", () => {
     createExercise("Push Up", ["Chest", "Triceps"], "Easy");
-
     createExercise("Push Up", ["Chest", "Triceps"], "Easy");
 
     cy.contains("Error creating exercise.");
@@ -135,6 +138,9 @@ describe("exercises", () => {
     cy.get("tr td").contains("Push Up");
 
     deleteExercise();
+
+    cy.get("table", { timeout: 10_000 }).should("exist");
+
     deleteExercise();
   });
 

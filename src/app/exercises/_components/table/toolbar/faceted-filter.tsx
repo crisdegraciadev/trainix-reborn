@@ -67,12 +67,13 @@ function FilterCommandList({
   column,
   options,
   selectedValues,
-}: Omit<_, "title"> & { selectedValues: Set<string> }) {
+  title,
+}: _ & { selectedValues: Set<string> }) {
   const facets = column?.getFacetedUniqueValues();
 
   return (
     <Command>
-      <CommandInput placeholder="Muscles" />
+      <CommandInput placeholder={title} />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup>
@@ -135,7 +136,12 @@ export default function ExerciseFacetedFilter({ column, options, title }: _) {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="h-8 border-dashed">
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-8 border-dashed"
+          data-cy={`${title}-filter`}
+        >
           <FilterButtonContent
             column={column}
             options={options}
@@ -146,7 +152,12 @@ export default function ExerciseFacetedFilter({ column, options, title }: _) {
       </PopoverTrigger>
 
       <PopoverContent className="w-[200px] p-0" align="start">
-        <FilterCommandList column={column} options={options} selectedValues={selectedValues} />
+        <FilterCommandList
+          column={column}
+          options={options}
+          selectedValues={selectedValues}
+          title={title}
+        />
       </PopoverContent>
     </Popover>
   );

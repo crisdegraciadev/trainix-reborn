@@ -1,6 +1,6 @@
 describe("exercises", () => {
   const deleteExercise = () => {
-    cy.get("button[data-cy=exercise-actions]").click();
+    cy.get("button[data-cy=exercise-actions]").first().click();
     cy.get("[role=menuitem]").contains("Delete").click();
     cy.get("[role=alertdialog] button").contains("Delete").click();
 
@@ -8,18 +8,21 @@ describe("exercises", () => {
     cy.contains("The exercise has been deleted.");
   };
 
-  const createExercise = (name: string) => {
+  const createExercise = (name: string, muscles: string[], difficulty: string) => {
+    cy.get("button").contains("Exercise").click();
+
     cy.get("input[id=name]").type(name);
     cy.get("input[placeholder='Select muscles']").click();
 
-    cy.get("[role=dialog]").contains("Chest").click({ force: true });
-    cy.get("[role=dialog]").contains("Triceps").click();
+    muscles.forEach((muscle) => {
+      cy.get("[role=dialog]").contains(muscle).click();
+    });
 
     cy.get("[role=dialog]").click();
 
     cy.get("[role=dialog] button[role=combobox]").click();
 
-    cy.get("[role=option]").contains("Easy").click();
+    cy.get("[role=option]").contains(difficulty).click();
 
     cy.get("button").contains("Save").click();
 
@@ -67,13 +70,9 @@ describe("exercises", () => {
   });
 
   it("should not create exercise with the same name", () => {
-    cy.get("button").contains("Exercise").click();
+    createExercise("Push Up", ["Chest", "Triceps"], "Easy");
 
-    createExercise("Push Up");
-
-    cy.get("button").contains("Exercise").click();
-
-    createExercise("Push Up");
+    createExercise("Push Up", ["Chest", "Triceps"], "Easy");
 
     cy.contains("Error creating exercise.");
     cy.contains("There was an unexpected error creating the exericse.");
@@ -84,9 +83,7 @@ describe("exercises", () => {
   });
 
   it("should delete an exercise", () => {
-    cy.get("button").contains("Exercise").click();
-
-    createExercise("Push Up");
+    createExercise("Push Up", ["Chest", "Triceps"], "Easy");
 
     cy.get("button[data-cy=exercise-actions]").click();
     cy.get("[role=menuitem]").contains("Delete").click();
@@ -97,12 +94,7 @@ describe("exercises", () => {
   });
 
   it("should edit an exercise", () => {
-    cy.get("button").contains("Exercise").click();
-
-    createExercise("Pus Up");
-
-    cy.contains("Exercise created");
-    cy.contains("The exercise has been created.");
+    createExercise("Pus Up", ["Chest", "Triceps"], "Easy");
 
     cy.get("tr td").contains("Pus Up");
 
@@ -122,6 +114,81 @@ describe("exercises", () => {
 
     cy.get("tr td").contains("Push Up");
 
+    deleteExercise();
+  });
+
+  it("should filter by name", () => {
+    createExercise("Push Up", ["Chest", "Triceps"], "Easy");
+    createExercise("Squat", ["Quadriceps"], "Easy");
+
+    cy.get("tr td").contains("Squat");
+    cy.get("tr td").contains("Push Up");
+
+    cy.get("input[placeholder='Filter name...']").type("Squat");
+
+    cy.get("tr td").contains("Squat");
+    cy.get("tr td").contains("Push Up").should("not.exist");
+
+    cy.get("input[placeholder='Filter name...']").clear();
+
+    cy.get("tr td").contains("Squat");
+    cy.get("tr td").contains("Push Up");
+
+    deleteExercise();
+    deleteExercise();
+  });
+
+  it("should filter by muscles", () => {
+    createExercise("Push Up", ["Chest", "Triceps"], "Easy");
+    createExercise("Squat", ["Quadriceps"], "Easy");
+
+    cy.get("tr td").contains("Squat");
+    cy.get("tr td").contains("Push Up");
+
+    cy.get("button[data-cy='Muscles-filter']").click();
+
+    cy.get("input[placeholder='Muscles']").type("Chest");
+    cy.get(".lucide-check").parent().click();
+
+    cy.get("tr td").contains("Push Up");
+    cy.get("tr td").contains("Squat").should("not.exist");
+
+    cy.get("input[placeholder='Muscles']").clear();
+
+    cy.get("input[placeholder='Muscles']").type("Triceps");
+    cy.get(".lucide-check").parent().click();
+
+    cy.get("tr td").contains("Push Up");
+    cy.get("tr td").contains("Squat").should("not.exist");
+
+    deleteExercise();
+    deleteExercise();
+  });
+
+  it("should filter by difficulty", () => {
+    createExercise("Push Up", ["Chest", "Triceps"], "Easy");
+    createExercise("Squat", ["Quadriceps"], "Medium");
+
+    cy.get("tr td").contains("Squat");
+    cy.get("tr td").contains("Push Up");
+
+    cy.get("button[data-cy='Difficulties-filter']").click();
+
+    cy.get("input[placeholder='Difficulties']").type("Easy");
+    cy.get(".lucide-check").parent().click();
+
+    cy.get("tr td").contains("Push Up");
+    cy.get("tr td").contains("Squat").should("not.exist");
+
+    cy.get("input[placeholder='Difficulties']").clear();
+
+    cy.get("input[placeholder='Difficulties']").type("Medium");
+    cy.get(".lucide-check").parent().click();
+
+    cy.get("tr td").contains("Push Up");
+    cy.get("tr td").contains("Squat");
+
+    deleteExercise();
     deleteExercise();
   });
 });

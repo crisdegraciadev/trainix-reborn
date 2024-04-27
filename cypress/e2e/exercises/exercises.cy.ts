@@ -1,4 +1,4 @@
-describe("login", () => {
+describe("exercises", () => {
   const deleteExercise = () => {
     cy.get("button[data-cy=exercise-actions]").click();
     cy.get("[role=menuitem]").contains("Delete").click();

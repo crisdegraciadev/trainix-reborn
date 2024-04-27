@@ -1,12 +1,13 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
-import ExerciseActionsCell from "./exercise-actions-cell";
-import { DataTableColumnHeader } from "@components/data-table/data-table-column-header";
 import { DifficultyCell } from "@components/data-table/cells/difficulty-cell";
 import { MusclesCell } from "@components/data-table/cells/muscles-cell";
-import { ExerciseRow } from "@typings/entities/exercise";
 import NameCell from "@components/data-table/cells/name-cell";
+import { DataTableColumnHeader } from "@components/data-table/data-table-column-header";
+import { ColumnDef } from "@tanstack/react-table";
+import { ExerciseRow } from "@typings/entities/exercise";
+import ExerciseActionsCell from "./actions/actions-cell";
+import { ExerciseActionsContextProvider } from "./actions/actions-context";
 
 export const exerciseColumns: ColumnDef<ExerciseRow>[] = [
   {
@@ -32,7 +33,11 @@ export const exerciseColumns: ColumnDef<ExerciseRow>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      return <ExerciseActionsCell row={row} />;
+      return (
+        <ExerciseActionsContextProvider>
+          <ExerciseActionsCell row={row} />
+        </ExerciseActionsContextProvider>
+      );
     },
   },
 ];

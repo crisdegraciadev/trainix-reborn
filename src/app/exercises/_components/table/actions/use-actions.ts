@@ -1,13 +1,17 @@
 import { useToast } from "@components/ui/use-toast";
 import { useDeleteExercise } from "@hooks/exercises/use-delete-exercise";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useExerciseActionsContext } from "./actions-context";
 
 export const useExerciseActions = () => {
-  const { deleteExercise, isDeleteExerciseSuccess, isDeleteExerciseLoading, isDeleteExerciseError } =
-    useDeleteExercise();
+  const { setIsDeleteDialogOpen } = useExerciseActionsContext();
 
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
+  const {
+    deleteExercise,
+    isDeleteExerciseSuccess,
+    isDeleteExerciseLoading,
+    isDeleteExerciseError,
+  } = useDeleteExercise();
 
   const { toast } = useToast();
 
@@ -21,7 +25,7 @@ export const useExerciseActions = () => {
 
       setIsDeleteDialogOpen(false);
     }
-  }, [isDeleteExerciseSuccess, toast]);
+  }, [isDeleteExerciseSuccess, setIsDeleteDialogOpen, toast]);
 
   useEffect(() => {
     if (isDeleteExerciseError) {
@@ -33,22 +37,10 @@ export const useExerciseActions = () => {
 
       setIsDeleteDialogOpen(false);
     }
-  }, [isDeleteExerciseError, toast]);
-
-  const toggleDeleteDialog = () => {
-    setIsDeleteDialogOpen((state) => !state);
-  };
-
-  const toggleUpdateDialog = () => {
-    setIsUpdateDialogOpen((state) => !state);
-  };
+  }, [isDeleteExerciseError, setIsDeleteDialogOpen, toast]);
 
   return {
     deleteExercise,
-    toggleDeleteDialog,
-    isDeleteDialogOpen,
     isDeleteExerciseLoading,
-    toggleUpdateDialog,
-    isUpdateDialogOpen,
   };
 };

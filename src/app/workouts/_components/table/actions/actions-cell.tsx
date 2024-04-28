@@ -22,7 +22,7 @@ import {
 } from "@components/ui/dropdown-menu";
 import { WorkoutRow } from "@typings/entities/workout";
 import { Loader2, MoreHorizontal, Trash2 } from "lucide-react";
-import { useWorkoutActions } from "./use-workout-actions";
+import { useWorkoutActions } from "./use-actions";
 
 export default function WorkoutActionsCell({ row }: CustomCellProps<WorkoutRow>) {
   const { deleteWorkout, toggleDeleteDialog, isDeleteDialogOpen, isDeleteWorkoutLoading } =

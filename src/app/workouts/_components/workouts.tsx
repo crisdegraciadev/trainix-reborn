@@ -1,10 +1,10 @@
 "use client";
 
 import { User } from "@typings/next-auth";
-import WorkoutTable from "./workout-table/workout-table";
-import { workoutColumns } from "./workout-table/workout-columns";
 import { useFindWorkoutRows } from "@hooks/workouts/use-find-workout-rows";
 import TableSkeleton from "@components/loaders/table-skeleton";
+import WorkoutTable from "./table/table";
+import { workoutColumns } from "./table/columns";
 
 type _Props = {
   user: User;

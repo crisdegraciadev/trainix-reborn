@@ -8,7 +8,7 @@ import db from "@lib/prisma";
 export const createWorkout = privateProcedure
   .input(workoutSchema)
   .mutation(async ({ input }): Promise<Workout> => {
-    const { muscles: musclesIds, activities, ...workoutData } = input;
+    const { muscles: musclesIds, activities, date, ...workoutData } = input;
 
     console.log("Creating new workout", { input });
 
@@ -22,11 +22,9 @@ export const createWorkout = privateProcedure
         },
       });
 
-      console.log("Workout created", {
-        workout,
-      });
+      console.log("Workout created", { workout });
 
-      const progressionCreationDate = convertToUTC(new Date());
+      const progressionCreationDate = convertToUTC(date);
       progressionCreationDate.setUTCHours(0, 0, 0, 0);
 
       const progression = await tx.progression.create({

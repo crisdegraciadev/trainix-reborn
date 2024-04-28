@@ -164,6 +164,8 @@ describe("exercises", () => {
     cy.get("tr td").contains("Push Up");
     cy.get("tr td").contains("Squat").should("not.exist");
 
+    cy.get("body").click();
+
     deleteExercise();
     cy.contains("Exercise deleted");
     cy.contains("The exercise has been deleted.");
@@ -197,6 +199,8 @@ describe("exercises", () => {
 
     cy.get("tr td").contains("Push Up");
     cy.get("tr td").contains("Squat");
+
+    cy.get("body").click();
 
     deleteExercise();
     cy.contains("Exercise deleted");

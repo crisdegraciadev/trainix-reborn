@@ -1,6 +1,7 @@
 describe("exercises", () => {
   const deleteExercise = () => {
     cy.get("button[data-cy=exercise-actions]").first().click();
+
     cy.get("[role=menuitem]").contains("Delete").click();
     cy.get("[role=alertdialog] button").contains("Delete").click();
 
@@ -138,9 +139,7 @@ describe("exercises", () => {
     cy.get("tr td").contains("Push Up");
 
     deleteExercise();
-
     cy.get("table", { timeout: 10_000 }).should("exist");
-
     deleteExercise();
   });
 
@@ -168,6 +167,7 @@ describe("exercises", () => {
     cy.get("tr td").contains("Squat").should("not.exist");
 
     deleteExercise();
+    cy.get("table", { timeout: 10_000 }).should("exist");
     deleteExercise();
   });
 
@@ -195,6 +195,7 @@ describe("exercises", () => {
     cy.get("tr td").contains("Squat");
 
     deleteExercise();
+    cy.get("table", { timeout: 10_000 }).should("exist");
     deleteExercise();
   });
 });

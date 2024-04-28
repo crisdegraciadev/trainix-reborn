@@ -2,7 +2,6 @@ import db from "@lib/prisma";
 import { privateProcedure } from "@server/trpc";
 import { TRPCError } from "@trpc/server";
 import { Workout } from "@typings/entities/workout";
-import { parseISO } from "date-fns";
 import { workoutSchema } from "../schemas/workout-schema";
 
 export const createWorkout = privateProcedure
@@ -24,7 +23,7 @@ export const createWorkout = privateProcedure
 
       console.log("Workout created", { workout });
 
-      const progressionCreationDate = parseISO(date);
+      const progressionCreationDate = date;
 
       const progression = await tx.progression.create({
         data: { workoutId: workout.id, createdAt: progressionCreationDate },

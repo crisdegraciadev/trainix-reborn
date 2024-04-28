@@ -91,7 +91,7 @@ export const useWorkoutForm = ({ onComplete }: WorkoutFormProps) => {
     createWorkout({
       ...data,
       userId,
-      date: new Date().toISOString(),
+      date: new Date(),
     });
   };
 

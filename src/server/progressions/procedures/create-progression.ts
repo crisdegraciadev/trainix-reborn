@@ -4,7 +4,6 @@ import { TRPCError } from "@trpc/server";
 import { PrismaTx } from "@typings/prisma";
 import { activitySchema } from "@typings/schemas/activity";
 import { ImprovementSchema, improvementSchema } from "@typings/schemas/improvement";
-import { parseISO } from "date-fns";
 import { z } from "zod";
 import { buildTodayDateFilter } from "../utils/build-today-date-filter";
 
@@ -12,7 +11,7 @@ export const createProgression = privateProcedure
   .input(
     z.object({
       workoutId: z.string(),
-      progression: z.object({ date: z.string(), activities: z.array(activitySchema) }),
+      progression: z.object({ date: z.date(), activities: z.array(activitySchema) }),
       currentProgressionId: z.string().optional(),
       improvements: z.array(improvementSchema).optional(),
     }),
@@ -23,7 +22,7 @@ export const createProgression = privateProcedure
 
     console.log("Create new progression with input", { date });
 
-    const createdAt = parseISO(date);
+    const createdAt = date;
     const todayFilter = buildTodayDateFilter(createdAt);
 
     console.log("Formatted date to UTC", { createdAt });

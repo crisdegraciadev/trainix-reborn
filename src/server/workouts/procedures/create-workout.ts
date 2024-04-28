@@ -25,7 +25,6 @@ export const createWorkout = privateProcedure
       console.log("Workout created", { workout });
 
       const progressionCreationDate = parseISO(date);
-      progressionCreationDate.setUTCHours(0, 0, 0, 0);
 
       const progression = await tx.progression.create({
         data: { workoutId: workout.id, createdAt: progressionCreationDate },

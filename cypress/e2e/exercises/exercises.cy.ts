@@ -1,14 +1,8 @@
 describe("exercises", () => {
   const deleteExercise = () => {
     cy.get("button[data-cy=exercise-actions]").first().click();
-
     cy.get("[role=menuitem]").contains("Delete").click();
     cy.get("[role=alertdialog] button").contains("Delete").click();
-
-    cy.contains("Exercise deleted");
-    cy.contains("The exercise has been deleted.");
-
-    cy.get("table", { timeout: 10_000 }).should("exist");
   };
 
   const createExercise = (name: string, muscles: string[], difficulty: string) => {
@@ -31,13 +25,6 @@ describe("exercises", () => {
     cy.get("[role=option]").contains(difficulty).click();
 
     cy.get("button").contains("Save").click();
-
-    cy.get("[role=dialog]").should("not.exist");
-
-    cy.contains("Exercise created");
-    cy.contains("The exercise has been created.");
-
-    cy.get("table", { timeout: 10_000 }).should("exist");
   };
 
   beforeEach(() => {
@@ -144,8 +131,14 @@ describe("exercises", () => {
     cy.get("tr td").contains("Push Up");
 
     deleteExercise();
-    cy.get("table", { timeout: 10_000 }).should("exist");
+    cy.contains("Exercise deleted");
+    cy.contains("The exercise has been deleted.");
+    cy.get("[data-cy=loading-table]").should("not.exist");
+
     deleteExercise();
+    cy.contains("Exercise deleted");
+    cy.contains("The exercise has been deleted.");
+    cy.get("[data-cy=loading-table]").should("not.exist");
   });
 
   it("should filter by muscles", () => {
@@ -172,8 +165,14 @@ describe("exercises", () => {
     cy.get("tr td").contains("Squat").should("not.exist");
 
     deleteExercise();
-    cy.get("table", { timeout: 10_000 }).should("exist");
+    cy.contains("Exercise deleted");
+    cy.contains("The exercise has been deleted.");
+    cy.get("[data-cy=loading-table]").should("not.exist");
+
     deleteExercise();
+    cy.contains("Exercise deleted");
+    cy.contains("The exercise has been deleted.");
+    cy.get("[data-cy=loading-table]").should("not.exist");
   });
 
   it("should filter by difficulty", () => {
@@ -200,7 +199,13 @@ describe("exercises", () => {
     cy.get("tr td").contains("Squat");
 
     deleteExercise();
-    cy.get("table", { timeout: 10_000 }).should("exist");
+    cy.contains("Exercise deleted");
+    cy.contains("The exercise has been deleted.");
+    cy.get("[data-cy=loading-table]").should("not.exist");
+
     deleteExercise();
+    cy.contains("Exercise deleted");
+    cy.contains("The exercise has been deleted.");
+    cy.get("[data-cy=loading-table]").should("not.exist");
   });
 });

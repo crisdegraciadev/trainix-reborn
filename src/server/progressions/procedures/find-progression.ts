@@ -5,6 +5,7 @@ import { ProgressionDetails } from "@typings/entities/progression";
 import { convertToUTC } from "@utils/convert-to-utc";
 import { z } from "zod";
 import { buildTodayDateFilter } from "../utils/build-today-date-filter";
+import { TRPCError } from "@trpc/server";
 
 export const findProgression = privateProcedure
   .input(z.object({ workoutId: z.string(), id: z.string().optional(), date: z.date().optional() }))
@@ -12,6 +13,10 @@ export const findProgression = privateProcedure
     const { workoutId, id, date } = input;
 
     const dateFilter = date ? buildTodayDateFilter(convertToUTC(date)) : {};
+
+    console.log("Finding progression with filters", {
+      where: { id, workoutId, ...dateFilter },
+    });
 
     const progression = await db.progression.findFirst({
       where: {
@@ -36,7 +41,7 @@ export const findProgression = privateProcedure
     });
 
     if (!progression) {
-      return null;
+      throw new TRPCError({ code: "NOT_FOUND", message: "Progression not found" });
     }
 
     const { activities, createdAt } = progression;

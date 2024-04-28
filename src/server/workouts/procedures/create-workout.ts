@@ -1,9 +1,9 @@
-import { privateProcedure } from "@server/trpc";
-import { workoutSchema } from "../schemas/workout-schema";
-import { Workout } from "@typings/entities/workout";
-import { TRPCError } from "@trpc/server";
-import { convertToUTC } from "@utils/convert-to-utc";
 import db from "@lib/prisma";
+import { privateProcedure } from "@server/trpc";
+import { TRPCError } from "@trpc/server";
+import { Workout } from "@typings/entities/workout";
+import { parseISO } from "date-fns";
+import { workoutSchema } from "../schemas/workout-schema";
 
 export const createWorkout = privateProcedure
   .input(workoutSchema)
@@ -24,7 +24,7 @@ export const createWorkout = privateProcedure
 
       console.log("Workout created", { workout });
 
-      const progressionCreationDate = convertToUTC(date);
+      const progressionCreationDate = parseISO(date);
       progressionCreationDate.setUTCHours(0, 0, 0, 0);
 
       const progression = await tx.progression.create({

@@ -6,7 +6,7 @@ export const workoutSchema = z.object({
   description: z.string().optional(),
   muscles: z.array(z.object({ id: z.string() })),
   userId: z.string(),
-  date: z.date(),
+  date: z.string(),
   activities: z.array(
     z.object({
       exerciseId: z.string().min(1),

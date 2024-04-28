@@ -14,9 +14,12 @@ describe("exercises", () => {
   const createExercise = (name: string, muscles: string[], difficulty: string) => {
     cy.get("button").contains("Exercise").click();
 
-    cy.get("input[id=name]").type(name);
-    cy.get("input[placeholder='Select muscles']").click();
+    cy.get("[role=dialog]").should("exist");
+    cy.get("[role=dialog] h2").contains("Create Exercise").should("exist");
 
+    cy.get("input[id=name]").type(name);
+
+    cy.get("input[placeholder='Select muscles']").click();
     muscles.forEach((muscle) => {
       cy.get("[role=dialog]").contains(muscle).click();
     });
@@ -28,6 +31,8 @@ describe("exercises", () => {
     cy.get("[role=option]").contains(difficulty).click();
 
     cy.get("button").contains("Save").click();
+
+    cy.get("[role=dialog]").should("not.exist");
 
     cy.contains("Exercise created");
     cy.contains("The exercise has been created.");

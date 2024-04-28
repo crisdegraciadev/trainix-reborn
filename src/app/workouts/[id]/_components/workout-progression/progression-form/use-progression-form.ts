@@ -149,6 +149,9 @@ export const useProgressionForm = () => {
   const onSubmit = async (data: ProgressionFormSchema) => {
     const { date, activities, improvements } = data;
 
+    console.log("Creating workout");
+    console.log({ workoutData: { date } });
+
     if (!workoutId) {
       throw new Error("Field workoutId is not provided");
     }

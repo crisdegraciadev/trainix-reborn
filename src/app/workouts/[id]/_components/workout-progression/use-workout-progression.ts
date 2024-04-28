@@ -44,6 +44,7 @@ export const useWorkoutProgression = ({ workout }: _) => {
   }, [setCurrentWorkout, workout]);
 
   useEffect(() => {
+    console.log({ currentProgressionDate });
     setProgressionTimeData({
       selectedDate: currentProgressionDate,
       matchDates: progressionDates,

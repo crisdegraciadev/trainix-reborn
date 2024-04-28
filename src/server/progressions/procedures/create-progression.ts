@@ -21,10 +21,12 @@ export const createProgression = privateProcedure
     const { workoutId, progression, improvements, currentProgressionId } = input;
     const { date, activities } = progression;
 
+    console.log("Create new progression with input", { date });
+
     const createdAt = convertToUTC(date);
     const todayFilter = buildTodayDateFilter(createdAt);
 
-    console.log({ createdAt, todayFilter });
+    console.log("Formatted date to UTC", { createdAt });
 
     return db.$transaction(async (tx) => {
       // Check if there is some progression on this date
@@ -34,6 +36,8 @@ export const createProgression = privateProcedure
 
       // Delete it to replace it with the incomming progression
       if (progressionOnSameDate) {
+        console.log("Progression on same date found", { progressionOnSameDate });
+
         await tx.progression.delete({
           where: { id: progressionOnSameDate.id },
         });

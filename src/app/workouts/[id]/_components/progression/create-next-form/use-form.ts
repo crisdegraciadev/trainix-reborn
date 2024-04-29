@@ -1,18 +1,18 @@
 import { SelectOption } from "@components/ui/multi-select";
 import { AppRoutes } from "@constants/routes";
-import { useFindExerciseSelectList } from "app/workouts/_hooks/use-find-exercise-select-list";
+import { useFindExerciseSelectList } from "../../../../_hooks/use-find-exercise-select-list";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { ProgressionFormSchema, progressionSchema } from "./progression-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ActivityFormSchema } from "@typings/schemas/activity";
 import { useCreateProgression } from "@hooks/progression/use-create-progression";
-import { TOAST_MESSAGES } from "./toast-messages";
 import { toast } from "@components/ui/use-toast";
-import { useWorkoutProgressionContext } from "../workout-progression-context";
 import { useFindLastProgression } from "@hooks/progression/use-find-last-progression";
+import { useWorkoutProgressionContext } from "../progression-context";
+import { TOAST_MESSAGES } from "../toast-messages";
+import { NextProgressionFormSchema, nextProgressionSchema } from "./next-progression-schema";
 
 const DEFAULT_FORM_VALUES = {
   date: new Date(),
@@ -20,7 +20,7 @@ const DEFAULT_FORM_VALUES = {
   improvements: [],
 };
 
-export const useProgressionForm = () => {
+export const useNextProgressionForm = () => {
   const { data: session } = useSession();
 
   if (!session) {
@@ -73,8 +73,8 @@ export const useProgressionForm = () => {
 
   const { data: lastProgression } = useFindLastProgression({ workoutId });
 
-  const form = useForm<ProgressionFormSchema>({
-    resolver: zodResolver(progressionSchema),
+  const form = useForm<NextProgressionFormSchema>({
+    resolver: zodResolver(nextProgressionSchema),
     defaultValues: DEFAULT_FORM_VALUES,
   });
 
@@ -146,7 +146,7 @@ export const useProgressionForm = () => {
     }
   }, [form, isCreateProgressionSuccess, setIsCreateDialogOpen, setProgressionTimeData]);
 
-  const onSubmit = async (data: ProgressionFormSchema) => {
+  const onSubmit = async (data: NextProgressionFormSchema) => {
     const { date, activities, improvements } = data;
 
     console.log("Creating workout");

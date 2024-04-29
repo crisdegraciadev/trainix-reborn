@@ -1,4 +1,5 @@
 import { Button } from "@components/ui/button";
+import { DatePicker } from "@components/ui/date-picker";
 import {
   Form,
   FormControl,
@@ -10,32 +11,27 @@ import {
 import { Input } from "@components/ui/input";
 import { ScrollArea } from "@components/ui/scroll-area";
 import {
+  NameValue,
   Select,
   SelectContent,
   SelectGroup,
-  NameValue,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@components/ui/select";
 import { cn } from "@lib/utils";
-import { Circle, CircleX, Loader2, PlusCircle, Trash2 } from "lucide-react";
-import { useProgressionForm } from "./use-progression-form";
-import { DatePicker } from "@components/ui/date-picker";
-import { CircleCheck } from "@components/ui/custom-icons";
+import { Loader2, PlusCircle, Trash2 } from "lucide-react";
+import { useFirstProgressionForm } from "./use-form";
 
-export default function ProgressionForm() {
+export default function CreateFirstProgressionForm() {
   const {
     form,
     activityFields,
     appendActivity,
     removeActivity,
-    improvementFields,
     exercisesOptions,
     isFormLoading,
-    lastProgression,
     onSubmit,
-  } = useProgressionForm();
+  } = useFirstProgressionForm();
 
   return (
     <Form {...form}>
@@ -50,78 +46,13 @@ export default function ProgressionForm() {
                   <FormLabel>Creation date</FormLabel>
                   <DatePicker
                     styles={["w-full"]}
-                    disableDays={{ beforeDate: lastProgression?.createdAt }}
                     selectedDate={field.value}
                     onSelect={field.onChange}
-                    // Ref error?
-                    // {...field}
                   />
                   <FormMessage />
                 </FormItem>
               )}
             />
-
-            <div className="space-y-2">
-              <div className="space-y-2">
-                <h3
-                  className={cn(
-                    "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
-                    form.formState.errors.improvements?.length ? "text-destructive" : "",
-                  )}
-                >
-                  Improvements
-                </h3>
-
-                {improvementFields.map(({ id, name, sets, reps }, idx) => (
-                  <div className="flex" key={id}>
-                    <FormField
-                      control={form.control}
-                      name={`improvements.${idx}.improve`}
-                      render={({ field }) => (
-                        <div className="flex grow gap-1">
-                          <Input className="w-3/6" value={name} disabled />
-                          <Input className="w-1/6" value={sets} disabled />
-                          <Input className="w-1/6" value={reps} disabled />
-                          <FormItem className="w-2/6">
-                            <Select onValueChange={field.onChange} defaultValue="=">
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder={`Select state`} />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <SelectGroup>
-                                  <SelectLabel>{name}</SelectLabel>
-                                  <NameValue value="+">
-                                    <div className="flex items-center">
-                                      <CircleCheck className="w-4 h-4 mr-2 text-green-600" />
-                                      Move On
-                                    </div>
-                                  </NameValue>
-                                  <NameValue value="=">
-                                    <div className="flex items-center">
-                                      <Circle className="w-4 h-4 mr-2 text-blue-600" />
-                                      Maintain
-                                    </div>
-                                  </NameValue>
-                                  <NameValue value="-">
-                                    <div className="flex items-center">
-                                      <CircleX className="w-4 h-4 mr-2 text-red-600" />
-                                      Slow Down
-                                    </div>
-                                  </NameValue>
-                                </SelectGroup>
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        </div>
-                      )}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
 
             <div className="space-y-2">
               <div className="space-y-2">

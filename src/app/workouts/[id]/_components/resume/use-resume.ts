@@ -1,8 +1,7 @@
 import { useFindLastProgression } from "@hooks/progression/use-find-last-progression";
-import { useFindProgression } from "@hooks/progression/use-find-progression";
 import { ProgressionDetails } from "@typings/entities/progression";
 import { WorkoutWithRelations } from "@typings/entities/workout";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 type _ = {
   workout: WorkoutWithRelations;

@@ -2,7 +2,6 @@ import db from "@lib/prisma";
 import { privateProcedure } from "@server/trpc";
 import { ActivityWithExercise } from "@typings/entities/activity";
 import { ProgressionDetails } from "@typings/entities/progression";
-import { convertToUTC } from "@utils/convert-to-utc";
 import { z } from "zod";
 import { buildTodayDateFilter } from "../utils/build-today-date-filter";
 import { TRPCError } from "@trpc/server";
@@ -12,7 +11,7 @@ export const findProgression = privateProcedure
   .query(async ({ input }): Promise<ProgressionDetails | null> => {
     const { workoutId, id, date } = input;
 
-    const dateFilter = date ? buildTodayDateFilter(convertToUTC(date)) : {};
+    const dateFilter = date ? buildTodayDateFilter(date) : {};
 
     console.log("Finding progression with filters", {
       where: { id, workoutId, ...dateFilter },

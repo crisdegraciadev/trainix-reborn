@@ -1,17 +1,16 @@
 import { useToast } from "@components/ui/use-toast";
-import { useFindMusclesOptions } from "@hooks/muscles/use-find-muscles-options";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { AppRoutes } from "@constants/routes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFindDifficultiesOptions } from "@hooks/difficulties/use-find-difficulties-options";
-import { WorkoutFormSchema, workoutSchema } from "./workout-schema";
+import { useFindMusclesOptions } from "@hooks/muscles/use-find-muscles-options";
 import { useCreateWorkout } from "@hooks/workouts/use-create-workout";
-import { TOAST_MESSAGES } from "./toast-messages";
 import { useFindExerciseSelectList } from "app/workouts/_hooks/use-find-exercise-select-list";
+import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-import { AppRoutes } from "@constants/routes";
-import { ActivityFormSchema } from "@typings/schemas/activity";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { TOAST_MESSAGES } from "./toast-messages";
+import { WorkoutFormSchema, workoutSchema } from "./workout-schema";
 
 export type WorkoutFormProps = {
   onComplete: () => void;
@@ -21,7 +20,6 @@ const DEFAULT_FORM_VALUES = {
   name: "",
   muscles: [],
   difficulty: "medium",
-  activities: [{ order: 0 }, { order: 1 }, { order: 2 }, { order: 3 }],
 };
 
 export const useWorkoutForm = ({ onComplete }: WorkoutFormProps) => {
@@ -53,15 +51,6 @@ export const useWorkoutForm = ({ onComplete }: WorkoutFormProps) => {
     defaultValues: DEFAULT_FORM_VALUES,
   });
 
-  const {
-    fields: activityFields,
-    append,
-    remove,
-  } = useFieldArray({
-    control: form.control,
-    name: "activities",
-  });
-
   useEffect(() => {
     const { isSubmitSuccessful: isSubmitSuccess } = form.formState;
 
@@ -88,28 +77,11 @@ export const useWorkoutForm = ({ onComplete }: WorkoutFormProps) => {
   }, [isCreateWorkoutError, toast]);
 
   const onSubmit = async (data: WorkoutFormSchema) => {
-    createWorkout({
-      ...data,
-      userId,
-      date: new Date(),
-    });
-  };
-
-  const appendActivity = (e: React.MouseEvent<Element, MouseEvent>) => {
-    e.preventDefault();
-    append({ order: activityFields.length } as ActivityFormSchema);
-  };
-
-  const removeActivity = (e: React.MouseEvent<Element, MouseEvent>, idx: number) => {
-    e.preventDefault();
-    remove(idx);
+    createWorkout({ ...data, userId });
   };
 
   return {
     form,
-    activityFields,
-    appendActivity,
-    removeActivity,
     onSubmit,
     muscles,
     difficulties,

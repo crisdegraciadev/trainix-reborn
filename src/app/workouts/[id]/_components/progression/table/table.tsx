@@ -13,7 +13,7 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 import { ActivityWithExercise } from "@typings/entities/activity";
-import ProgressionTableToolbar from "./progression-table-toolbar";
+import ProgressionTableToolbar from "./toolbar";
 
 export default function ProgressionTable<U>({
   columns,

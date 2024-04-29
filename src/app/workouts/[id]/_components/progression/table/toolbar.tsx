@@ -1,7 +1,7 @@
 import CreateButton from "@components/create-button";
 import { DatePicker } from "@components/ui/date-picker";
-import ProgressionForm from "../progression-form/progression-form";
-import { useWorkoutProgressionContext } from "../workout-progression-context";
+import { useWorkoutProgressionContext } from "../progression-context";
+import CreateNextProgressionForm from "../create-next-form/form";
 
 export default function ProgressionTableToolbar() {
   const {
@@ -34,7 +34,7 @@ export default function ProgressionTableToolbar() {
         isDialogOpen={isCreateDialogOpen}
         setIsDialogOpen={setIsCreateDialogOpen}
       >
-        <ProgressionForm />
+        <CreateNextProgressionForm />
       </CreateButton>
     </div>
   );

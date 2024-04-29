@@ -1,8 +1,8 @@
 import { useFindProgressionDates } from "@hooks/progression/use-find-progression-dates";
 import { WorkoutWithRelations } from "@typings/entities/workout";
 import { useEffect, useMemo, useState } from "react";
-import { useWorkoutProgressionContext } from "./workout-progression-context";
 import { useFindProgression } from "@hooks/progression/use-find-progression";
+import { useWorkoutProgressionContext } from "./progression-context";
 
 type _ = {
   workout: WorkoutWithRelations;
@@ -44,7 +44,6 @@ export const useWorkoutProgression = ({ workout }: _) => {
   }, [setCurrentWorkout, workout]);
 
   useEffect(() => {
-    console.log({ currentProgressionDate });
     setProgressionTimeData({
       selectedDate: currentProgressionDate,
       matchDates: progressionDates,

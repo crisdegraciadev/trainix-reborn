@@ -12,7 +12,7 @@ import { PlusCircle } from "lucide-react";
 import { Dispatch, PropsWithChildren, SetStateAction } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
-type _Props = {
+type _ = {
   title: string;
   label?: string;
   description: string;
@@ -33,7 +33,7 @@ export default function CreateButton({
   isDialogOpen,
   setIsDialogOpen,
   dialogClassNames,
-}: PropsWithChildren & _Props) {
+}: PropsWithChildren & _) {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
@@ -43,7 +43,7 @@ export default function CreateButton({
               <Button
                 disabled={disabled}
                 variant="outline"
-                className="items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground rounded-md px-3 text-xs ml-auto h-8 flex"
+                className="items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground rounded-md px-3 text-xs h-8 flex"
               >
                 <PlusCircle className="w-4 h-4 mr-2" />
                 {label ?? "Create"}

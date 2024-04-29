@@ -2,7 +2,7 @@ import { AppRoutes } from "@constants/routes";
 import { serverClient } from "@server/server-client";
 import { checkAuthorized } from "@utils/check-authorized";
 import { redirect } from "next/navigation";
-import WorkoutDetails from "./_components/workout-details";
+import WorkoutDetails from "./_components/details";
 
 type _ = {
   params: { id: string };

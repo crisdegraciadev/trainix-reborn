@@ -8,6 +8,7 @@ import CreateFirstProgressionForm from "./create-first-form/form";
 import { progressionColumns } from "./table/columns";
 import ProgressionTable from "./table/table";
 import { useWorkoutProgression } from "./use-progression";
+import TableSkeleton from "@components/loaders/table-skeleton";
 
 type _ = {
   workout: WorkoutWithRelations;
@@ -58,9 +59,17 @@ function CreateFirstProgression() {
 }
 
 export default function WorkoutProgression({ workout }: _) {
-  const { currentProgression } = useWorkoutProgression({
+  const { currentProgression, isLoadingProgression } = useWorkoutProgression({
     workout,
   });
+
+  if (isLoadingProgression) {
+    return (
+      <ProgressionBody>
+        <TableSkeleton />
+      </ProgressionBody>
+    );
+  }
 
   return (
     <ProgressionBody>

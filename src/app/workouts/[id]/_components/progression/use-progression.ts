@@ -21,6 +21,7 @@ export const useWorkoutProgression = ({ workout }: _) => {
     data: progression,
     isSuccess: isSuccessProgression,
     isError: isErrorProgression,
+    isLoading: isLoadingProgression,
   } = useFindProgression({
     workoutId: workout.id,
     date: progressionTimeData.selectedDate,
@@ -74,5 +75,5 @@ export const useWorkoutProgression = ({ workout }: _) => {
     }
   }, [isErrorDates]);
 
-  return { currentProgression };
+  return { currentProgression, isLoadingProgression };
 };

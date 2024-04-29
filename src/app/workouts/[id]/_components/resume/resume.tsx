@@ -18,6 +18,7 @@ import Image from "next/image";
 import { PropsWithChildren } from "react";
 import { WorkoutActiveTab } from "../details";
 import { useWorkoutResume } from "./use-resume";
+import TableSkeleton from "@components/loaders/table-skeleton";
 
 type _ = {
   workout: WorkoutWithRelations;
@@ -89,54 +90,64 @@ function ResumeContent({ currentProgression }: { currentProgression: Progression
   return (
     <div>
       <h4 className="scroll-m-20 text-lg font-semibold tracking-tight mb-2">Last Workout</h4>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead className="w-[50px]">Sets</TableHead>
-            <TableHead className="w-[50px]">Reps</TableHead>
-            <TableHead className="w-[50px]">Total</TableHead>
-            <TableHead className="w-[150px]">Improve</TableHead>
-          </TableRow>
-        </TableHeader>
-
-        <TableBody>
-          {currentProgression.activities.map((activity) => (
-            <TableRow key={activity.id}>
-              <TableCell className="px-4">{activity.name}</TableCell>
-              <TableCell className="px-4 text-center">{activity.sets}</TableCell>
-              <TableCell className="px-4 text-center">{activity.reps}</TableCell>
-              <TableCell className="px-4 text-center">{activity.sets * activity.reps}</TableCell>
-              <TableCell className="px-4 flex items-center">
-                {!activity.improve ? (
-                  ""
-                ) : activity.improve.value === "+" ? (
-                  <div className="flex items-center">
-                    <CircleCheck className="w-4 h-4 mr-2 text-green-600" />
-                    Move On
-                  </div>
-                ) : activity.improve.value === "-" ? (
-                  <div className="flex items-center">
-                    <CircleX className="w-4 h-4 mr-2 text-red-600" />
-                    Slow Down
-                  </div>
-                ) : (
-                  <div className="flex items-center w-48">
-                    <Circle className="w-4 h-4 mr-2 text-blue-600" />
-                    Keep Working
-                  </div>
-                )}
-              </TableCell>
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead className="w-[50px]">Sets</TableHead>
+              <TableHead className="w-[50px]">Reps</TableHead>
+              <TableHead className="w-[50px]">Total</TableHead>
+              <TableHead className="w-[150px]">Improve</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+
+          <TableBody>
+            {currentProgression.activities.map((activity) => (
+              <TableRow key={activity.id}>
+                <TableCell className="px-4">{activity.name}</TableCell>
+                <TableCell className="px-4 text-center">{activity.sets}</TableCell>
+                <TableCell className="px-4 text-center">{activity.reps}</TableCell>
+                <TableCell className="px-4 text-center">{activity.sets * activity.reps}</TableCell>
+                <TableCell className="px-4 flex items-center">
+                  {!activity.improve ? (
+                    ""
+                  ) : activity.improve.value === "+" ? (
+                    <div className="flex items-center">
+                      <CircleCheck className="w-4 h-4 mr-2 text-green-600" />
+                      Move On
+                    </div>
+                  ) : activity.improve.value === "-" ? (
+                    <div className="flex items-center">
+                      <CircleX className="w-4 h-4 mr-2 text-red-600" />
+                      Slow Down
+                    </div>
+                  ) : (
+                    <div className="flex items-center w-48">
+                      <Circle className="w-4 h-4 mr-2 text-blue-600" />
+                      Keep Working
+                    </div>
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 }
 
 export default function WorkoutResume({ workout, onActiveTabChange }: _) {
-  const { currentProgression } = useWorkoutResume({ workout });
+  const { currentProgression, isProgressionLoading } = useWorkoutResume({ workout });
+
+  if (isProgressionLoading) {
+    return (
+      <ResumeBody workout={workout}>
+        <TableSkeleton />
+      </ResumeBody>
+    );
+  }
 
   return (
     <ResumeBody workout={workout}>

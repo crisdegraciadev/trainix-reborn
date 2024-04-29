@@ -8,7 +8,7 @@ export const updateWorkout = privateProcedure
   .input(z.object({ id: z.string(), workout: workoutSchema }))
   .mutation(async ({ input }): Promise<Workout> => {
     const { id, workout } = input;
-    const { muscles: musclesIds, activities, ...workoutData } = workout;
+    const { muscles: musclesIds, ...workoutData } = workout;
 
     console.log({ workout });
 

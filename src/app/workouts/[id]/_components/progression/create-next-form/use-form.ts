@@ -161,7 +161,7 @@ export const useNextProgressionForm = () => {
       improvements,
       currentProgressionId: currentProgression?.id,
       progression: {
-        date,
+        date: new Date(date.toDateString()),
         activities,
       },
     });

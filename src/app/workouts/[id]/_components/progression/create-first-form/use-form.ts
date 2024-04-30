@@ -14,7 +14,12 @@ import { FirstProgressionFormSchema, firstProgressionSchema } from "./first-prog
 
 const DEFAULT_FORM_VALUES = {
   date: new Date(),
-  activities: [],
+  activities: [
+    { exerciseId: "", sets: 4, reps: 4, order: 0 },
+    { exerciseId: "", sets: 4, reps: 4, order: 1 },
+    { exerciseId: "", sets: 4, reps: 4, order: 2 },
+    { exerciseId: "", sets: 4, reps: 4, order: 3 },
+  ],
 };
 
 export const useFirstProgressionForm = () => {

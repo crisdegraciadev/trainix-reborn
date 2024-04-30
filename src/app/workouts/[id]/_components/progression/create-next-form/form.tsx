@@ -24,6 +24,7 @@ import { DatePicker } from "@components/ui/date-picker";
 import { CircleCheck } from "@components/ui/custom-icons";
 import { useNextProgressionForm } from "./use-form";
 import { Skeleton } from "@components/ui/skeleton";
+import { InputNumber } from "@components/ui/input-number";
 
 function FormSkeleton() {
   return (
@@ -84,8 +85,6 @@ export default function CreateNextProgressionForm() {
                     disableDays={{ beforeDate: lastProgression?.createdAt }}
                     selectedDate={field.value}
                     onSelect={field.onChange}
-                    // Ref error?
-                    // {...field}
                   />
                   <FormMessage />
                 </FormItem>
@@ -111,8 +110,8 @@ export default function CreateNextProgressionForm() {
                       render={({ field }) => (
                         <div className="flex grow gap-1">
                           <Input className="w-3/6" value={name} disabled />
-                          <Input className="w-1/6" value={sets} disabled />
-                          <Input className="w-1/6" value={reps} disabled />
+                          <Input className="w-1/6 text-end" value={sets} disabled />
+                          <Input className="w-1/6 text-end" value={reps} disabled />
                           <FormItem className="w-2/6">
                             <Select onValueChange={field.onChange} defaultValue="=">
                               <FormControl>
@@ -199,7 +198,12 @@ export default function CreateNextProgressionForm() {
                         render={({ field }) => (
                           <FormItem className="w-32">
                             <FormControl>
-                              <Input placeholder="Sets" {...field} />
+                              <InputNumber
+                                placeholder="sets"
+                                {...field}
+                                form={form}
+                                controlName={`activities.${idx}.sets`}
+                              />
                             </FormControl>
                           </FormItem>
                         )}
@@ -211,7 +215,12 @@ export default function CreateNextProgressionForm() {
                         render={({ field }) => (
                           <FormItem className="w-32">
                             <FormControl>
-                              <Input placeholder="Reps" {...field} />
+                              <InputNumber
+                                placeholder="Reps"
+                                {...field}
+                                form={form}
+                                controlName={`activities.${idx}.reps`}
+                              />
                             </FormControl>
                           </FormItem>
                         )}

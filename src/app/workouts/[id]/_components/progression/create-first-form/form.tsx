@@ -8,7 +8,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@components/ui/form";
-import { Input } from "@components/ui/input";
 import { ScrollArea } from "@components/ui/scroll-area";
 import {
   NameValue,
@@ -18,10 +17,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@components/ui/select";
+import { Skeleton } from "@components/ui/skeleton";
 import { cn } from "@lib/utils";
 import { Loader2, PlusCircle, Trash2 } from "lucide-react";
 import { useFirstProgressionForm } from "./use-form";
-import { Skeleton } from "@components/ui/skeleton";
+import { InputNumber } from "@components/ui/input-number";
 
 function FormSkeleton() {
   return (
@@ -130,7 +130,12 @@ export default function CreateFirstProgressionForm() {
                         render={({ field }) => (
                           <FormItem className="w-32">
                             <FormControl>
-                              <Input placeholder="Sets" {...field} />
+                              <InputNumber
+                                placeholder="Sets"
+                                {...field}
+                                form={form}
+                                controlName={`activities.${idx}.sets`}
+                              />
                             </FormControl>
                           </FormItem>
                         )}
@@ -142,7 +147,12 @@ export default function CreateFirstProgressionForm() {
                         render={({ field }) => (
                           <FormItem className="w-32">
                             <FormControl>
-                              <Input placeholder="Reps" {...field} />
+                              <InputNumber
+                                placeholder="Reps"
+                                {...field}
+                                form={form}
+                                controlName={`activities.${idx}.reps`}
+                              />
                             </FormControl>
                           </FormItem>
                         )}

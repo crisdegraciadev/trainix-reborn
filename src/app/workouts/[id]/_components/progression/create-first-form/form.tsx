@@ -9,19 +9,19 @@ import {
   FormMessage,
 } from "@components/ui/form";
 import { ScrollArea } from "@components/ui/scroll-area";
-import {
-  NameValue,
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectTrigger,
-  SelectValue,
-} from "@components/ui/select";
 import { Skeleton } from "@components/ui/skeleton";
 import { cn } from "@lib/utils";
-import { Loader2, PlusCircle, Trash2 } from "lucide-react";
+import { Check, ChevronsUpDown, Loader2, PlusCircle, Trash2 } from "lucide-react";
 import { useFirstProgressionForm } from "./use-form";
 import { InputNumber } from "@components/ui/input-number";
+import { Popover, PopoverContent, PopoverTrigger } from "@components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@components/ui/command";
 
 function FormSkeleton() {
   return (
@@ -96,7 +96,7 @@ export default function CreateFirstProgressionForm() {
                   Exercises
                 </h3>
 
-                {activityFields.map(({ id, exerciseId }, idx) => (
+                {activityFields.map(({ id }, idx) => (
                   <div key={id}>
                     <div className="mt-2 flex items-center gap-1">
                       <FormField
@@ -104,22 +104,56 @@ export default function CreateFirstProgressionForm() {
                         name={`activities.${idx}.exerciseId`}
                         render={({ field }) => (
                           <FormItem className="w-full">
-                            <FormControl>
-                              <Select onValueChange={field.onChange} defaultValue={exerciseId}>
-                                <SelectTrigger>
-                                  <SelectValue placeholder={`Select exercise ${idx + 1}`} />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectGroup>
-                                    {exercises.map(({ id, value, name: label }) => (
-                                      <NameValue key={id} value={value}>
-                                        {label}
-                                      </NameValue>
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <FormControl>
+                                  <Button
+                                    variant="outline"
+                                    role="combobox"
+                                    className={cn(
+                                      "w-full justify-between",
+                                      !field.value && "text-muted-foreground",
+                                    )}
+                                  >
+                                    {field.value
+                                      ? exercises.find((exercise) => exercise.value === field.value)
+                                          ?.name
+                                      : "Select language"}
+                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                  </Button>
+                                </FormControl>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-[200px] p-0">
+                                <Command>
+                                  <CommandInput placeholder="Search language..." />
+                                  <CommandEmpty>No language found.</CommandEmpty>
+                                  <CommandGroup>
+                                    {exercises.map((exercise) => (
+                                      <CommandItem
+                                        value={exercise.name}
+                                        key={exercise.value}
+                                        onSelect={() => {
+                                          form.setValue(
+                                            `activities.${idx}.exerciseId`,
+                                            exercise.value,
+                                          );
+                                        }}
+                                      >
+                                        <Check
+                                          className={cn(
+                                            "mr-2 h-4 w-4",
+                                            exercise.value === field.value
+                                              ? "opacity-100"
+                                              : "opacity-0",
+                                          )}
+                                        />
+                                        {exercise.name}
+                                      </CommandItem>
                                     ))}
-                                  </SelectGroup>
-                                </SelectContent>
-                              </Select>
-                            </FormControl>
+                                  </CommandGroup>
+                                </Command>
+                              </PopoverContent>
+                            </Popover>
                           </FormItem>
                         )}
                       />

@@ -4,7 +4,7 @@ import { useEffect } from "react";
 export const useCreateProgression = () => {
   const utils = trpc.useUtils();
 
-  const { mutate, isSuccess, isError, error, isLoading } =
+  const { mutate, isSuccess, isError, isLoading } =
     trpc.progressions.createProgression.useMutation();
 
   useEffect(() => {

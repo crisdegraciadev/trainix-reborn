@@ -1,15 +1,14 @@
-import { SelectOption } from "@components/ui/multi-select";
+import { toast } from "@components/ui/use-toast";
 import { AppRoutes } from "@constants/routes";
-import { useFindExerciseSelectList } from "../../../../_hooks/use-find-exercise-select-list";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCreateProgression } from "@hooks/progression/use-create-progression";
+import { useFindLastProgression } from "@hooks/progression/use-find-last-progression";
+import { ActivityFormSchema } from "@typings/schemas/activity";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ActivityFormSchema } from "@typings/schemas/activity";
-import { useCreateProgression } from "@hooks/progression/use-create-progression";
-import { toast } from "@components/ui/use-toast";
-import { useFindLastProgression } from "@hooks/progression/use-find-last-progression";
+import { useFindExerciseSelectList } from "../../../../_hooks/use-find-exercise-select-list";
 import { useWorkoutProgressionContext } from "../progression-context";
 import { TOAST_MESSAGES } from "../toast-messages";
 import { NextProgressionFormSchema, nextProgressionSchema } from "./next-progression-schema";
@@ -53,24 +52,7 @@ export const useNextProgressionForm = () => {
     setIsFormLoading(false);
   }, [isCreateProgressionError]);
 
-  const {
-    data: exercises,
-    isSuccess: isExercisesSuccess,
-    isError: isExercisesError,
-  } = useFindExerciseSelectList({ userId });
-
-  useEffect(() => {
-    if (isExercisesSuccess && exercises) {
-      setExercisesOptions(exercises);
-    }
-  }, [isExercisesSuccess, exercises]);
-
-  useEffect(() => {
-    if (isExercisesError) {
-      setExercisesOptions([]);
-    }
-  }, [isExercisesError]);
-
+  const { data: exercises, isLoading: isExercisesLoading } = useFindExerciseSelectList({ userId });
   const { data: lastProgression } = useFindLastProgression({ workoutId });
 
   const form = useForm<NextProgressionFormSchema>({
@@ -80,7 +62,6 @@ export const useNextProgressionForm = () => {
 
   const [isFormLoading, setIsFormLoading] = useState(false);
   const [isActivityFieldSetup, setIsActivityFieldSetup] = useState(false);
-  const [exercisesOptions, setExercisesOptions] = useState<SelectOption[]>([]);
 
   const {
     fields: activityFields,
@@ -138,7 +119,7 @@ export const useNextProgressionForm = () => {
       setIsFormLoading(false);
       toast(TOAST_MESSAGES.create);
 
-      setProgressionTimeData((state) => ({ ...state, selectedDate: form.getValues("date") }));
+      // setProgressionTimeData((state) => ({ ...state, selectedDate: form.getValues("date") }));
 
       form.reset();
 
@@ -179,7 +160,8 @@ export const useNextProgressionForm = () => {
 
   return {
     form,
-    exercisesOptions,
+    exercises,
+    isExercisesLoading,
     activityFields,
     improvementFields,
     isFormLoading,

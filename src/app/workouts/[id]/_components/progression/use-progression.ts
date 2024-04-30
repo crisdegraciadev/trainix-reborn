@@ -1,6 +1,6 @@
 import { useFindProgressionDates } from "@hooks/progression/use-find-progression-dates";
 import { WorkoutWithRelations } from "@typings/entities/workout";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect } from "react";
 import { useFindProgression } from "@hooks/progression/use-find-progression";
 import { useWorkoutProgressionContext } from "./progression-context";
 
@@ -19,61 +19,38 @@ export const useWorkoutProgression = ({ workout }: _) => {
 
   const {
     data: progression,
-    isSuccess: isSuccessProgression,
-    isError: isErrorProgression,
     isLoading: isLoadingProgression,
+    isSuccess: isProgressionSuccess,
   } = useFindProgression({
     workoutId: workout.id,
     date: progressionTimeData.selectedDate,
   });
 
-  const {
-    data: dates,
-    isSuccess: isSuccessDates,
-    isError: isErrorDates,
-  } = useFindProgressionDates({ workoutId: workout.id });
-
-  const [progressionDates, setProgressionDates] = useState<Date[]>([]);
-
-  const currentProgressionDate = useMemo(
-    () => (currentProgression ? new Date(currentProgression?.createdAt) : undefined),
-    [currentProgression],
-  );
+  const { data: dates, isSuccess: isSuccessDates } = useFindProgressionDates({
+    workoutId: workout.id,
+  });
 
   useEffect(() => {
     setCurrentWorkout(workout);
   }, [setCurrentWorkout, workout]);
 
   useEffect(() => {
-    setProgressionTimeData({
-      selectedDate: currentProgressionDate,
-      matchDates: progressionDates,
-    });
-  }, [currentProgressionDate, progressionDates, setProgressionTimeData]);
-
-  useEffect(() => {
-    if (isSuccessProgression && progression) {
+    if (progression && isProgressionSuccess) {
       setCurrentProgression(progression);
     }
-  }, [isSuccessProgression, setCurrentProgression, progression]);
+  }, [setCurrentProgression, isProgressionSuccess, progression]);
 
   useEffect(() => {
-    if (isErrorProgression) {
-      setCurrentProgression(undefined);
+    if (dates && isSuccessDates) {
+      setProgressionTimeData((state) => ({ ...state, matchDates: dates }));
     }
-  }, [isErrorProgression, setCurrentProgression]);
+  }, [currentProgression, isSuccessDates, setProgressionTimeData, dates]);
 
   useEffect(() => {
-    if (isSuccessDates && dates) {
-      setProgressionDates(dates);
+    if (dates) {
+      setProgressionTimeData((state) => ({ ...state, selectedDate: dates[dates?.length - 1] }));
     }
-  }, [isSuccessDates, dates]);
+  }, [dates, setProgressionTimeData]);
 
-  useEffect(() => {
-    if (isErrorDates) {
-      setProgressionDates([]);
-    }
-  }, [isErrorDates]);
-
-  return { currentProgression, isLoadingProgression };
+  return { progression, isLoadingProgression };
 };

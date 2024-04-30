@@ -10,6 +10,8 @@ const QUERY_CLIENT_CONFIG: QueryClientConfig = {
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
+      retry: 0,
+      retryDelay: 500,
     },
   },
 };

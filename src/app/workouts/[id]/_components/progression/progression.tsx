@@ -59,7 +59,7 @@ function CreateFirstProgression() {
 }
 
 export default function WorkoutProgression({ workout }: _) {
-  const { currentProgression, isLoadingProgression } = useWorkoutProgression({
+  const { progression, isLoadingProgression } = useWorkoutProgression({
     workout,
   });
 
@@ -73,8 +73,8 @@ export default function WorkoutProgression({ workout }: _) {
 
   return (
     <ProgressionBody>
-      {currentProgression ? (
-        <ProgressionTable data={currentProgression.activities} columns={progressionColumns} />
+      {progression ? (
+        <ProgressionTable data={progression.activities} columns={progressionColumns} />
       ) : (
         <CreateFirstProgression />
       )}

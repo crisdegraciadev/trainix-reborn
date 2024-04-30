@@ -1,17 +1,16 @@
 import { toast } from "@components/ui/use-toast";
 import { AppRoutes } from "@constants/routes";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateProgression } from "@hooks/progression/use-create-progression";
-import { useFindExerciseSelectList } from "../../../../_hooks/use-find-exercise-select-list";
+import { ActivityFormSchema } from "@typings/schemas/activity";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { TOAST_MESSAGES } from "../toast-messages";
 import { useFieldArray, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FirstProgressionFormSchema, firstProgressionSchema } from "./first-progression-schema";
-import { SelectOption } from "@components/ui/multi-select";
-import { ActivityFormSchema } from "@typings/schemas/activity";
+import { useFindExerciseSelectList } from "../../../../_hooks/use-find-exercise-select-list";
 import { useWorkoutProgressionContext } from "../progression-context";
+import { TOAST_MESSAGES } from "../toast-messages";
+import { FirstProgressionFormSchema, firstProgressionSchema } from "./first-progression-schema";
 
 const DEFAULT_FORM_VALUES = {
   date: new Date(),
@@ -38,6 +37,13 @@ export const useFirstProgressionForm = () => {
     isError: isCreateProgressionError,
   } = useCreateProgression();
 
+  const form = useForm<FirstProgressionFormSchema>({
+    resolver: zodResolver(firstProgressionSchema),
+    defaultValues: DEFAULT_FORM_VALUES,
+  });
+
+  const [isFormLoading, setIsFormLoading] = useState(false);
+
   useEffect(() => {
     if (isCreateProgressionLoading) {
       setIsFormLoading(true);
@@ -51,31 +57,7 @@ export const useFirstProgressionForm = () => {
     setIsFormLoading(false);
   }, [isCreateProgressionError]);
 
-  const {
-    data: exercises,
-    isSuccess: isExercisesSuccess,
-    isError: isExercisesError,
-  } = useFindExerciseSelectList({ userId });
-
-  useEffect(() => {
-    if (isExercisesSuccess && exercises) {
-      setExercisesOptions(exercises);
-    }
-  }, [isExercisesSuccess, exercises]);
-
-  useEffect(() => {
-    if (isExercisesError) {
-      setExercisesOptions([]);
-    }
-  }, [isExercisesError]);
-
-  const form = useForm<FirstProgressionFormSchema>({
-    resolver: zodResolver(firstProgressionSchema),
-    defaultValues: DEFAULT_FORM_VALUES,
-  });
-
-  const [isFormLoading, setIsFormLoading] = useState(false);
-  const [exercisesOptions, setExercisesOptions] = useState<SelectOption[]>([]);
+  const { data: exercises, isLoading: isExercisesLoading } = useFindExerciseSelectList({ userId });
 
   const {
     fields: activityFields,
@@ -91,7 +73,10 @@ export const useFirstProgressionForm = () => {
       setIsFormLoading(false);
       toast(TOAST_MESSAGES.create);
 
-      setProgressionTimeData((state) => ({ ...state, selectedDate: form.getValues("date") }));
+      setProgressionTimeData((state) => ({
+        ...state,
+        selectedDate: new Date(form.getValues("date").toDateString()),
+      }));
 
       form.reset();
 
@@ -102,7 +87,7 @@ export const useFirstProgressionForm = () => {
   const onSubmit = async (data: FirstProgressionFormSchema) => {
     const { date, activities } = data;
 
-    console.log("Creating workout");
+    console.log("Creating first progression");
     console.log({ workoutData: { date: new Date(date.toDateString()) } });
 
     if (!workoutId) {
@@ -130,7 +115,8 @@ export const useFirstProgressionForm = () => {
 
   return {
     form,
-    exercisesOptions,
+    exercises,
+    isExercisesLoading,
     activityFields,
     isFormLoading,
     onSubmit,

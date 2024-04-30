@@ -23,6 +23,32 @@ import { Circle, CircleX, Loader2, PlusCircle, Trash2 } from "lucide-react";
 import { DatePicker } from "@components/ui/date-picker";
 import { CircleCheck } from "@components/ui/custom-icons";
 import { useNextProgressionForm } from "./use-form";
+import { Skeleton } from "@components/ui/skeleton";
+
+function FormSkeleton() {
+  return (
+    <div className="flex items-center space-x-4 mt-2">
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[100px]" />
+          <Skeleton className="h-10 w-[500px]" />
+        </div>
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[100px]" />
+          <Skeleton className="h-10 w-[500px]" />
+        </div>
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[100px]" />
+          <Skeleton className="h-10 w-[500px]" />
+        </div>
+
+        <div className="w-full flex justify-end">
+          <Skeleton className="h-10 w-[100px]" />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function CreateNextProgressionForm() {
   const {
@@ -31,11 +57,16 @@ export default function CreateNextProgressionForm() {
     appendActivity,
     removeActivity,
     improvementFields,
-    exercisesOptions,
+    exercises,
+    isExercisesLoading,
     isFormLoading,
     lastProgression,
     onSubmit,
   } = useNextProgressionForm();
+
+  if (!exercises || isExercisesLoading) {
+    return <FormSkeleton />;
+  }
 
   return (
     <Form {...form}>
@@ -149,7 +180,7 @@ export default function CreateNextProgressionForm() {
                                 </SelectTrigger>
                                 <SelectContent>
                                   <SelectGroup>
-                                    {exercisesOptions.map(({ id, value, name: label }) => (
+                                    {exercises.map(({ id, value, name: label }) => (
                                       <NameValue key={id} value={value}>
                                         {label}
                                       </NameValue>

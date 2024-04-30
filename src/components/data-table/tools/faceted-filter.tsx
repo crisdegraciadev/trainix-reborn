@@ -13,21 +13,20 @@ import { Popover, PopoverContent, PopoverTrigger } from "@components/ui/popover"
 import { Separator } from "@components/ui/separator";
 import { cn } from "@lib/utils";
 import { Column } from "@tanstack/react-table";
-import { ExerciseRow } from "@typings/entities/exercise";
 import { NameValue } from "@typings/utils";
 import { CheckIcon, PlusCircle } from "lucide-react";
 
-type _ = {
+export type FacetedFilterProps<T> = {
   title: string;
-  column: Column<ExerciseRow, unknown>;
+  column: Column<T, unknown>;
   options: NameValue[];
 };
 
-function FilterButtonContent({
+function FilterButtonContent<T>({
   selectedValues,
   options,
   title,
-}: _ & { selectedValues: Set<string> }) {
+}: FacetedFilterProps<T> & { selectedValues: Set<string> }) {
   return (
     <>
       <PlusCircle className="mr-2 h-4 w-4" />
@@ -63,12 +62,12 @@ function FilterButtonContent({
   );
 }
 
-function FilterCommandList({
+function FilterCommandList<T>({
   column,
   options,
   selectedValues,
   title,
-}: _ & { selectedValues: Set<string> }) {
+}: FacetedFilterProps<T> & { selectedValues: Set<string> }) {
   const facets = column?.getFacetedUniqueValues();
 
   return (
@@ -130,7 +129,7 @@ function FilterCommandList({
   );
 }
 
-export default function ExerciseFacetedFilter({ column, options, title }: _) {
+export default function FacetedFilter<T>({ column, options, title }: FacetedFilterProps<T>) {
   const selectedValues = new Set(column?.getFilterValue() as string[]);
 
   return (

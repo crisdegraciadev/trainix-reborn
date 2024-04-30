@@ -1,6 +1,6 @@
 import CreateButton from "@components/create-button";
 import { useState } from "react";
-import ExerciseForm from "../../form/exercise-form";
+import ExerciseForm from "../../form/form";
 
 export default function CreateExerciseButton() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);

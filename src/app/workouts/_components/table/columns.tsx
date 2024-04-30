@@ -24,7 +24,7 @@ export const workoutColumns: ColumnDef<WorkoutRow>[] = [
     cell: ({ row }) => <NameCell row={row} path={AppRoutes.WORKOUTS} />,
     filterFn: (row, id, value) => {
       const rowValue: string = row.getValue(id);
-      return rowValue.includes(value);
+      return rowValue.toUpperCase().includes(value.toUpperCase());
     },
   },
   {
@@ -35,11 +35,20 @@ export const workoutColumns: ColumnDef<WorkoutRow>[] = [
     accessorKey: "difficulty",
     header: "Difficulty",
     cell: ({ row }) => <DifficultyCell row={row} />,
+    filterFn: (row, id, value) => {
+      const { value: rowValue }: NameValue = row.getValue(id);
+      return value.some((value: string) => rowValue === value);
+    },
   },
   {
     accessorKey: "muscles",
     header: "Muscles",
     cell: ({ row }) => <MusclesCell row={row} />,
+    filterFn: (row, id, value) => {
+      const rowValues: NameValue[] = row.getValue(id);
+      const muscleValues = rowValues.map(({ value }) => value);
+      return value.some((value: string) => muscleValues.includes(value));
+    },
   },
   {
     id: "actions",

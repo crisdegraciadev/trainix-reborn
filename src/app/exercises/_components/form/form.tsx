@@ -21,7 +21,7 @@ import {
 } from "@components/ui/select";
 import { Skeleton } from "@components/ui/skeleton";
 import { Loader2 } from "lucide-react";
-import { ExerciseFormProps, useExerciseForm } from "./use-exercise-form";
+import { ExerciseFormProps, useExerciseForm } from "./use-form";
 
 function ExerciseFormSkeleton() {
   return (

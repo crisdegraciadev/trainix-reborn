@@ -1,10 +1,10 @@
 import { Table } from "@tanstack/react-table";
 import { ExerciseRow } from "@typings/entities/exercise";
 import CreateExerciseButton from "./create";
-import ExerciseSearchbar from "./searchbar";
-import ExerciseFacetedFilter from "./faceted-filter";
 import { useFindMusclesOptions } from "@hooks/muscles/use-find-muscles-options";
 import { useFindDifficultiesOptions } from "@hooks/difficulties/use-find-difficulties-options";
+import FacetedFilter from "@components/data-table/tools/faceted-filter";
+import TableSearchbar from "@components/data-table/tools/searchbar";
 
 type _ = {
   table: Table<ExerciseRow>;
@@ -20,14 +20,14 @@ export default function ExerciseToolbar({ table }: _) {
   return (
     <div className="flex justify-between mb-4">
       <div className="flex gap-1">
-        <ExerciseSearchbar table={table} />
+        <TableSearchbar table={table} columnName="name" />
 
         {musclesColumn && musclesOptions && (
-          <ExerciseFacetedFilter title="Muscles" column={musclesColumn} options={musclesOptions} />
+          <FacetedFilter title="Muscles" column={musclesColumn} options={musclesOptions} />
         )}
 
         {difficultyColumn && difficultiesOptions && (
-          <ExerciseFacetedFilter
+          <FacetedFilter
             title="Difficulties"
             column={difficultyColumn}
             options={difficultiesOptions}

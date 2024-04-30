@@ -17,7 +17,7 @@ export const exerciseColumns: ColumnDef<ExerciseRow>[] = [
     cell: ({ row }) => <NameCell row={row} split={30} />,
     filterFn: (row, id, value) => {
       const rowValue: string = row.getValue(id);
-      return rowValue.includes(value);
+      return rowValue.toUpperCase().includes(value.toUpperCase());
     },
   },
 
@@ -36,7 +36,6 @@ export const exerciseColumns: ColumnDef<ExerciseRow>[] = [
     cell: ({ row }) => <MusclesCell row={row} />,
     filterFn: (row, id, value) => {
       const rowValues: NameValue[] = row.getValue(id);
-      console.log({ id, rowValues });
       const muscleValues = rowValues.map(({ value }) => value);
       return value.some((value: string) => muscleValues.includes(value));
     },

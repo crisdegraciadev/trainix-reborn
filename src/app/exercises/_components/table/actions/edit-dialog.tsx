@@ -5,10 +5,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@components/ui/dialog";
-import ExerciseForm from "../../form/exercise-form";
 import { useExerciseActionsContext } from "./actions-context";
 import { ExerciseRow } from "@typings/entities/exercise";
 import { Row } from "@tanstack/react-table";
+import ExerciseForm from "../../form/form";
 
 type _ = {
   row: Row<ExerciseRow>;

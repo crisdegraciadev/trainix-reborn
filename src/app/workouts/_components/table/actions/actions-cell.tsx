@@ -1,17 +1,7 @@
 "use client";
 
 import { CustomCellProps } from "@components/data-table/types";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@components/ui/alert-dialog";
-import { Button, buttonVariants } from "@components/ui/button";
+import { Button } from "@components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,14 +11,13 @@ import {
   DropdownMenuTrigger,
 } from "@components/ui/dropdown-menu";
 import { WorkoutRow } from "@typings/entities/workout";
-import { Loader2, MoreHorizontal, Trash2 } from "lucide-react";
-import { useWorkoutActions } from "./use-actions";
+import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { useWorkoutActionsContext } from "./actions-context";
+import DeleteWorkoutDialog from "./delete-dialog";
+import EditWorkoutDialog from "./edit-dialog";
 
 export default function WorkoutActionsCell({ row }: CustomCellProps<WorkoutRow>) {
-  const { deleteWorkout, toggleDeleteDialog, isDeleteDialogOpen, isDeleteWorkoutLoading } =
-    useWorkoutActions();
-
-  const { id } = row.original;
+  const { toggleDeleteDialog, toggleUpdateDialog } = useWorkoutActionsContext();
 
   return (
     <div className="w-[10px]">
@@ -49,41 +38,19 @@ export default function WorkoutActionsCell({ row }: CustomCellProps<WorkoutRow>)
             >
               <Trash2 className="w-4 h-4 mr-2" /> Delete
             </DropdownMenuItem>
-            {/*
-              <DropdownMenuItem
-                className="flex justify-start items-center"
-                onClick={toggleUpdateDialog}
-              >
-                <Pencil className="w-4 h-4 mr-2" /> Edit
-              </DropdownMenuItem>
-          */}
+            <DropdownMenuItem
+              className="flex justify-start items-center"
+              onClick={toggleUpdateDialog}
+            >
+              <Pencil className="w-4 h-4 mr-2" /> Edit
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
 
-      {/* Delete confirm dialog */}
-      <AlertDialog open={isDeleteDialogOpen} onOpenChange={toggleDeleteDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your workout and remove the
-              workouts that make use of it.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              disabled={isDeleteWorkoutLoading}
-              onClick={() => deleteWorkout({ id })}
-              className={buttonVariants({ variant: "destructive" })}
-            >
-              {isDeleteWorkoutLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <EditWorkoutDialog row={row} />
+
+      <DeleteWorkoutDialog row={row} />
     </div>
   );
 }

@@ -7,14 +7,19 @@ import { useCreateWorkout } from "@hooks/workouts/use-create-workout";
 import { useFindExerciseSelectList } from "app/workouts/_hooks/use-find-exercise-select-list";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { TOAST_MESSAGES } from "./toast-messages";
 import { WorkoutFormSchema, workoutSchema } from "./workout-schema";
+import { WorkoutRow } from "@typings/entities/workout";
+import { useUpdateWorkout } from "@hooks/workouts/use-update-workout";
 
-export type WorkoutFormProps = {
+export type BaseProps = {
   onComplete: () => void;
 };
+
+export type WorkoutFormProps = BaseProps &
+  ({ type: "create"; rowData?: null } | { type: "update"; rowData: WorkoutRow });
 
 const DEFAULT_FORM_VALUES = {
   name: "",
@@ -22,7 +27,7 @@ const DEFAULT_FORM_VALUES = {
   difficulty: "medium",
 };
 
-export const useWorkoutForm = ({ onComplete }: WorkoutFormProps) => {
+export const useWorkoutForm = ({ onComplete, rowData, type }: WorkoutFormProps) => {
   const { data: session } = useSession();
 
   if (!session) {
@@ -38,6 +43,13 @@ export const useWorkoutForm = ({ onComplete }: WorkoutFormProps) => {
     mutate: createWorkout,
   } = useCreateWorkout();
 
+  const {
+    isSuccess: isUpdateWorkoutSuccess,
+    isLoading: isUpdateWorkoutLoading,
+    isError: isUpdateWorkoutError,
+    mutate: updateWorkout,
+  } = useUpdateWorkout();
+
   const { data: difficulties } = useFindDifficultiesOptions();
   const { data: muscles } = useFindMusclesOptions();
   const { data: exercises } = useFindExerciseSelectList({ userId });
@@ -46,38 +58,59 @@ export const useWorkoutForm = ({ onComplete }: WorkoutFormProps) => {
 
   const { toast } = useToast();
 
+  const defaultFormValues = useMemo(() => {
+    if (rowData) {
+      const { description } = rowData;
+      return { ...rowData, description: description ?? "" };
+    }
+
+    return DEFAULT_FORM_VALUES;
+  }, [rowData]);
+
   const form = useForm<WorkoutFormSchema>({
     resolver: zodResolver(workoutSchema),
-    defaultValues: DEFAULT_FORM_VALUES,
+    defaultValues: defaultFormValues,
   });
 
   useEffect(() => {
     const { isSubmitSuccessful: isSubmitSuccess } = form.formState;
 
-    if (isCreateWorkoutSuccess && isSubmitSuccess) {
+    if ((isCreateWorkoutSuccess || isUpdateWorkoutSuccess) && isSubmitSuccess) {
       setIsFormSubmitting(false);
-      toast(TOAST_MESSAGES.create);
+      toast(TOAST_MESSAGES[type]);
       form.reset();
       onComplete();
     }
-  }, [form, isCreateWorkoutSuccess, onComplete, toast]);
+  }, [form, isCreateWorkoutSuccess, isUpdateWorkoutSuccess, type, onComplete, toast]);
 
   useEffect(() => {
-    if (isCreateWorkoutLoading) {
+    if (isCreateWorkoutLoading || isUpdateWorkoutLoading) {
       setIsFormSubmitting(true);
     }
-  }, [isCreateWorkoutLoading]);
+  }, [isCreateWorkoutLoading, isUpdateWorkoutLoading]);
 
   useEffect(() => {
     if (isCreateWorkoutError) {
       toast(TOAST_MESSAGES.createError);
     }
 
+    if (isUpdateWorkoutError) {
+      toast(TOAST_MESSAGES.updateError);
+    }
+
     setIsFormSubmitting(false);
-  }, [isCreateWorkoutError, toast]);
+  }, [isCreateWorkoutError, isUpdateWorkoutError, toast]);
 
   const onSubmit = async (data: WorkoutFormSchema) => {
-    createWorkout({ ...data, userId });
+    const workout = { ...data, userId };
+
+    if (type === "create") {
+      createWorkout({ ...workout });
+    }
+
+    if (type === "update") {
+      updateWorkout({ workout, id: rowData.id });
+    }
   };
 
   return {

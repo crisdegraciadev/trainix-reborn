@@ -22,7 +22,7 @@ import {
 import { Skeleton } from "@components/ui/skeleton";
 import { Textarea } from "@components/ui/textarea";
 import { Loader2 } from "lucide-react";
-import { WorkoutFormProps, useWorkoutForm } from "./use-create-workout-form";
+import { WorkoutFormProps, useWorkoutForm } from "./use-form";
 
 function LoadingFormSkeleton() {
   return (
@@ -53,7 +53,7 @@ function LoadingFormSkeleton() {
   );
 }
 
-export default function CreateWorkoutForm(formProps: WorkoutFormProps) {
+export default function WorkoutForm(formProps: WorkoutFormProps) {
   const { form, muscles, difficulties, exercises, isFormSubmitting, onSubmit } =
     useWorkoutForm(formProps);
 

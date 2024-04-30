@@ -7,6 +7,7 @@ import { AppRoutes } from "@constants/routes";
 import { NameValue } from "@typings/utils";
 import { WorkoutRow } from "@typings/entities/workout";
 import WorkoutActionsCell from "./actions/actions-cell";
+import { WorkoutActionsContextProvider } from "./actions/actions-context";
 
 export type WorkoutTableData = {
   id: string;
@@ -43,7 +44,11 @@ export const workoutColumns: ColumnDef<WorkoutRow>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      return <WorkoutActionsCell row={row} />;
+      return (
+        <WorkoutActionsContextProvider>
+          <WorkoutActionsCell row={row} />
+        </WorkoutActionsContextProvider>
+      );
     },
   },
 ];

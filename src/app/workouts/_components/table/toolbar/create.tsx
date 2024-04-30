@@ -1,6 +1,6 @@
 import CreateButton from "@components/create-button";
 import { useState } from "react";
-import CreateWorkoutForm from "../../create-workout-form/create-workout-form";
+import WorkoutForm from "../../form/form";
 
 export default function CreateWorkoutButton() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -15,7 +15,7 @@ export default function CreateWorkoutButton() {
       isDialogOpen={isCreateDialogOpen}
       setIsDialogOpen={setIsCreateDialogOpen}
     >
-      <CreateWorkoutForm onComplete={() => setIsCreateDialogOpen(false)} />
+      <WorkoutForm type="create" onComplete={() => setIsCreateDialogOpen(false)} />
     </CreateButton>
   );
 }

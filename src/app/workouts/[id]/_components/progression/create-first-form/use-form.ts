@@ -110,7 +110,13 @@ export const useFirstProgressionForm = () => {
 
   const appendActivity = (e: React.MouseEvent<Element, MouseEvent>) => {
     e.preventDefault();
-    appendActivityField({ order: activityFields.length } as ActivityFormSchema);
+
+    appendActivityField({
+      exerciseId: "",
+      sets: 4,
+      reps: 4,
+      order: activityFields.length,
+    });
   };
 
   const removeActivity = (e: React.MouseEvent<Element, MouseEvent>, idx: number) => {

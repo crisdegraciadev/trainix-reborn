@@ -18,8 +18,10 @@
     "cy:run": "cypress run",
     "shad:add": "npx shadcn-ui@latest add",
     "db:update": "npx prisma db push",
+    "db:reset": "npx prisma db push --force-reset",
     "db:seed": "npx prisma db seed",
-    "db:studio": "npx prisma studio --browser chrome"
+    "db:studio": "npx prisma studio --browser chrome",
+    "db:prepare:test": "npm run cp:test && npm run db:reset && npm run db:seed"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",

@@ -9,6 +9,7 @@ import { progressionColumns } from "./table/columns";
 import ProgressionTable from "./table/table";
 import { useWorkoutProgression } from "./use-progression";
 import TableSkeleton from "@components/loaders/table-skeleton";
+import { useTheme } from "next-themes";
 
 type _ = {
   workout: WorkoutWithRelations;
@@ -31,11 +32,18 @@ function ProgressionBody({ children }: PropsWithChildren) {
 }
 
 function CreateFirstProgression() {
+  const { theme } = useTheme();
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <Image src="/4.svg" alt="not found" width={160} height={160} />
+      <Image
+        className={theme === "dark" ? "invert" : ""}
+        src="/4.svg"
+        alt="not found"
+        width={160}
+        height={160}
+      />
       <h4 className="scroll-m-20 text-lg font-semibold tracking-tight mt-3 flex items-center gap-1">
         Create your first progression
       </h4>

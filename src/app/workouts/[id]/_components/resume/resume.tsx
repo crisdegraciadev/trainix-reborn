@@ -19,6 +19,7 @@ import { PropsWithChildren } from "react";
 import { WorkoutActiveTab } from "../details";
 import { useWorkoutResume } from "./use-resume";
 import TableSkeleton from "@components/loaders/table-skeleton";
+import { useTheme } from "next-themes";
 
 type _ = {
   workout: WorkoutWithRelations;
@@ -65,13 +66,21 @@ function ResumeBody({ children, workout }: PropsWithChildren & Pick<_, "workout"
 }
 
 function ResumeContentEmpty({ onActiveTabChange }: Pick<_, "onActiveTabChange">) {
+  const { theme } = useTheme();
+
   const handleClick = () => {
     onActiveTabChange("progression");
   };
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <Image src="/1.svg" alt="not found" width={120} height={120} />
+      <Image
+        className={theme === "dark" ? "invert" : ""}
+        src="/1.svg"
+        alt="not found"
+        width={120}
+        height={120}
+      />
       <h4 className="scroll-m-20 text-lg font-semibold tracking-tight mt-3 flex items-center gap-1">
         No progression found
       </h4>

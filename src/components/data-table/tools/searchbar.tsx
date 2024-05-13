@@ -12,7 +12,7 @@ export default function TableSearchbar<T>({ table, columnName }: TableSearchBarP
       placeholder="Filter name..."
       value={(table.getColumn(columnName)?.getFilterValue() as string) ?? ""}
       onChange={(event) => table.getColumn(columnName)?.setFilterValue(event.target.value)}
-      className="h-8 w-64"
+      className="h-8 w-full xl:w-64"
     />
   );
 }

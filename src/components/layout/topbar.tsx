@@ -6,15 +6,15 @@ import { Button } from "@components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@components/ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger } from "@components/ui/sheet";
 import { AppRoutes } from "@constants/routes";
 import { cn } from "@lib/utils";
-import { Dumbbell } from "lucide-react";
+import { Dumbbell, Menu } from "lucide-react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -25,17 +25,55 @@ type _ = {
   user: Partial<{ name: string; email: string }>;
 };
 
+function MobileNavbar() {
+  const pathname = usePathname();
+
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Menu className="md:hidden" />
+      </SheetTrigger>
+      <SheetContent>
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4 mt-8">
+            <nav className="flex flex-col items-center gap-6 text-xl">
+              <Link
+                href={AppRoutes.WORKOUTS}
+                className={cn(
+                  "transition-colors hover:text-primary",
+                  !pathname.includes(TABS[2]) ? "text-muted-foreground" : "",
+                )}
+              >
+                Workouts
+              </Link>
+              <Link
+                href={AppRoutes.EXERCISES}
+                className={cn(
+                  "transition-colors hover:text-primary",
+                  !pathname.includes(TABS[1]) ? "text-muted-foreground" : "",
+                )}
+              >
+                Exercises
+              </Link>
+            </nav>
+          </div>
+        </div>
+      </SheetContent>
+    </Sheet>
+  );
+}
+
 export default function Topbar({ user }: _) {
   const pathname = usePathname();
 
   return (
-    <div className="flex h-14 top-0 fixed w-full justify-between px-48 items-center border-b">
+    <div className="flex h-14 top-0 fixed w-full justify-between px-8 sm:px-16 md:px-24 lg:px-32 xl:px-40 2xl:px-48 items-center border-b">
       <div className="flex">
         <div className="flex items-center gap-1 mr-6">
           <Dumbbell className="w-5 h-5" />
           <span className="font-bold">Trainix</span>
         </div>
-        <nav className="flex items-center gap-6 text-sm">
+        <nav className="items-center gap-6 hidden md:flex">
           <Link
             href={AppRoutes.WORKOUTS}
             className={cn(
@@ -61,7 +99,6 @@ export default function Topbar({ user }: _) {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-8 w-8 rounded-full">
               <Avatar className="h-8 w-8">
-                {/* <AvatarImage src="/avatars/01.png" alt="@shadcn" /> */}
                 <AvatarFallback>{user.name?.slice(0, 2).toUpperCase()}</AvatarFallback>
               </Avatar>
             </Button>
@@ -74,15 +111,11 @@ export default function Topbar({ user }: _) {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => signOut()}>Log out</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
         <ThemeToggle />
+        <MobileNavbar />
       </div>
     </div>
   );

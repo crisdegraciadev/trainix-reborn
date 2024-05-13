@@ -3,6 +3,7 @@
 import {
   ColumnFiltersState,
   SortingState,
+  VisibilityState,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -15,13 +16,24 @@ import DataTableHeader from "@components/data-table/data-table-header";
 import DataTablePagination from "@components/data-table/data-table-pagination";
 import { DataTableProps } from "@components/data-table/types";
 import { Table } from "@components/ui/table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ExerciseRow } from "@typings/entities/exercise";
 import ExerciseToolbar from "./toolbar/toolbar";
+import { useScreenSize } from "@hooks/screen/use-screen-size";
 
 export default function ExerciseTable({ columns, data }: DataTableProps<ExerciseRow, ExerciseRow>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+
+  const { width } = useScreenSize();
+
+  useEffect(() => {
+    // setColumnVisibility();
+    //
+
+    setColumnVisibility({ name: true, difficulty: width >= 640, muscles: width >= 768 });
+  }, [width]);
 
   const table = useReactTable({
     data,
@@ -32,9 +44,11 @@ export default function ExerciseTable({ columns, data }: DataTableProps<Exercise
     getFilteredRowModel: getFilteredRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
     state: {
       columnFilters,
       sorting,
+      columnVisibility,
     },
   });
 

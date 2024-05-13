@@ -14,7 +14,7 @@ import { Separator } from "@components/ui/separator";
 import { cn } from "@lib/utils";
 import { Column } from "@tanstack/react-table";
 import { NameValue } from "@typings/utils";
-import { CheckIcon, PlusCircle } from "lucide-react";
+import { CheckIcon, ListFilter, PlusCircle } from "lucide-react";
 
 export type FacetedFilterProps<T> = {
   title: string;
@@ -29,7 +29,7 @@ function FilterButtonContent<T>({
 }: FacetedFilterProps<T> & { selectedValues: Set<string> }) {
   return (
     <>
-      <PlusCircle className="mr-2 h-4 w-4" />
+      <ListFilter className="mr-2 h-4 w-4" />
       {title}
       {selectedValues?.size > 0 && (
         <>
@@ -138,7 +138,7 @@ export default function FacetedFilter<T>({ column, options, title }: FacetedFilt
         <Button
           variant="outline"
           size="sm"
-          className="h-8 border-dashed"
+          className="h-8 border-dashed w-full xl:w-auto"
           data-cy={`${title}-filter`}
         >
           <FilterButtonContent

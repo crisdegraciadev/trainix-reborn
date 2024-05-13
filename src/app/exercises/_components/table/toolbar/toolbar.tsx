@@ -18,21 +18,23 @@ export default function ExerciseToolbar({ table }: _) {
   const difficultyColumn = table.getColumn("difficulty");
 
   return (
-    <div className="flex justify-between mb-4">
-      <div className="flex gap-1">
+    <div className="flex flex-col xl:flex-row justify-between mb-4 gap-1">
+      <div className="flex flex-col xl:flex-row gap-1">
         <TableSearchbar table={table} columnName="name" />
 
-        {musclesColumn && musclesOptions && (
-          <FacetedFilter title="Muscles" column={musclesColumn} options={musclesOptions} />
-        )}
+        <div className="flex w-full gap-1">
+          {musclesColumn && musclesOptions && (
+            <FacetedFilter title="Muscles" column={musclesColumn} options={musclesOptions} />
+          )}
 
-        {difficultyColumn && difficultiesOptions && (
-          <FacetedFilter
-            title="Difficulties"
-            column={difficultyColumn}
-            options={difficultiesOptions}
-          />
-        )}
+          {difficultyColumn && difficultiesOptions && (
+            <FacetedFilter
+              title="Difficulties"
+              column={difficultyColumn}
+              options={difficultiesOptions}
+            />
+          )}
+        </div>
       </div>
       <CreateExerciseButton />
     </div>

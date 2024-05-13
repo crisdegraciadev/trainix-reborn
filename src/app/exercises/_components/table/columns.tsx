@@ -12,6 +12,7 @@ import { NameValue } from "@typings/utils";
 
 export const exerciseColumns: ColumnDef<ExerciseRow>[] = [
   {
+    id: "name",
     accessorKey: "name",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
     cell: ({ row }) => <NameCell row={row} split={30} />,
@@ -22,8 +23,9 @@ export const exerciseColumns: ColumnDef<ExerciseRow>[] = [
   },
 
   {
+    id: "difficulty",
     accessorKey: "difficulty",
-    header: "Difficulty",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Difficulty" />,
     cell: ({ row }) => <DifficultyCell row={row} />,
     filterFn: (row, id, value) => {
       const { value: rowValue }: NameValue = row.getValue(id);
@@ -31,8 +33,9 @@ export const exerciseColumns: ColumnDef<ExerciseRow>[] = [
     },
   },
   {
+    id: "muscles",
     accessorKey: "muscles",
-    header: "Muscles",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Muscles" />,
     cell: ({ row }) => <MusclesCell row={row} />,
     filterFn: (row, id, value) => {
       const rowValues: NameValue[] = row.getValue(id);

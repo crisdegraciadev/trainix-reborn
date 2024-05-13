@@ -43,7 +43,7 @@ export default function CreateButton({
               <Button
                 disabled={disabled}
                 variant="outline"
-                className="items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground rounded-md px-3 text-xs h-8 flex"
+                className=" items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground rounded-md px-3 text-sm h-8 flex w-full xl:w-auto"
               >
                 <PlusCircle className="w-4 h-4 mr-2" />
                 {label ?? "Create"}
@@ -56,14 +56,14 @@ export default function CreateButton({
         ) : (
           <Button
             variant="outline"
-            className="items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground rounded-md px-3 text-xs ml-auto h-8 flex"
+            className="items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground rounded-md px-3 text-sm ml-auto h-8 flex w-full xl:w-auto"
           >
             <PlusCircle className="w-4 h-4 mr-2" />
             {label ?? "Create"}
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className={cn("max-w-xl flex flex-col gap-0", dialogClassNames)}>
+      <DialogContent className={cn("w-[calc(100%-20px)] flex flex-col gap-0", dialogClassNames)}>
         <DialogHeader className="mb-4">
           <DialogTitle className="text-xl">{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>

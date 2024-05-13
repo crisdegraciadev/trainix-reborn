@@ -6,7 +6,7 @@ export function MusclesCell<T>({ row }: CustomCellProps<T>) {
   const muscles: NameValue[] = row.getValue("muscles");
 
   return (
-    <div className="w-[500px]">
+    <div className="w-[500px] ">
       <div className="flex flex-wrap gap-1 ">
         {muscles.length > 5 ? (
           <>

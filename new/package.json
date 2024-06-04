@@ -1,0 +1,19 @@
+{
+  "name": "trainix",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "bunx turbo dev",
+    "build": "bunx turbo build"
+  },
+  "author": "",
+  "license": "ISC",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "dependencies": {
+    "turbo": "^1.13.3"
+  }
+}

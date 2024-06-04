@@ -1,0 +1,24 @@
+{
+  "name": "@trainix/database",
+  "version": "0.0.0",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "scripts": {
+    "db:push": "bunx prisma db push",
+    "db:generate": "bunx prisma generate",
+    "db:reset": "bunx prisma db push --force-reset",
+    "db:seed": "bunx prisma db seed",
+    "db:studio": "bunx prisma studio --browser chrome"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.15.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.1",
+    "prisma": "^5.15.0",
+    "ts-node": "^10.9.2"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  }
+}

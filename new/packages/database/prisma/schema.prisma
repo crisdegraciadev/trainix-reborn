@@ -1,0 +1,115 @@
+datasource db {
+  provider     = "postgres"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String @id @unique @default(uuid())
+  name         String
+  surname      String
+  email        String @unique
+  passwordHash String
+
+  exercises Exercise[]
+  workout   Workout[]
+}
+
+model Exercise {
+  id          String  @id @unique @default(uuid())
+  name        String  @unique
+  description String? @db.Text
+
+  muscles    Muscle[]
+  activities Acticity[]
+
+  User   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  difficulty   Difficulty @relation(fields: [difficultyId], references: [id])
+  difficultyId String
+
+  @@index([userId])
+  @@index([difficultyId])
+}
+
+model Workout {
+  id          String  @id @unique @default(uuid())
+  name        String  @unique
+  description String? @db.Text
+
+  muscles      Muscle[]
+  progressions Progression[]
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  difficulty   Difficulty @relation(fields: [difficultyId], references: [id])
+  difficultyId String
+
+  @@index([userId])
+  @@index([difficultyId])
+}
+
+model Progression {
+  id String @id @unique @default(uuid())
+
+  workout   Workout @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+  workoutId String
+
+  activities Acticity[]
+
+  createdAt DateTime @default(now())
+
+  @@index([workoutId])
+}
+
+model Acticity {
+  id String @id @unique @default(uuid())
+
+  order Int
+  sets  Int
+  reps  Int
+
+  progression   Progression @relation(fields: [progressionId], references: [id], onDelete: Cascade)
+  progressionId String
+  exercise      Exercise    @relation(fields: [exerciseId], references: [id])
+  exerciseId    String
+  improve       Improve?    @relation(fields: [improveId], references: [id])
+  improveId     String?
+
+  @@index([progressionId])
+  @@index([exerciseId])
+  @@index([improveId])
+}
+
+model Muscle {
+  id    String @id @unique @default(uuid())
+  name  String @unique
+  value String @unique
+
+  exercises Exercise[]
+  workouts  Workout[]
+}
+
+model Difficulty {
+  id    String @id @unique @default(uuid())
+  name  String @unique
+  value String @unique
+  level Int    @unique
+
+  exercises Exercise[]
+  workouts  Workout[]
+}
+
+model Improve {
+  id    String @id @unique @default(uuid())
+  name  String @unique
+  value String @unique
+
+  activities Acticity[]
+}

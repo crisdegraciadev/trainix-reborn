@@ -1,6 +1,7 @@
 "use client";
 
 import { ThemeToggle } from "@components/theme-toggle";
+
 import { Avatar, AvatarFallback } from "@components/ui/avatar";
 import { Button } from "@components/ui/button";
 import {
@@ -12,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@components/ui/sheet";
+
 import { AppRoutes } from "@constants/routes";
 import { cn } from "@lib/utils";
 import { Dumbbell, Menu } from "lucide-react";
@@ -34,30 +36,26 @@ function MobileNavbar() {
         <Menu className="md:hidden" />
       </SheetTrigger>
       <SheetContent>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4 mt-8">
-            <nav className="flex flex-col items-center gap-6 text-xl">
-              <Link
-                href={AppRoutes.WORKOUTS}
-                className={cn(
-                  "transition-colors hover:text-primary",
-                  !pathname.includes(TABS[2]) ? "text-muted-foreground" : "",
-                )}
-              >
-                Workouts
-              </Link>
-              <Link
-                href={AppRoutes.EXERCISES}
-                className={cn(
-                  "transition-colors hover:text-primary",
-                  !pathname.includes(TABS[1]) ? "text-muted-foreground" : "",
-                )}
-              >
-                Exercises
-              </Link>
-            </nav>
-          </div>
-        </div>
+        <nav className="flex flex-col gap-6 mt-8 text-xl">
+          <Link
+            href={AppRoutes.WORKOUTS}
+            className={cn(
+              "transition-colors hover:text-primary",
+              !pathname.includes(TABS[2]) ? "text-muted-foreground" : "",
+            )}
+          >
+            Workouts
+          </Link>
+          <Link
+            href={AppRoutes.EXERCISES}
+            className={cn(
+              "transition-colors hover:text-primary",
+              !pathname.includes(TABS[1]) ? "text-muted-foreground" : "",
+            )}
+          >
+            Exercises
+          </Link>
+        </nav>
       </SheetContent>
     </Sheet>
   );
